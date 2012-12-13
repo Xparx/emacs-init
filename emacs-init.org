@@ -322,8 +322,6 @@
     #+begin_src emacs-lisp
       (el-get 'sync '(magit))
     #+end_src
-
-** Org Mode
 ** Misc
 *** Color Themes
    The [[http://www.nongnu.org/color-theme/][Color Themes]] package provides support for changing, saving,
@@ -340,12 +338,14 @@
      (add-to-list 'custom-theme-load-path (concat emacs-init-dir "themes"))
    #+end_src
 
-   Load my prefered theme 
+   Load my prefered theme if availible
    #+begin_src emacs-lisp
-     (load-theme 'test t)
+     (condition-case nil 
+          (load-theme 'test t) 
+          (error "no theme loaded"))
    #+end_src
 
-
+** Org Mode
 ** Emacs shell
    - Emacs shell settings in [[file:emacs-init-eshell.org][emacs-init-eshell]]
      #+begin_src emacs-lisp :tangle no
