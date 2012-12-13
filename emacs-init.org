@@ -128,7 +128,7 @@
   interested in the actual code implemented in Emacs Init.
 
 ** emacs init basics
-   - Load path etc.
+   - Load path etc ::
      #+name: emacs-init-load-paths
      #+begin_src emacs-lisp
        (add-to-list 'load-path emacs-init-dir)
@@ -136,20 +136,18 @@
        (setq package-user-dir (concat emacs-init-dir "elpa"))
        (setq custom-file (concat emacs-init-dir "custom.el"))
      #+end_src
-
-   - Ubiquitous Packages which should be loaded on startup rather than
+   - Ubiquitous Packages ::  which should be loaded on startup rather than
      autoloaded on demand since they are likely to be used in every
      session.
      #+name: emacs-init-load-on-startup
-     #+begin_src emacs-lisp tangle: yes
+     #+begin_src emacs-lisp
        (require 'saveplace)
        (require 'ffap)
        (require 'uniquify)
        (require 'ansi-color)
        (require 'recentf)
-     #+end_src
-
-   - ELPA archive repositories. 
+     #+end_src     
+   - ELPA archive repositories :: 
      #+begin_src emacs-lisp
        (setq package-archives
              '(("original"    . "http://tromey.com/elpa/")
@@ -172,7 +170,6 @@
          (unless (package-installed-p package)
            (package-install package)))
      #+end_src
-
    - El-get initialization ::  # <<Lazy Install>>
      - Lazy Install :: To setup el-get the simple way one needs only
        to evaluate the following emacs lisp block
@@ -198,8 +195,7 @@
 
          (el-get 'sync)
        #+end_src
-
-   - Functions for loading other parts of the emacs init
+   - Functions for loading other parts of the emacs init ::
      #+name: emacs-init-load
      #+begin_src emacs-lisp
        (defun emacs-init-load (file &optional header-or-tag)
@@ -254,47 +250,120 @@
 * Emacs init core
    :PROPERTIES:
    :CUSTOM_ID: emacs-init-core
-   :tangle:   no
+   :tangle:   yes
    :END:
    The trees contain the remainder of the core of Emacs Init.  All of
    the code in this section should be loaded by emacs used on any
    machine and user.
 
-   - El-get setup and fetch in [[file:emacs-init-el-get.org][emacs-init-el-get]]
-     #+begin_src emacs-lisp :tangle no
-       (emacs-init-load "emacs-init-el-get.org")
-     #+end_src
+** Emacs bindings
+   :PROPERTIES:
+   :tangle:   yes
+   :CUSTOM_ID: emacs-bindings
+   :END:
+   Custom keybindings
+*** Align your code in a pretty way.
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-x \\") 'align-regexp)
+    #+end_src
+*** Completion that uses many different methods to find options
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "M-/") 'hippie-expand)
+    #+end_src
 
-   - Key Bindings in [[file:emacs-init-bindings.org][emacs-init-bindings]]
-     #+begin_src emacs-lisp :tangle no
-       (emacs-init-load "emacs-init-bindings.org")
-     #+end_src
+*** Font size
+    #+begin_src emacs-lisp
+      (define-key global-map (kbd "C-+") 'text-scale-increase)
+      (define-key global-map (kbd "C--") 'text-scale-decrease)
+    #+end_src
 
-   - Org Mode settings in [[file:emacs-init-org.org][emacs-init-org]]
-     #+begin_src emacs-lisp :tangle no
-       (emacs-init-load "emacs-init-org.org")
-     #+end_src
+*** Use regex searches by default
+    #+begin_src emacs-lisp :tangle yes
+      (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+      (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+      (global-set-key (kbd "C-M-s") 'isearch-forward)
+      (global-set-key (kbd "C-M-r") 'isearch-backward)
+    #+end_src
 
-   - Miscellaneous settings in [[file:emacs-init-misc.org][emacs-init-misc]]
-     #+begin_src emacs-lisp :tangle no
-       (emacs-init-load "emacs-init-misc.org")
-     #+end_src emacs-lisp
+*** File finding
+    #+begin_src emacs-lisp :tangle yes
+      (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
+      (global-set-key (kbd "C-x C-M-f") 'find-file-in-project)
+      (global-set-key (kbd "C-x C-p") 'find-file-at-point)
+      (global-set-key (kbd "C-c y") 'bury-buffer)
+      (global-set-key (kbd "C-c r") 'revert-buffer)
+      (global-set-key (kbd "M-`") 'file-cache-minibuffer-complete)
+      (global-set-key (kbd "C-x C-b") 'ibuffer)
+    #+end_src
 
+*** Buffer cycling.
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-<prior>") 'previous-buffer) ; Ctrl+PageDown
+      (global-set-key (kbd "C-<next>") 'next-buffer) ; Ctrl+PageUp
+    #+end_src
+
+*** Help should search more than just commands
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-h a") 'apropos)
+    #+end_src
+
+*** Rgrep
+    Rgrep is infinitely useful in multi-file projects.
+    (see [[elisp:(describe-function 'rgrep)]])
+    #+begin_src emacs-lisp
+      (define-key global-map "\C-x\C-r" 'rgrep)
+    #+end_src
+
+** Magit
+   :PROPERTIES:
+   :CUSTOM_ID: emacs-init-magit
+   :END:
+*** Install and sync magit repository with el-get
+    #+begin_src emacs-lisp
+      (el-get 'sync '(magit))
+    #+end_src
+
+** Org Mode
+** Misc
+*** Color Themes
+   The [[http://www.nongnu.org/color-theme/][Color Themes]] package provides support for changing, saving,
+   sharing Emacs color themes.  To view and apply color themes available
+   on your system run =M-x color-theme-select=.  See the color theme
+   website and EmacsWiki pages for more information. 
+   - http://www.nongnu.org/color-theme/
+   - http://www.emacswiki.org/emacs/ColorTheme
+   - https://github.com/bbatsov/zenburn-emacs
+
+
+   Add list to load-theme path. use [[elisp:load-theme][load-theme]] RET "theme" to choose a theme.
+   #+begin_src emacs-lisp
+     (add-to-list 'custom-theme-load-path (concat emacs-init-dir "themes"))
+   #+end_src
+
+   Load my prefered theme 
+   #+begin_src emacs-lisp
+     (load-theme 'test t)
+   #+end_src
+
+
+** Emacs shell
    - Emacs shell settings in [[file:emacs-init-eshell.org][emacs-init-eshell]]
      #+begin_src emacs-lisp :tangle no
        (emacs-init-load "emacs-init-eshell.org")
      #+end_src
 
+** Publish emacs init
    - Publish project on startup, [[file:emacs-init-publish][emacs-init-publish]]
      #+begin_src emacs-lisp :tangle no
        (emacs-init-load "emacs-init-publish.org")
      #+end_src
-
+** Registers
    - Registers for jumping to commonly used files in [[file:emacs-init-registers.org][emacs-init-registers]]
      #+begin_src emacs-lisp :tangle no
        (emacs-init-load "emacs-init-registers.org")
      #+end_src
 
+** Yasnippet
    - [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs. It is
      inspired by TextMate's templating syntax.
      - watch the [[http://www.youtube.com/watch?v=vOj7btx3ATg][video on YouTube]]
