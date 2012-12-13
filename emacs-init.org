@@ -252,7 +252,7 @@
    :CUSTOM_ID: emacs-init-core
    :tangle:   yes
    :END:
-   The trees contain the remainder of the core of Emacs Init.  All of
+   These trees contain the remainder of the core of Emacs Init.  All of
    the code in this section should be loaded by emacs used on any
    machine and user.
 
@@ -323,7 +323,17 @@
       (el-get 'sync '(magit))
     #+end_src
 ** Misc
+*** Don't clutter up directories with files~
+    Rather than saving backup files scattered all over the file system,
+    let them live in the =backups/= directory inside of the emacs init.
+    #+begin_src emacs-lisp
+      (setq backup-directory-alist `(("." . ,(expand-file-name
+                                              (concat emacs-init-dir "backups")))))
+    #+end_src
 *** Color Themes
+    :PROPERTIES:
+    :CUSTOM_ID: color-theme
+    :END:
    The [[http://www.nongnu.org/color-theme/][Color Themes]] package provides support for changing, saving,
    sharing Emacs color themes.  To view and apply color themes available
    on your system run =M-x color-theme-select=.  See the color theme
@@ -345,24 +355,149 @@
           (error "no theme loaded"))
    #+end_src
 
+*** Aspell and dictionaries
+    #+begin_src emacs-lisp
+      (setq-default ispell-program-name "aspell")
+    #+end_src
+
+    Set default ispell dict
+    #+begin_src emacs-lisp
+      (setq ispell-dictionary "en")
+    #+end_src
+
+    Set ispell personal dictionary, this has some weird consequences
+    (what consequences Andreas!!)
+    #+begin_src emacs-lisp :tangle yes
+      (setq ispell-personal-dictionary
+            (concat emacs-init-dir "ispell-personal-dict"))
+    #+end_src
+
+*** Open my specific bashrc files in the right mode
+    #+begin_src emacs-lisp
+      (add-to-list 'auto-mode-alist '("bashrc\\'" . shell-script-mode))
+      (add-to-list 'auto-mode-alist '("bash_variables\\'" . shell-script-mode))
+      (add-to-list 'auto-mode-alist '("bash_aliases\\'" . shell-script-mode))
+    #+end_src
+
+** LaTeX mode
+   Fly spell mode for latex mode
+   #+begin_src emacs-lisp
+     (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+   #+end_src
+ 
+   Auto fill for latex mode, wrap lines automatically
+   #+begin_src emacs-lisp
+     (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
+   #+end_src
+ 
+   Some auctex specific settings.
+   #+begin_src emacs-lisp
+      (setq TeX-auto-save t)
+      (setq TeX-parse-self t)
+      (setq-default TeX-master nil)
+    #+end_src
+
+** Python
+   :PROPERTIES:
+   :CUSTOM_ID: python
+   :END:
+   Support for the Python programming language.
+*** Use Python's python-mode.el instead of Emacs' python.el
+    :PROPERTIES:
+    :CUSTOM_ID: python-mode
+    :END:
+    Install and sync python-mode repository with el-get
+    #+begin_src emacs-lisp
+      (el-get 'sync '(python-mode))
+    #+end_src
+    Replace the Python mode that comes with Emacs by the Python mode
+    supplied by the Python distribution itself.
+    #+begin_src emacs-lisp
+      (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+      (add-to-list 'interpreter-mode-alist '("python" . python-mode))
+    #+end_src
+    
+*** Use IPython if =ipython= command is present
+   :PROPERTIES:
+   :CUSTOM_ID: ipython
+   :END:
+    Install and sync ipython repository with el-get
+    #+begin_src emacs-lisp
+      (el-get 'sync '(ipython))
+    #+end_src
+    If an =ipython= executable is on the path, then assume that
+    IPython is the preferred method for python evaluation.
+    #+begin_src emacs-lisp
+      (when (executable-find "ipython")
+        (setq org-babel-python-mode 'python-mode))
+    #+end_src
+*** Use Cython mode
+   :PROPERTIES:
+   :CUSTOM_ID: cython
+   :tangle:   no
+   :END:
+    Install and sync cython-mode repository with el-get
+    #+begin_src emacs-lisp
+      (el-get 'sync '(cython-mode))
+    #+end_src
+    Set cython-mode file associations
+    #+begin_src emacs-lisp
+      (add-to-list 'auto-mode-alist '("\\.pyx\\'" . cython-mode))
+      (add-to-list 'auto-mode-alist '("\\.pxd\\'" . cython-mode))
+      (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode))
+    #+end_src
+** Smaller Code-modes
+*** cedet
+    I am not sure what this does expect enableing cedet when coding,
+    whatever that means
+    #+begin_src emacs-lisp
+      (global-ede-mode 1)
+      (require 'semantic/sb)
+      (semantic-mode 1)
+    #+end_src emacs-lisp
+
+*** gnuplot-mode
+    Install and sync gnuplot-mode repository with el-get
+    #+begin_src emacs-lisp
+      (el-get 'sync '(gnuplot-mode))
+    #+end_src
+    Associate .gp files with gnuplot.
+    #+begin_src emacs-lisp
+      (setq auto-mode-alist
+            (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
+    #+end_src
+
+*** MATLAB-mode
+    The indent function -1 will couse functions to not indent
+    #+begin_src emacs-lisp
+      (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
+      (setq matlab-indent-function nil)
+      (setq matlab-shell-command "matlab")
+    #+end_src
+
+    Make sure matlab does not auto wrap lines. It's really enoying and
+    it does not work! Do manually with 'M-q'
+    #+begin_src emacs-lisp
+      (add-hook 'matlab-mode-hook '(lambda () (auto-fill-mode -1)))
+    #+end_src
+
+*** Maxima-mode
+    Why is the load-path here so specific
+    #+begin_src emacs-lisp :tangle no
+      (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
+      (setq load-path (cons  "/usr/share/maxima/5.9.2/emacs" load-path))
+      (autoload 'maxima "maxima" "Running Maxima interactively" t)
+      (autoload 'maxima-mode "maxima" "Maxima editing mode" t)
+    #+end_src
+
 ** Org Mode
 ** Emacs shell
-   - Emacs shell settings in [[file:emacs-init-eshell.org][emacs-init-eshell]]
      #+begin_src emacs-lisp :tangle no
        (emacs-init-load "emacs-init-eshell.org")
      #+end_src
 
 ** Publish emacs init
-   - Publish project on startup, [[file:emacs-init-publish][emacs-init-publish]]
-     #+begin_src emacs-lisp :tangle no
-       (emacs-init-load "emacs-init-publish.org")
-     #+end_src
 ** Registers
-   - Registers for jumping to commonly used files in [[file:emacs-init-registers.org][emacs-init-registers]]
-     #+begin_src emacs-lisp :tangle no
-       (emacs-init-load "emacs-init-registers.org")
-     #+end_src
-
 ** Yasnippet
    - [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs. It is
      inspired by TextMate's templating syntax.
