@@ -14,15 +14,15 @@
   :PROPERTIES:
   :CUSTOM_ID: introduction
   :END:
-  - emacs24-starter-kit ::
-    This file is an inspired by version of the emacs24-starter-kit.
-    The latest version can be found at http://github.com/eschulte/emacs24-starter-kit/
+  - emacs24-starter-kit :: This file is inspired by and in part copied
+       from emacs24-starter-kit. The latest version can be found at
+       http://github.com/eschulte/emacs24-starter-kit/
     #+begin_src sh
       git clone https://github.com/eschulte/emacs24-starter-kit.git
     #+end_src
     
     If you want to keep your regular =~/.emacs.d= in place and just launch
-    a single instance using the starter kit, try the following invocation:
+    a single instance, using the starter kit, try the following invocation:
     #+begin_src sh
       emacs -q -l ~/src/emacs24-starter-kit/init.el
     #+end_src
@@ -84,13 +84,17 @@
      #+end_src
 
    - Installing more elisp libraries :: The easiest way to install new
-        libraries is through the Emacs Lisp Package Archive (see
-        [[#emacs-lisp-package-archive][EmacsLisp Package Archive]] below).  When a library is not
-        available through ELPA you can grab it's source and place it
-        directly in the =src= directory. Any packages found there will
-        automatically be added to your load-path when Emacs starts
-        up. I also install packages through el-get.
-
+        libraries is through the 
+     - Emacs Lisp Package Archive :: (see [[#emacs-lisp-package-archive][EmacsLisp Package Archive]]
+          below).  When a library is not available through ELPA you
+          can grab it's source and place it directly in the =src=
+          directory. Any packages found there will automatically be
+          added to your load-path when Emacs starts up. I also install
+          packages through el-get.
+     - El-get :: (see [[#emacs-lisp-get][El-get]] below). The other easy way to install new
+                 packages is with the package manager el-get. El-get
+                 will automatically initiate the package to be used
+                 with .emacs
    - Misc :: Some additional miscellaneous configuration and getting
 	     started suggestions
      - First see the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Customization.html#Customization][Customization]] node in the Emacs manual. Available
@@ -111,12 +115,18 @@
    this directory.
 
 ** El-get
-   El-get is a package manager for using custome recipes for
-   installing emacs packages. The source can be fetched [[https://github.com/dimitri/el-get][here]], by doing:
+   :PROPERTIES:
+   :CUSTOM_ID: el-get-package-manager
+   :END:
+   El-get is a /(foxy spanish, Arriba! Arriba!)/ package manager using
+   custome recipes for installing and initializing emacs packages from
+   a wide rangeof different repositories. The source can be fetched
+   [[https://github.com/dimitri/el-get][here]], by doing:
    #+begin_src sh
      git clone https://github.com/dimitri/el-get.git
    #+end_src
-   This can be automated with a [[Lazy%20install][Lazy install]] or regular [[Install]].
+   This can be automated with a [[Lazy%20install][Lazy install]] or regular [[Install]], which
+   is the default in this emacs-init.
 
 * Implementation
   :PROPERTIES:
@@ -252,10 +262,9 @@
    :CUSTOM_ID: emacs-init-core
    :tangle:   yes
    :END:
-   These trees contain the remainder of the core of Emacs Init.  All of
+   These sub-trees contain the remainder of the core of Emacs Init.  All of
    the code in this section should be loaded by emacs used on any
    machine and user.
-
 ** Emacs bindings
    :PROPERTIES:
    :tangle:   yes
@@ -316,13 +325,16 @@
 
 ** Magit
    :PROPERTIES:
-   :CUSTOM_ID: emacs-init-magit
+   :CUSTOM_ID: magit
    :END:
 *** Install and sync magit repository with el-get
     #+begin_src emacs-lisp
       (el-get 'sync '(magit))
     #+end_src
 ** Misc
+   :PROPERTIES:
+   :CUSTOM_ID: misc
+   :END:
 *** Don't clutter up directories with files~
     Rather than saving backup files scattered all over the file system,
     let them live in the =backups/= directory inside of the emacs init.
@@ -330,6 +342,11 @@
       (setq backup-directory-alist `(("." . ,(expand-file-name
                                               (concat emacs-init-dir "backups")))))
     #+end_src
+*** Make colors work in M-x shell
+    #+begin_src emacs-lisp
+      (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+    #+end_src
+
 *** Color Themes
     :PROPERTIES:
     :CUSTOM_ID: color-theme
@@ -366,8 +383,8 @@
     #+end_src
 
     Set ispell personal dictionary, this has some weird consequences
-    (what consequences Andreas!!)
-    #+begin_src emacs-lisp :tangle yes
+    (what consequences!!)
+    #+begin_src emacs-lisp
       (setq ispell-personal-dictionary
             (concat emacs-init-dir "ispell-personal-dict"))
     #+end_src
@@ -379,19 +396,66 @@
       (add-to-list 'auto-mode-alist '("bash_aliases\\'" . shell-script-mode))
     #+end_src
 
+*** Transparently open compressed files
+    #+begin_src emacs-lisp
+      (auto-compression-mode t)
+    #+end_src
+
+*** Save a list of recent files visited.
+    #+begin_src emacs-lisp
+      (recentf-mode 1)
+    #+end_src
+
+*** Highlight matching parentheses when the point is on them.
+    #+name: emacs-init-match-parens
+    #+begin_src emacs-lisp
+      (show-paren-mode 1)
+      (set-face-background 'show-paren-match-face (face-background 'default))
+      (set-face-foreground 'show-paren-match-face "#def")
+      (set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
+    #+end_src
+
+*** Alias for yes-no to y-n choice, init random seed.
+    #+begin_src emacs-lisp
+      (defalias 'yes-or-no-p 'y-or-n-p)
+      ;; Seed the random-number generator
+      (random t)
+    #+end_src
+*** Tramp mode defaults
+    #+begin_src emacs-lisp
+      (setq tramp-default-method "ssh")
+    #+end_src
+
+*** Remove trailing whitespaces
+    #+begin_src emacs-lisp
+      (add-hook 'before-save-hook 'delete-trailing-whitespace)
+    #+end_src
+*** Set exec-path same as PATH in bash
+    Source: [[http://stackoverflow.com/questions/9663396/how-do-i-make-emacs-recognize-bash-environment-variables-for-compilation][stackoverflow]]
+    #+begin_src emacs-lisp
+      (let ((path (shell-command-to-string ". ~/.bash_variables; echo -n $PATH")))
+       	(setenv "PATH" path)
+       	(setq exec-path
+              (append
+               (split-string-and-unquote path ":")
+               exec-path)))
+    #+end_src emacs-lisp
 ** LaTeX mode
-   Fly spell mode for latex mode
-   #+begin_src emacs-lisp
-     (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-   #+end_src
+   :PROPERTIES:
+   :CUSTOM_ID: latex
+   :END:
+*** Fly spell mode for latex mode
+    #+begin_src emacs-lisp
+      (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+    #+end_src
  
-   Auto fill for latex mode, wrap lines automatically
-   #+begin_src emacs-lisp
-     (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
-   #+end_src
+*** Auto fill for latex mode, wrap lines automatically
+    #+begin_src emacs-lisp
+      (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
+    #+end_src
  
-   Some auctex specific settings.
-   #+begin_src emacs-lisp
+*** Some auctex specific settings.
+    #+begin_src emacs-lisp
       (setq TeX-auto-save t)
       (setq TeX-parse-self t)
       (setq-default TeX-master nil)
@@ -446,7 +510,7 @@
       (add-to-list 'auto-mode-alist '("\\.pxd\\'" . cython-mode))
       (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode))
     #+end_src
-** Smaller Code-modes
+** Code-modes
 *** cedet
     I am not sure what this does expect enableing cedet when coding,
     whatever that means
@@ -454,9 +518,12 @@
       (global-ede-mode 1)
       (require 'semantic/sb)
       (semantic-mode 1)
-    #+end_src emacs-lisp
+    #+end_src
 
 *** gnuplot-mode
+    :PROPERTIES:
+    :CUSTOM_ID: gnuplot
+    :END:
     Install and sync gnuplot-mode repository with el-get
     #+begin_src emacs-lisp
       (el-get 'sync '(gnuplot-mode))
@@ -468,6 +535,15 @@
     #+end_src
 
 *** MATLAB-mode
+    :PROPERTIES:
+    :CUSTOM_ID: matlab
+    :tangle:   no
+    :END:
+    Install and sync matlab-mode repository with el-get
+    #+begin_src emacs-lisp
+      (el-get 'sync '(matlab-mode))
+    #+end_src
+
     The indent function -1 will couse functions to not indent
     #+begin_src emacs-lisp
       (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
@@ -482,8 +558,17 @@
     #+end_src
 
 *** Maxima-mode
+    :PROPERTIES:
+    :tangle:   no
+    :CUSTOM_ID: maxima
+    :END:
+    Install and sync maxima-mode repository with el-get
+    #+begin_src emacs-lisp
+      (el-get 'sync '(maxima-mode))
+    #+end_src
+
     Why is the load-path here so specific
-    #+begin_src emacs-lisp :tangle no
+    #+begin_src emacs-lisp
       (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
       (setq load-path (cons  "/usr/share/maxima/5.9.2/emacs" load-path))
       (autoload 'maxima "maxima" "Running Maxima interactively" t)
@@ -491,20 +576,18 @@
     #+end_src
 
 ** Org Mode
-** Emacs shell
-     #+begin_src emacs-lisp :tangle no
-       (emacs-init-load "emacs-init-eshell.org")
-     #+end_src
-
 ** Publish emacs init
-** Registers
 ** Yasnippet
-   - [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs. It is
+   :PROPERTIES:
+   :tangle:   no
+   :CUSTOM_ID: yasnippet
+   :END:
+    - [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs. It is
      inspired by TextMate's templating syntax.
      - watch the [[http://www.youtube.com/watch?v=vOj7btx3ATg][video on YouTube]]
      - see the [[http://yasnippet.googlecode.com/svn/trunk/doc/index.html][intro and tutorial]]
 
-     load the yasnippet bundle, probably done automatically with el-get
+     Load the yasnippet bundle, probably done automatically with el-get
      #+begin_src emacs-lisp :tangle no
        (add-to-list 'load-path
                     (expand-file-name  "yasnippet"
@@ -514,14 +597,14 @@
        (yas/initialize)
      #+end_src
 
-     load the snippets defined in the =./snippets/= directory
+     Load the snippets defined in the =./snippets/= directory
      #+begin_src emacs-lisp :tangle no
        (yas/load-directory (expand-file-name "snippets" emacs-init-dir))
      #+end_src
 
      The latest version of yasnippets doesn't play well with Org-Mode, the
      following function allows these two to play nicely together.
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp :tangle no
        (defun yas/org-very-safe-expand ()
          (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
