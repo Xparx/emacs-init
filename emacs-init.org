@@ -20,7 +20,7 @@
     #+begin_src sh
       git clone https://github.com/eschulte/emacs24-starter-kit.git
     #+end_src
-    
+
     If you want to keep your regular =~/.emacs.d= in place and just launch
     a single instance, using the starter kit, try the following invocation:
     #+begin_src sh
@@ -84,7 +84,7 @@
      #+end_src
 
    - Installing more elisp libraries :: The easiest way to install new
-        libraries is through the 
+        libraries is through the
      - Emacs Lisp Package Archive :: (see [[#emacs-lisp-package-archive][EmacsLisp Package Archive]]
           below).  When a library is not available through ELPA you
           can grab it's source and place it directly in the =src=
@@ -156,8 +156,8 @@
        (require 'uniquify)
        (require 'ansi-color)
        (require 'recentf)
-     #+end_src     
-   - ELPA archive repositories :: 
+     #+end_src
+   - ELPA archive repositories ::
      #+begin_src emacs-lisp
        (setq package-archives
              '(("original"    . "http://tromey.com/elpa/")
@@ -331,9 +331,11 @@
     #+begin_src emacs-lisp
       (el-get 'sync '(magit))
     #+end_src
+
 ** Misc
    :PROPERTIES:
    :CUSTOM_ID: misc
+   :tangle:   yes
    :END:
 *** Don't clutter up directories with files~
     Rather than saving backup files scattered all over the file system,
@@ -342,6 +344,7 @@
       (setq backup-directory-alist `(("." . ,(expand-file-name
                                               (concat emacs-init-dir "backups")))))
     #+end_src
+
 *** Make colors work in M-x shell
     #+begin_src emacs-lisp
       (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
@@ -351,26 +354,26 @@
     :PROPERTIES:
     :CUSTOM_ID: color-theme
     :END:
-   The [[http://www.nongnu.org/color-theme/][Color Themes]] package provides support for changing, saving,
-   sharing Emacs color themes.  To view and apply color themes available
-   on your system run =M-x color-theme-select=.  See the color theme
-   website and EmacsWiki pages for more information. 
-   - http://www.nongnu.org/color-theme/
-   - http://www.emacswiki.org/emacs/ColorTheme
-   - https://github.com/bbatsov/zenburn-emacs
+    The [[http://www.nongnu.org/color-theme/][Color Themes]] package provides support for changing, saving,
+    sharing Emacs color themes.  To view and apply color themes available
+    on your system run =M-x color-theme-select=.  See the color theme
+    website and EmacsWiki pages for more information.
+    - http://www.nongnu.org/color-theme/
+    - http://www.emacswiki.org/emacs/ColorTheme
+    - https://github.com/bbatsov/zenburn-emacs
 
 
-   Add list to load-theme path. use [[elisp:load-theme][load-theme]] RET "theme" to choose a theme.
-   #+begin_src emacs-lisp
-     (add-to-list 'custom-theme-load-path (concat emacs-init-dir "themes"))
-   #+end_src
+    Add list to load-theme path. use [[elisp:load-theme][load-theme]] RET "theme" to choose a theme.
+    #+begin_src emacs-lisp
+      (add-to-list 'custom-theme-load-path (concat emacs-init-dir "themes"))
+    #+end_src
 
-   Load my prefered theme if availible
-   #+begin_src emacs-lisp
-     (condition-case nil 
-          (load-theme 'test t) 
-          (error "no theme loaded"))
-   #+end_src
+    Load my prefered theme if availible
+    #+begin_src emacs-lisp
+      (condition-case nil
+           (load-theme 'test t)
+           (error "no theme loaded"))
+    #+end_src
 
 *** Aspell and dictionaries
     #+begin_src emacs-lisp
@@ -448,12 +451,12 @@
     #+begin_src emacs-lisp
       (add-hook 'LaTeX-mode-hook 'flyspell-mode)
     #+end_src
- 
+
 *** Auto fill for latex mode, wrap lines automatically
     #+begin_src emacs-lisp
       (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
     #+end_src
- 
+
 *** Some auctex specific settings.
     #+begin_src emacs-lisp
       (setq TeX-auto-save t)
@@ -480,7 +483,7 @@
       (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
       (add-to-list 'interpreter-mode-alist '("python" . python-mode))
     #+end_src
-    
+
 *** Use IPython if =ipython= command is present
    :PROPERTIES:
    :CUSTOM_ID: ipython
@@ -511,6 +514,10 @@
       (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode))
     #+end_src
 ** Code-modes
+   :PROPERTIES:
+   :CUSTOM_ID: coding
+   :tangle:   yes
+   :END:
 *** cedet
     I am not sure what this does expect enableing cedet when coding,
     whatever that means
