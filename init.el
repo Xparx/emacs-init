@@ -26,6 +26,7 @@
 
 ;; load up emacs init
 (message "Loading emacs-init")
+(require 'org)
 (org-babel-load-file (expand-file-name "emacs-init.org" emacs-init-dir))
 
 (message "init.el has loaded")
