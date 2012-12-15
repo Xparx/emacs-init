@@ -120,7 +120,7 @@
    :END:
    El-get is a /(foxy spanish, Arriba! Arriba!)/ package manager using
    custome recipes for installing and initializing emacs packages from
-   a wide rangeof different repositories. The source can be fetched
+   a wide range of different repositories. The source can be fetched
    [[https://github.com/dimitri/el-get][here]], by doing:
    #+begin_src sh
      git clone https://github.com/dimitri/el-get.git
@@ -167,21 +167,22 @@
        (package-initialize)
      #+end_src
      - Packages to be installed by default
-     #+begin_src emacs-lisp :tangle no
-       ;; Put more packages here if more default should be used.
-       ;; This ends up in src/ not el-get/.
-       (defvar emacs-init-packages
-         (list 'yasnippet-bundle)
-         "Libraries that should be installed by default.")
+       #+begin_src emacs-lisp :tangle no
+         ;; Put more packages here if more default should be used.
+         ;; This ends up in src/ not el-get/.
+         (defvar emacs-init-packages
+           (list 'yasnippet-bundle)
+           "Libraries that should be installed by default.")
 
-       (unless package-archive-contents
-         (package-refresh-contents))
-       (dolist (package emacs-init-packages)
-         (unless (package-installed-p package)
-           (package-install package)))
-     #+end_src
-   - El-get initialization ::  # <<Lazy Install>>
-     - Lazy Install :: To setup el-get the simple way one needs only
+         (unless package-archive-contents
+           (package-refresh-contents))
+         (dolist (package emacs-init-packages)
+           (unless (package-installed-p package)
+             (package-install package)))
+       #+end_src
+   - El-get initialization ::
+     - Lazy Install :: # <<Lazy Install>>
+       To setup el-get the simple way one needs only
        to evaluate the following emacs lisp block
        #+begin_src emacs-lisp :tangle no
          ;; So the idea is that you copy/paste this code into your *scratch* buffer,
@@ -215,6 +216,7 @@
        not an id then it will be interpreted as a tag, and only subtrees
        marked with the given tag will be loaded.
 
+       ! STARTER-KIT Configurations:
        For example, to load all of emacs-init-lisp.org simply
        add (emacs-init-load \"lisp\") to your configuration.
        To load only the 'window-system' config from
@@ -287,7 +289,7 @@
     #+end_src
 
 *** Use regex searches by default
-    #+begin_src emacs-lisp :tangle yes
+    #+begin_src emacs-lisp
       (global-set-key (kbd "C-s") 'isearch-forward-regexp)
       (global-set-key (kbd "C-r") 'isearch-backward-regexp)
       (global-set-key (kbd "C-M-s") 'isearch-forward)
@@ -295,7 +297,7 @@
     #+end_src
 
 *** File finding
-    #+begin_src emacs-lisp :tangle yes
+    #+begin_src emacs-lisp
       (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
       (global-set-key (kbd "C-x C-M-f") 'find-file-in-project)
       (global-set-key (kbd "C-x C-p") 'find-file-at-point)
@@ -437,12 +439,17 @@
     Source: [[http://stackoverflow.com/questions/9663396/how-do-i-make-emacs-recognize-bash-environment-variables-for-compilation][stackoverflow]]
     #+begin_src emacs-lisp
       (let ((path (shell-command-to-string ". ~/.bash_variables; echo -n $PATH")))
-       	(setenv "PATH" path)
-       	(setq exec-path
+        (setenv "PATH" path)
+        (setq exec-path
               (append
                (split-string-and-unquote path ":")
                exec-path)))
     #+end_src emacs-lisp
+*** Default to unified diffs
+    #+begin_src emacs-lisp
+      (setq diff-switches "-u")
+    #+end_src
+
 ** LaTeX mode
    :PROPERTIES:
    :CUSTOM_ID: latex
@@ -463,7 +470,6 @@
       (setq TeX-parse-self t)
       (setq-default TeX-master nil)
     #+end_src
-
 ** Python
    :PROPERTIES:
    :CUSTOM_ID: python
@@ -522,8 +528,8 @@
     I am not sure what this does expect enableing cedet when coding,
     whatever that means
     #+begin_src emacs-lisp
-      (global-ede-mode 1)
       (require 'semantic/sb)
+      (global-ede-mode 1)
       (semantic-mode 1)
     #+end_src
 
@@ -582,8 +588,238 @@
       (autoload 'maxima-mode "maxima" "Maxima editing mode" t)
     #+end_src
 
-** Org Mode
+** Org Mode <3
+    :PROPERTIES:
+    :tangle:   yes
+    :END:
+    Install and sync org-mode repository with el-get
+*** El-getting org-mode
+    :PROPERTIES:
+    :tangle:   yes
+    :END:
+    Providing org-mode this way will not update the version in emacs
+    when running =M-x org-version=. I don't know why but it is
+    annoying. This forces me to run =M-x org-reload= to update org.
+
+    It turns out that the el-get recipe is to blame. Removeing the
+    =:autoloads= and =:features= gets rid of the warning about
+    =requare org-install= but the version problem is still there.
+    #+begin_src emacs-lisp
+      (el-get 'sync '(org-mode))
+    #+end_src
+
+*** Org-Mode File association
+    Both .org and .txt files should be associated with org-mode
+    #+begin_src emacs-lisp
+      (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+      (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
+    #+end_src
+
+*** Hide leading stars in structure outline
+    #+begin_src emacs-lisp
+      (setq org-hide-leading-stars t)
+    #+end_src
+
+*** Org-Mode Global Keybindings
+    :PROPERTIES:
+    :CUSTOM_ID: org-global-keybindings
+    :END:
+    Two global Emacs bindings for Org-mode
+
+    The [[http://orgmode.org/manual/Agenda-Views.html#Agenda-Views][Org-mode agenda]] is good to have close at hand
+    #+begin_src emacs-lisp
+      (define-key global-map "\C-ca" 'org-agenda)
+    #+end_src
+
+    Org-mode supports [[http://orgmode.org/manual/Hyperlinks.html#Hyperlinks][links]], this command allows you to store links
+    globally for later insertion into an Org-mode buffer.  See
+    [[http://orgmode.org/manual/Handling-links.html#Handling-links][Handling-links]] in the Org-mode manual.
+    #+begin_src emacs-lisp
+      (define-key global-map "\C-cl" 'org-store-link)
+    #+end_src
+
+*** Org-Mode ToDo
+   Org mode todo states and agenda mode navigation.
+   #+begin_src emacs-lisp
+     (eval-after-load "org"
+       '(progn
+          (define-prefix-command 'org-todo-state-map)
+          (define-key org-mode-map "\C-cx" 'org-todo-state-map)
+          (define-key org-todo-state-map "x"
+            #'(lambda nil (interactive) (org-todo "CANCELLED")))
+          (define-key org-todo-state-map "d"
+            #'(lambda nil (interactive) (org-todo "DONE")))
+          (define-key org-todo-state-map "f"
+            #'(lambda nil (interactive) (org-todo "DEFERRED")))
+          (define-key org-todo-state-map "l"
+            #'(lambda nil (interactive) (org-todo "DELEGATED")))
+          (define-key org-todo-state-map "s"
+            #'(lambda nil (interactive) (org-todo "STARTED")))
+          (define-key org-todo-state-map "w"
+            #'(lambda nil (interactive) (org-todo "WAITING")))
+          ;; reset keys to original functions
+          (add-hook 'org-agenda-mode-hook
+                    (lambda ()
+                      (define-key org-agenda-mode-map "\C-n" 'next-line)
+                      (define-key org-agenda-keymap "\C-n" 'next-line)
+                      (define-key org-agenda-mode-map "\C-p" 'previous-line)
+                      (define-key org-agenda-keymap "\C-p" 'previous-line)))))
+   #+end_src
+
+*** Activate babel languages
+    :PROPERTIES:
+    :CUSTOM_ID: babel
+    :END:
+    This activates a number of widely used languages, you are
+    encouraged to activate more languages.  The customize interface of
+    `=org-babel-load-languages=' contains an up to date list of the
+    currently supported languages.
+    #+name:babel-lang
+    #+begin_src emacs-lisp
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((emacs-lisp . t)
+         (sh . t)
+         (matlab . t)
+         (gnuplot . t)
+         (python . t)
+         (dot . t)
+         (latex . t)))
+    #+end_src
+
+    Adding unsecure evaluation of code-blocks
+    #+begin_src emacs-lisp
+      (setq org-confirm-babel-evaluate nil)
+    #+end_src
+
+*** Code block fontification
+    :PROPERTIES:
+    :CUSTOM_ID: code-block-fontification
+    :END:
+    The following displays the contents of code blocks in Org-mode files
+    using the major-mode of the code.  It also changes the behavior of
+    =TAB= to as if it were used in the appropriate major mode.  This means
+    that reading and editing code from inside of your Org-mode files is
+    much more like reading and editing of code using its major mode.
+    #+begin_src emacs-lisp
+      (setq org-src-fontify-natively t)
+      (setq org-src-tab-acts-natively t)
+    #+end_src
+
+*** Org general export
+    #+begin_src emacs-lisp
+      (setq org-export-with-sub-superscripts nil)
+    #+end_src
+
+*** Org LaTeX export types
+    Originally taken from Bruno Tavernier: [[http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432][here]], but adapted to use latexmk
+    4.20 or higher.
+    #+begin_src emacs-lisp
+      (defun my-auto-tex-cmd ()
+	"When exporting from .org with latex, automatically run latex,
+	   pdflatex, or xelatex as appropriate, using latexmk."
+	(let ((texcmd)))
+	;; default command: oldstyle latex via dvi
+	(setq texcmd "latexmk -pdfdvi -quiet %f")
+	;; bibtex -> pdf
+	(if (string-match "LATEX_CMD: texbibtex" (buffer-string))
+	    (setq texcmd "latexmk -pdfdvi -bibtex -quiet %f"))
+	;; longway tex -> pdf
+	(if (string-match "LATEX_CMD: dvipdfps" (buffer-string))
+	    (setq texcmd "latexmk -pdf -quiet %f"))
+	;; pdflatex -> .pdf
+	(if (string-match "LATEX_CMD: pdflatex" (buffer-string))
+	    (setq texcmd "latexmk -pdf -quiet %f"))
+	;; xelatex -> .pdf
+	(if (string-match "LATEX_CMD: xelatex" (buffer-string))
+	    (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
+	;; LaTeX compilation command
+	(setq org-latex-to-pdf-process (list texcmd)))
+
+      (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
+    #+end_src
+
+*** Org LaTeX export with default packages
+    :PROPERTIES:
+    :tangle:   no
+    :END:
+    Specify default packages to be included in every tex file, whether
+    pdflatex or xelatex. This is kept as an example. Some packages are
+    still included in the output.
+    #+begin_src emacs-lisp
+      (setq org-export-latex-packages-alist
+	    '(("" "graphicx" t)
+	      ("" "longtable" nil)
+	      ("" "float" nil)))
+    #+end_src
+
+    Define packages for each latex command. Using latexmk...
+    #+begin_src emacs-lisp
+      (defun my-auto-tex-parameters ()
+            "Automatically select the tex packages to include."
+            ;; default packages for ordinary latex or pdflatex export
+            (setq org-export-latex-default-packages-alist
+                  '(("" "graphicx" t)
+                    ("" "longtable" nil)
+                    ("" "float" nil)
+                    ("AUTO" "inputenc" t)
+                    ("T1"   "fontenc"   t)
+                    (""     "fixltx2e"  t)
+                    (""     "hyperref"  nil)))
+
+            ;; Packages to include when xelatex is used
+            (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+                (setq org-export-latex-default-packages-alist
+                      '(("" "fontspec" t)
+                        ("" "xunicode" t)
+                        ("" "url" t)
+                        ("" "rotating" t)
+                        ("american" "babel" t)
+                        ("babel" "csquotes" t)
+                        ("" "soul" t)
+                        ("xetex" "hyperref" nil)
+                        )))
+
+            (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+                (setq org-export-latex-classes
+                      (cons '("article"
+                              "\\documentclass[11pt,article,oneside]{memoir}"
+                              ("\\section{%s}" . "\\section*{%s}")
+                              ("\\subsection{%s}" . "\\subsection*{%s}")
+                              ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                              ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                              ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                            org-export-latex-classes))))
+      (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
+    #+end_src
+
+*** Org BibTeX export
+
+*** MobileOrg
+    :PROPERTIES:
+    :tangle:   yes
+    :END:
+    Mobile org push/pull directory
+    #+begin_src emacs-lisp
+      (setq org-mobile-directory "~/Dropbox/MobileOrg" )
+      (setq org-mobile-inbox-for-pull "~/Dropbox/MobileOrg/from-mobile.org" )
+    #+end_src
+
+    #+begin_src emacs-lisp
+      (setq org-mobile-files '("~/notebook/notes.org" "~/notebook/todo.org") )
+    #+end_src
+
 ** Publish emacs init
+   Publishing require the htmlize package. Can be found in
+   emacs-goodies or as a standalone elisp file. I use el-get in
+   emacs-init-publish to make sure hymlize is installed and
+   initialized.
+
+   Evaluate this to publish this file to ./doc
+   #+begin_src emacs-lisp :tangle no
+     (emacs-init-load "emacs-init-publish.org")
+   #+end_src
+
 ** Yasnippet
    :PROPERTIES:
    :tangle:   no
