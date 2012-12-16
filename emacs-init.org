@@ -48,7 +48,6 @@
 ** Customization
    :PROPERTIES:
    :CUSTOM_ID: customization
-   :tangle:   no
    :END:
 
    The defaults built into the emacs init are only the beginning of
@@ -118,7 +117,7 @@
    :PROPERTIES:
    :CUSTOM_ID: el-get-package-manager
    :END:
-   El-get is a /(foxy spanish, Arriba! Arriba!)/ package manager using
+   El-get is a /(foxy el-mexicano, Arriba! Arriba!:)/ package manager using
    custome recipes for installing and initializing emacs packages from
    a wide range of different repositories. The source can be fetched
    [[https://github.com/dimitri/el-get][here]], by doing:
@@ -256,14 +255,12 @@
 ** Emacs init core
     :PROPERTIES:
     :CUSTOM_ID: emacs-init-core
-    :tangle:   yes
     :END:
     These sub-trees contain the remainder of the core of Emacs Init.  All of
     the code in this section should be loaded by emacs used on any
     machine and user.
 *** Emacs bindings
     :PROPERTIES:
-    :tangle:   yes
     :CUSTOM_ID: emacs-bindings
     :END:
     Custom keybindings
@@ -331,7 +328,6 @@
 *** Misc
     :PROPERTIES:
     :CUSTOM_ID: misc
-    :tangle:   yes
     :END:
 **** Don't clutter up directories with files~
      Rather than saving backup files scattered all over the file system,
@@ -534,11 +530,12 @@
 *** Code-modes
     :PROPERTIES:
     :CUSTOM_ID: coding
-    :tangle:   yes
     :END:
 **** cedet
      I am not sure what this does expect enableing cedet when coding,
-     whatever that means
+     whatever that means. =org-edit-src-code: Symbol's function
+     definition is void: user-error= error if this sentence is
+     removed, odd but true.
      #+begin_src emacs-lisp
        (require 'semantic/sb)
        (global-ede-mode 1)
@@ -564,6 +561,9 @@
      :CUSTOM_ID: matlab
      :tangle:   no
      :END:
+     TODO: Matlab-mode fails to install because of cedet for some
+     reason. Need to modify el-get recipe.
+
      Install and sync matlab-mode repository with el-get
      #+begin_src emacs-lisp
        (el-get 'sync '(matlab-mode))
@@ -976,7 +976,6 @@
 
 * Load User/System Specific Files
   :PROPERTIES:
-  :tangle:   no
   :CUSTOM_ID: user-system-configs
   :END:
   You can keep system- or user-specific customizations here in either
