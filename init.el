@@ -24,9 +24,21 @@
 (global-set-key [f12] 'toggle-truncate-lines) ;; toggle-truncate-lines keybinding
 (setq blink-matching-delay .1) ;; matching parenthesis timer default 1
 
+;; Setting up el-get in init.el so that org-mode can be preloaded here
+(setq el-get-dir (expand-file-name "el-get" emacs-init-dir))
+(add-to-list 'load-path (concat emacs-init-dir "el-get/el-get"))
+(unless (require 'el-get nil t)
+  (url-retrieve
+   "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
+   (lambda (s)
+     (goto-char (point-max))
+     (eval-print-last-sexp))))
+(el-get 'sync)
+
+(el-get 'sync '(org-mode))
 ;; load up emacs init
 (message "Loading emacs-init")
-(require 'org)
+;;(require 'org)
 (org-babel-load-file (expand-file-name "emacs-init.org" emacs-init-dir))
 
 (message "init.el has loaded")
