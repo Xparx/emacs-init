@@ -1036,5 +1036,6 @@
 [1] If you already have a directory at =~/.emacs.d= move it out of the
     way and put this there instead.
 
-[2] The emacs init uses [[http://orgmode.org/][Org Mode]] to load embedded elisp code
-    directly from literate Org-mode documents.
+[2] The emacs init uses [[http://orgmode.org/][Org Mode]] to load embedded elisp code directly
+    from literate Org-mode documents. Org is included with Emacs for
+    later version.
