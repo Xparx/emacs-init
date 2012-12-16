@@ -408,7 +408,11 @@
     #+begin_src emacs-lisp
       (recentf-mode 1)
     #+end_src
-
+*** Save last place in visited files
+    #+begin_src emacs-lisp
+      (setq save-place-file (concat emacs-init-dir "saved-places"))
+      (setq-default save-place t)
+    #+end_src
 *** Highlight matching parentheses when the point is on them.
     #+name: emacs-init-match-parens
     #+begin_src emacs-lisp
