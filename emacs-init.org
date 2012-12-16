@@ -166,14 +166,12 @@
                ("marmalade"   . "http://marmalade-repo.org/packages/")))
        (package-initialize)
      #+end_src
-     - Packages to be installed by default
-       #+begin_src emacs-lisp :tangle no
-         ;; Put more packages here if more default should be used.
-         ;; This ends up in src/ not el-get/.
+     - Packages to be installed by default. Put more packages here if
+       more default should be installed with elpa.
+       #+begin_src emacs-lisp
          (defvar emacs-init-packages
            (list 'yasnippet-bundle)
            "Libraries that should be installed by default.")
-
          (unless package-archive-contents
            (package-refresh-contents))
          (dolist (package emacs-init-packages)
@@ -329,7 +327,7 @@
    :PROPERTIES:
    :CUSTOM_ID: magit
    :END:
-*** Install and sync magit repository with el-get
+*** El-get magit repository
     #+begin_src emacs-lisp
       (el-get 'sync '(magit))
     #+end_src
@@ -465,11 +463,25 @@
     #+end_src
 
 *** Some auctex specific settings.
+    Install and sync auctex repository with el-get
+    #+begin_src emacs-lisp
+      (el-get 'sync '(auctex))
+    #+end_src
+
     #+begin_src emacs-lisp
       (setq TeX-auto-save t)
       (setq TeX-parse-self t)
       (setq-default TeX-master nil)
     #+end_src
+*** RefTeX
+    :PROPERTIES:
+    :CUSTOM_ID: reftex
+    :END:
+    Install and sync reftex repository with el-get
+    #+begin_src emacs-lisp
+      (el-get 'sync '(reftex))
+    #+end_src
+
 ** Python
    :PROPERTIES:
    :CUSTOM_ID: python
@@ -638,6 +650,12 @@
       (define-key global-map "\C-cl" 'org-store-link)
     #+end_src
 
+*** Local Org files
+    Set to the location of your Org files on your local system
+    #+begin_src emacs-lisp
+      (setq org-directory "~/notebook")
+    #+end_src
+
 *** Org-Mode ToDo
    Org mode todo states and agenda mode navigation.
    #+begin_src emacs-lisp
@@ -665,6 +683,50 @@
                       (define-key org-agenda-mode-map "\C-p" 'previous-line)
                       (define-key org-agenda-keymap "\C-p" 'previous-line)))))
    #+end_src
+
+*** Remember-Mode
+    Remember mode makes it possible to store notes and todos in
+    different files automaticly with a simple key command.
+    #+begin_src emacs-lisp
+      (add-hook 'remember-mode-hook 'org-remember-apply-template)
+      (define-key global-map [(meta ?r)] 'remember)
+
+      (custom-set-variables
+      '(org-agenda-files (quote ("~/notebook/todo.org")))
+       '(org-default-notes-file "~/notebook/notes.org")
+       '(org-agenda-ndays 7)
+       '(org-deadline-warning-days 14)
+       '(org-agenda-show-all-dates t)
+       '(org-agenda-skip-deadline-if-done t)
+       '(org-agenda-skip-scheduled-if-done t)
+       '(org-agenda-start-on-weekday nil)
+       '(org-reverse-note-order t)
+       '(org-fast-tag-selection-single-key (quote expert))
+       '(org-agenda-custom-commands
+         (quote (("d" todo "DELEGATED" nil)
+                 ("c" todo "DONE|DEFERRED|CANCELLED" nil)
+                 ("w" todo "WAITING" nil)
+                 ("W" agenda "" ((org-agenda-ndays 21)))
+                 ("A" agenda ""
+                  ((org-agenda-skip-function
+                    (lambda nil
+                      (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]")))
+                   (org-agenda-ndays 1)
+                   (org-agenda-overriding-header "Today's Priority #A tasks: ")))
+                 ("u" alltodo ""
+                  ((org-agenda-skip-function
+                    (lambda nil
+                      (org-agenda-skip-entry-if (quote scheduled) (quote deadline)
+                                                (quote regexp) "\n]+>")))
+                   (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
+
+       '(org-remember-store-without-prompt t)
+       '(org-remember-templates
+         (quote ((116 "* TODO %?\n  %u" "~/notebook/todo.org" "Tasks")
+                 (110 "* %u %?" "~/notebook/notes.org" "Notes"))))
+       '(remember-annotation-functions (quote (org-remember-annotation)))
+       '(remember-handler-functions (quote (org-remember-handler))))
+    #+end_src
 
 *** Activate babel languages
     :PROPERTIES:
@@ -793,7 +855,48 @@
       (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
     #+end_src
 
-*** Org BibTeX export
+*** Org RefTeX integration
+    :PROPERTIES:
+    :CUSTOM_ID: org-reftex
+    :END:
+     source: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
+     #+begin_src emacs-lisp
+       (defun org-mode-reftex-setup ()
+         (load-library "reftex")
+         (and (buffer-file-name) (file-exists-p (buffer-file-name))
+              (progn
+                ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
+                ;; (global-auto-revert-mode t)
+                ;; (reftex-parse-all)
+                ;; add a custom reftex cite format to insert links
+                (reftex-set-cite-format
+                 '((?b . "[[bib:%l][%l-bib]]")
+                   (?n . "[[notes:%l][%l-notes]]")
+                   (?p . "[[papers:%l][%l-paper]]")
+                   (?t . "%t")
+                   (?c . "\\cite{%l}")
+                   (?h . "*** %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
+         (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
+         (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
+
+       (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+     #+end_src
+
+     Jump to entry
+     #+begin_src emacs-lisp
+       (defun org-mode-reftex-search ()
+         ;;jump to the notes for the paper pointed to at from reftex search
+         (interactive)
+         (org-open-link-from-string (format "[[notes:%s]]" (reftex-citation t))))
+     #+end_src
+
+     Paths
+     #+begin_src emacs-lisp
+       (setq org-link-abbrev-alist
+             '(("bib" . "~/research/library.bib::%s")
+               ("notes" . "~/research/notes.txt::#%s")
+               ("papers" . "~/research/papers/%s.pdf")))
+     #+end_src
 
 *** MobileOrg
     :PROPERTIES:
@@ -822,7 +925,7 @@
 
 ** Yasnippet
    :PROPERTIES:
-   :tangle:   no
+   :tangle:   yes
    :CUSTOM_ID: yasnippet
    :END:
     - [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs. It is
@@ -830,36 +933,43 @@
      - watch the [[http://www.youtube.com/watch?v=vOj7btx3ATg][video on YouTube]]
      - see the [[http://yasnippet.googlecode.com/svn/trunk/doc/index.html][intro and tutorial]]
 
-     Load the yasnippet bundle, probably done automatically with el-get
-     #+begin_src emacs-lisp :tangle no
-       (add-to-list 'load-path
-                    (expand-file-name  "yasnippet"
-                                       (expand-file-name "el-get"
-                                                         emacs-init-dir)))
-       (require 'yasnippet)
-       (yas/initialize)
-     #+end_src
+   Install yasnippet with el-get
+   #+begin_src emacs-lisp
+     (el-get 'sync '(yasnippet))
+   #+end_src
 
-     Load the snippets defined in the =./snippets/= directory
-     #+begin_src emacs-lisp :tangle no
-       (yas/load-directory (expand-file-name "snippets" emacs-init-dir))
-     #+end_src
+   TODO: move elpa install of bundle here
 
-     The latest version of yasnippets doesn't play well with Org-Mode, the
-     following function allows these two to play nicely together.
-     #+begin_src emacs-lisp :tangle no
-       (defun yas/org-very-safe-expand ()
-         (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+   Add loadpath to yasnippet from el-get. Seems pointless
+   #+begin_src emacs-lisp
+     (add-to-list 'load-path
+                  (expand-file-name  "yasnippet"
+                                     (expand-file-name "el-get"
+                                                       emacs-init-dir)))
+     (yas/initialize)
+   #+end_src
 
-       (defun yas/org-setup ()
-         ;; yasnippet (using the new org-cycle hooks)
-         (make-variable-buffer-local 'yas/trigger-key)
-         (setq yas/trigger-key [tab])
-         (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-         (define-key yas/keymap [tab] 'yas/next-field))
+   Load the snippets defined in the =./snippets/= directory
+   #+begin_src emacs-lisp
+     (yas/load-directory (expand-file-name "snippets" emacs-init-dir))
+   #+end_src
 
-       (add-hook 'org-mode-hook #'yas/org-setup)
-     #+end_src
+   The latest version of yasnippets doesn't play well with Org-Mode, the
+   following function allows these two to play nicely together.
+   This [[http://stackoverflow.com/questions/9418148/conflicts-between-org-mode-and-yasnippet][stackoverflow post]] might be usefull as well.
+   #+begin_src emacs-lisp
+     (defun yas/org-very-safe-expand ()
+       (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+
+     (defun yas/org-setup ()
+       ;; yasnippet (using the new org-cycle hooks)
+       (make-variable-buffer-local 'yas/trigger-key)
+       (setq yas/trigger-key [tab])
+       (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+       (define-key yas/keymap [tab] 'yas/next-field))
+
+     (add-hook 'org-mode-hook #'yas/org-setup)
+   #+end_src
 
 * Load User/System Specific Files
   :PROPERTIES:
@@ -917,7 +1027,6 @@
    #+begin_src emacs-lisp
      (load custom-file 'noerror)
    #+end_src
-
 
 * Footnotes
 
