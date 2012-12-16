@@ -133,10 +133,6 @@
   :CUSTOM_ID: implementation
   :END:
 
-  This section contains all code implemented in Emacs Init. It
-  is probably safe to stop reading at this point unless you are
-  interested in the actual code implemented in Emacs Init.
-
 ** emacs init basics
    - Load path etc ::
      #+name: emacs-init-load-paths
@@ -257,723 +253,726 @@
               file))))
      #+end_src
 
-* Emacs init core
-   :PROPERTIES:
-   :CUSTOM_ID: emacs-init-core
-   :tangle:   yes
-   :END:
-   These sub-trees contain the remainder of the core of Emacs Init.  All of
-   the code in this section should be loaded by emacs used on any
-   machine and user.
-** Emacs bindings
-   :PROPERTIES:
-   :tangle:   yes
-   :CUSTOM_ID: emacs-bindings
-   :END:
-   Custom keybindings
-*** Align your code in a pretty way.
-    #+begin_src emacs-lisp
-      (global-set-key (kbd "C-x \\") 'align-regexp)
-    #+end_src
-*** Completion that uses many different methods to find options
-    #+begin_src emacs-lisp
-      (global-set-key (kbd "M-/") 'hippie-expand)
-    #+end_src
-
-*** Font size
-    #+begin_src emacs-lisp
-      (define-key global-map (kbd "C-+") 'text-scale-increase)
-      (define-key global-map (kbd "C--") 'text-scale-decrease)
-    #+end_src
-
-*** Use regex searches by default
-    #+begin_src emacs-lisp
-      (global-set-key (kbd "C-s") 'isearch-forward-regexp)
-      (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-      (global-set-key (kbd "C-M-s") 'isearch-forward)
-      (global-set-key (kbd "C-M-r") 'isearch-backward)
-    #+end_src
-
-*** File finding
-    #+begin_src emacs-lisp
-      (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
-      (global-set-key (kbd "C-x C-M-f") 'find-file-in-project)
-      (global-set-key (kbd "C-x C-p") 'find-file-at-point)
-      (global-set-key (kbd "C-c y") 'bury-buffer)
-      (global-set-key (kbd "C-c r") 'revert-buffer)
-      (global-set-key (kbd "M-`") 'file-cache-minibuffer-complete)
-      (global-set-key (kbd "C-x C-b") 'ibuffer)
-    #+end_src
-
-*** Buffer cycling.
-    #+begin_src emacs-lisp
-      (global-set-key (kbd "C-<prior>") 'previous-buffer) ; Ctrl+PageDown
-      (global-set-key (kbd "C-<next>") 'next-buffer) ; Ctrl+PageUp
-    #+end_src
-
-*** Help should search more than just commands
-    #+begin_src emacs-lisp
-      (global-set-key (kbd "C-h a") 'apropos)
-    #+end_src
-
-*** Rgrep
-    Rgrep is infinitely useful in multi-file projects.
-    (see [[elisp:(describe-function 'rgrep)]])
-    #+begin_src emacs-lisp
-      (define-key global-map "\C-x\C-r" 'rgrep)
-    #+end_src
-
-** Magit
-   :PROPERTIES:
-   :CUSTOM_ID: magit
-   :END:
-*** El-get magit repository
-    #+begin_src emacs-lisp
-      (el-get 'sync '(magit))
-    #+end_src
-
-** Misc
-   :PROPERTIES:
-   :CUSTOM_ID: misc
-   :tangle:   yes
-   :END:
-*** Don't clutter up directories with files~
-    Rather than saving backup files scattered all over the file system,
-    let them live in the =backups/= directory inside of the emacs init.
-    #+begin_src emacs-lisp
-      (setq backup-directory-alist `(("." . ,(expand-file-name
-                                              (concat emacs-init-dir "backups")))))
-    #+end_src
-
-*** Make colors work in M-x shell
-    #+begin_src emacs-lisp
-      (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-    #+end_src
-
-*** Color Themes
+** Emacs init core
     :PROPERTIES:
-    :CUSTOM_ID: color-theme
-    :END:
-    The [[http://www.nongnu.org/color-theme/][Color Themes]] package provides support for changing, saving,
-    sharing Emacs color themes.  To view and apply color themes available
-    on your system run =M-x color-theme-select=.  See the color theme
-    website and EmacsWiki pages for more information.
-    - http://www.nongnu.org/color-theme/
-    - http://www.emacswiki.org/emacs/ColorTheme
-    - https://github.com/bbatsov/zenburn-emacs
-
-
-    Add list to load-theme path. use [[elisp:load-theme][load-theme]] RET "theme" to choose a theme.
-    #+begin_src emacs-lisp
-      (add-to-list 'custom-theme-load-path (concat emacs-init-dir "themes"))
-    #+end_src
-
-    Load my prefered theme if availible
-    #+begin_src emacs-lisp
-      (condition-case nil
-           (load-theme 'test t)
-           (error "no theme loaded"))
-    #+end_src
-
-*** Aspell and dictionaries
-    #+begin_src emacs-lisp
-      (setq-default ispell-program-name "aspell")
-    #+end_src
-
-    Set default ispell dict
-    #+begin_src emacs-lisp
-      (setq ispell-dictionary "en")
-    #+end_src
-
-    Set ispell personal dictionary, this has some weird consequences
-    (what consequences!!)
-    #+begin_src emacs-lisp
-      (setq ispell-personal-dictionary
-            (concat emacs-init-dir "ispell-personal-dict"))
-    #+end_src
-
-*** Open my specific bashrc files in the right mode
-    #+begin_src emacs-lisp
-      (add-to-list 'auto-mode-alist '("bashrc\\'" . shell-script-mode))
-      (add-to-list 'auto-mode-alist '("bash_variables\\'" . shell-script-mode))
-      (add-to-list 'auto-mode-alist '("bash_aliases\\'" . shell-script-mode))
-    #+end_src
-
-*** Transparently open compressed files
-    #+begin_src emacs-lisp
-      (auto-compression-mode t)
-    #+end_src
-
-*** Save a list of recent files visited.
-    #+begin_src emacs-lisp
-      (recentf-mode 1)
-    #+end_src
-*** Save last place in visited files
-    #+begin_src emacs-lisp
-      (setq save-place-file (concat emacs-init-dir "saved-places"))
-      (setq-default save-place t)
-    #+end_src
-*** Highlight matching parentheses when the point is on them.
-    #+name: emacs-init-match-parens
-    #+begin_src emacs-lisp
-      (show-paren-mode 1)
-      (set-face-background 'show-paren-match-face (face-background 'default))
-      (set-face-foreground 'show-paren-match-face "#def")
-      (set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
-    #+end_src
-
-*** Alias for yes-no to y-n choice, init random seed.
-    #+begin_src emacs-lisp
-      (defalias 'yes-or-no-p 'y-or-n-p)
-      ;; Seed the random-number generator
-      (random t)
-    #+end_src
-*** Tramp mode defaults
-    #+begin_src emacs-lisp
-      (setq tramp-default-method "ssh")
-    #+end_src
-
-*** Remove trailing whitespaces
-    #+begin_src emacs-lisp
-      (add-hook 'before-save-hook 'delete-trailing-whitespace)
-    #+end_src
-*** Set exec-path same as PATH in bash
-    Source: [[http://stackoverflow.com/questions/9663396/how-do-i-make-emacs-recognize-bash-environment-variables-for-compilation][stackoverflow]]
-    #+begin_src emacs-lisp
-      (let ((path (shell-command-to-string ". ~/.bash_variables; echo -n $PATH")))
-        (setenv "PATH" path)
-        (setq exec-path
-              (append
-               (split-string-and-unquote path ":")
-               exec-path)))
-    #+end_src emacs-lisp
-*** Default to unified diffs
-    #+begin_src emacs-lisp
-      (setq diff-switches "-u")
-    #+end_src
-
-** LaTeX mode
-   :PROPERTIES:
-   :CUSTOM_ID: latex
-   :END:
-*** Fly spell mode for latex mode
-    #+begin_src emacs-lisp
-      (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-    #+end_src
-
-*** Auto fill for latex mode, wrap lines automatically
-    #+begin_src emacs-lisp
-      (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
-    #+end_src
-
-*** Some auctex specific settings.
-    Install and sync auctex repository with el-get
-    #+begin_src emacs-lisp
-      (el-get 'sync '(auctex))
-    #+end_src
-
-    #+begin_src emacs-lisp
-      (setq TeX-auto-save t)
-      (setq TeX-parse-self t)
-      (setq-default TeX-master nil)
-    #+end_src
-*** RefTeX
-    :PROPERTIES:
-    :CUSTOM_ID: reftex
-    :END:
-    Install and sync reftex repository with el-get
-    #+begin_src emacs-lisp
-      (el-get 'sync '(reftex))
-    #+end_src
-
-** Python
-   :PROPERTIES:
-   :CUSTOM_ID: python
-   :END:
-   Support for the Python programming language.
-*** Use Python's python-mode.el instead of Emacs' python.el
-    :PROPERTIES:
-    :CUSTOM_ID: python-mode
-    :END:
-    Install and sync python-mode repository with el-get
-    #+begin_src emacs-lisp
-      (el-get 'sync '(python-mode))
-    #+end_src
-    Replace the Python mode that comes with Emacs by the Python mode
-    supplied by the Python distribution itself.
-    #+begin_src emacs-lisp
-      (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-      (add-to-list 'interpreter-mode-alist '("python" . python-mode))
-    #+end_src
-
-*** Use IPython if =ipython= command is present
-   :PROPERTIES:
-   :CUSTOM_ID: ipython
-   :END:
-    Install and sync ipython repository with el-get
-    #+begin_src emacs-lisp
-      (el-get 'sync '(ipython))
-    #+end_src
-    If an =ipython= executable is on the path, then assume that
-    IPython is the preferred method for python evaluation.
-    #+begin_src emacs-lisp
-      (when (executable-find "ipython")
-        (setq org-babel-python-mode 'python-mode))
-    #+end_src
-*** Use Cython mode
-   :PROPERTIES:
-   :CUSTOM_ID: cython
-   :tangle:   no
-   :END:
-    Install and sync cython-mode repository with el-get
-    #+begin_src emacs-lisp
-      (el-get 'sync '(cython-mode))
-    #+end_src
-    Set cython-mode file associations
-    #+begin_src emacs-lisp
-      (add-to-list 'auto-mode-alist '("\\.pyx\\'" . cython-mode))
-      (add-to-list 'auto-mode-alist '("\\.pxd\\'" . cython-mode))
-      (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode))
-    #+end_src
-** Code-modes
-   :PROPERTIES:
-   :CUSTOM_ID: coding
-   :tangle:   yes
-   :END:
-*** cedet
-    I am not sure what this does expect enableing cedet when coding,
-    whatever that means
-    #+begin_src emacs-lisp
-      (require 'semantic/sb)
-      (global-ede-mode 1)
-      (semantic-mode 1)
-    #+end_src
-
-*** gnuplot-mode
-    :PROPERTIES:
-    :CUSTOM_ID: gnuplot
-    :END:
-    Install and sync gnuplot-mode repository with el-get
-    #+begin_src emacs-lisp
-      (el-get 'sync '(gnuplot-mode))
-    #+end_src
-    Associate .gp files with gnuplot.
-    #+begin_src emacs-lisp
-      (setq auto-mode-alist
-            (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
-    #+end_src
-
-*** MATLAB-mode
-    :PROPERTIES:
-    :CUSTOM_ID: matlab
-    :tangle:   no
-    :END:
-    Install and sync matlab-mode repository with el-get
-    #+begin_src emacs-lisp
-      (el-get 'sync '(matlab-mode))
-    #+end_src
-
-    The indent function -1 will couse functions to not indent
-    #+begin_src emacs-lisp
-      (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
-      (setq matlab-indent-function nil)
-      (setq matlab-shell-command "matlab")
-    #+end_src
-
-    Make sure matlab does not auto wrap lines. It's really enoying and
-    it does not work! Do manually with 'M-q'
-    #+begin_src emacs-lisp
-      (add-hook 'matlab-mode-hook '(lambda () (auto-fill-mode -1)))
-    #+end_src
-
-*** Maxima-mode
-    :PROPERTIES:
-    :tangle:   no
-    :CUSTOM_ID: maxima
-    :END:
-    Install and sync maxima-mode repository with el-get
-    #+begin_src emacs-lisp
-      (el-get 'sync '(maxima-mode))
-    #+end_src
-
-    Why is the load-path here so specific
-    #+begin_src emacs-lisp
-      (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
-      (setq load-path (cons  "/usr/share/maxima/5.9.2/emacs" load-path))
-      (autoload 'maxima "maxima" "Running Maxima interactively" t)
-      (autoload 'maxima-mode "maxima" "Maxima editing mode" t)
-    #+end_src
-
-** Org Mode <3
-    :PROPERTIES:
+    :CUSTOM_ID: emacs-init-core
     :tangle:   yes
     :END:
-    Install and sync org-mode repository with el-get
-*** El-getting org-mode
+    These sub-trees contain the remainder of the core of Emacs Init.  All of
+    the code in this section should be loaded by emacs used on any
+    machine and user.
+*** Emacs bindings
     :PROPERTIES:
     :tangle:   yes
+    :CUSTOM_ID: emacs-bindings
     :END:
-    Providing org-mode this way will not update the version in emacs
-    when running =M-x org-version=. I don't know why but it is
-    annoying. This forces me to run =M-x org-reload= to update org.
+    Custom keybindings
+**** Align your code in a pretty way.
+     #+begin_src emacs-lisp
+       (global-set-key (kbd "C-x \\") 'align-regexp)
+     #+end_src
+**** Completion that uses many different methods to find options
+     #+begin_src emacs-lisp
+       (global-set-key (kbd "M-/") 'hippie-expand)
+     #+end_src
 
-    It turns out that the el-get recipe is to blame. Removeing the
-    =:autoloads= and =:features= gets rid of the warning about
-    =requare org-install= but the version problem is still there.
-    #+begin_src emacs-lisp
-      (el-get 'sync '(org-mode))
-    #+end_src
+**** Font size
+     #+begin_src emacs-lisp
+       (define-key global-map (kbd "C-+") 'text-scale-increase)
+       (define-key global-map (kbd "C--") 'text-scale-decrease)
+     #+end_src
 
-*** Org-Mode File association
-    Both .org and .txt files should be associated with org-mode
-    #+begin_src emacs-lisp
-      (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-      (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
-    #+end_src
+**** Use regex searches by default
+     #+begin_src emacs-lisp
+       (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+       (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+       (global-set-key (kbd "C-M-s") 'isearch-forward)
+       (global-set-key (kbd "C-M-r") 'isearch-backward)
+     #+end_src
 
-*** Hide leading stars in structure outline
-    #+begin_src emacs-lisp
-      (setq org-hide-leading-stars t)
-    #+end_src
+**** File finding
+     #+begin_src emacs-lisp
+       (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
+       (global-set-key (kbd "C-x C-M-f") 'find-file-in-project)
+       (global-set-key (kbd "C-x C-p") 'find-file-at-point)
+       (global-set-key (kbd "C-c y") 'bury-buffer)
+       (global-set-key (kbd "C-c r") 'revert-buffer)
+       (global-set-key (kbd "M-`") 'file-cache-minibuffer-complete)
+       (global-set-key (kbd "C-x C-b") 'ibuffer)
+     #+end_src
 
-*** Org-Mode Global Keybindings
+**** Buffer cycling.
+     #+begin_src emacs-lisp
+       (global-set-key (kbd "C-<prior>") 'previous-buffer) ; Ctrl+PageDown
+       (global-set-key (kbd "C-<next>") 'next-buffer) ; Ctrl+PageUp
+     #+end_src
+
+**** Help should search more than just commands
+     #+begin_src emacs-lisp
+       (global-set-key (kbd "C-h a") 'apropos)
+     #+end_src
+
+**** Rgrep
+     Rgrep is infinitely useful in multi-file projects.
+     (see [[elisp:(describe-function 'rgrep)]])
+     #+begin_src emacs-lisp
+       (define-key global-map "\C-x\C-r" 'rgrep)
+     #+end_src
+
+*** Magit
     :PROPERTIES:
-    :CUSTOM_ID: org-global-keybindings
+    :CUSTOM_ID: magit
     :END:
-    Two global Emacs bindings for Org-mode
+**** El-get magit repository
+     #+begin_src emacs-lisp
+       (el-get 'sync '(magit))
+     #+end_src
 
-    The [[http://orgmode.org/manual/Agenda-Views.html#Agenda-Views][Org-mode agenda]] is good to have close at hand
-    #+begin_src emacs-lisp
-      (define-key global-map "\C-ca" 'org-agenda)
-    #+end_src
-
-    Org-mode supports [[http://orgmode.org/manual/Hyperlinks.html#Hyperlinks][links]], this command allows you to store links
-    globally for later insertion into an Org-mode buffer.  See
-    [[http://orgmode.org/manual/Handling-links.html#Handling-links][Handling-links]] in the Org-mode manual.
-    #+begin_src emacs-lisp
-      (define-key global-map "\C-cl" 'org-store-link)
-    #+end_src
-
-*** Local Org files
-    Set to the location of your Org files on your local system
-    #+begin_src emacs-lisp
-      (setq org-directory "~/notebook")
-    #+end_src
-
-*** Org-Mode ToDo
-   Org mode todo states and agenda mode navigation.
-   #+begin_src emacs-lisp
-     (eval-after-load "org"
-       '(progn
-          (define-prefix-command 'org-todo-state-map)
-          (define-key org-mode-map "\C-cx" 'org-todo-state-map)
-          (define-key org-todo-state-map "x"
-            #'(lambda nil (interactive) (org-todo "CANCELLED")))
-          (define-key org-todo-state-map "d"
-            #'(lambda nil (interactive) (org-todo "DONE")))
-          (define-key org-todo-state-map "f"
-            #'(lambda nil (interactive) (org-todo "DEFERRED")))
-          (define-key org-todo-state-map "l"
-            #'(lambda nil (interactive) (org-todo "DELEGATED")))
-          (define-key org-todo-state-map "s"
-            #'(lambda nil (interactive) (org-todo "STARTED")))
-          (define-key org-todo-state-map "w"
-            #'(lambda nil (interactive) (org-todo "WAITING")))
-          ;; reset keys to original functions
-          (add-hook 'org-agenda-mode-hook
-                    (lambda ()
-                      (define-key org-agenda-mode-map "\C-n" 'next-line)
-                      (define-key org-agenda-keymap "\C-n" 'next-line)
-                      (define-key org-agenda-mode-map "\C-p" 'previous-line)
-                      (define-key org-agenda-keymap "\C-p" 'previous-line)))))
-   #+end_src
-
-*** Remember-Mode
-    Remember mode makes it possible to store notes and todos in
-    different files automaticly with a simple key command.
-    #+begin_src emacs-lisp
-      (add-hook 'remember-mode-hook 'org-remember-apply-template)
-      (define-key global-map [(meta ?r)] 'remember)
-
-      (custom-set-variables
-      '(org-agenda-files (quote ("~/notebook/todo.org")))
-       '(org-default-notes-file "~/notebook/notes.org")
-       '(org-agenda-ndays 7)
-       '(org-deadline-warning-days 14)
-       '(org-agenda-show-all-dates t)
-       '(org-agenda-skip-deadline-if-done t)
-       '(org-agenda-skip-scheduled-if-done t)
-       '(org-agenda-start-on-weekday nil)
-       '(org-reverse-note-order t)
-       '(org-fast-tag-selection-single-key (quote expert))
-       '(org-agenda-custom-commands
-         (quote (("d" todo "DELEGATED" nil)
-                 ("c" todo "DONE|DEFERRED|CANCELLED" nil)
-                 ("w" todo "WAITING" nil)
-                 ("W" agenda "" ((org-agenda-ndays 21)))
-                 ("A" agenda ""
-                  ((org-agenda-skip-function
-                    (lambda nil
-                      (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]")))
-                   (org-agenda-ndays 1)
-                   (org-agenda-overriding-header "Today's Priority #A tasks: ")))
-                 ("u" alltodo ""
-                  ((org-agenda-skip-function
-                    (lambda nil
-                      (org-agenda-skip-entry-if (quote scheduled) (quote deadline)
-                                                (quote regexp) "\n]+>")))
-                   (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
-
-       '(org-remember-store-without-prompt t)
-       '(org-remember-templates
-         (quote ((116 "* TODO %?\n  %u" "~/notebook/todo.org" "Tasks")
-                 (110 "* %u %?" "~/notebook/notes.org" "Notes"))))
-       '(remember-annotation-functions (quote (org-remember-annotation)))
-       '(remember-handler-functions (quote (org-remember-handler))))
-    #+end_src
-
-*** Activate babel languages
+*** Misc
     :PROPERTIES:
-    :CUSTOM_ID: babel
+    :CUSTOM_ID: misc
+    :tangle:   yes
     :END:
-    This activates a number of widely used languages, you are
-    encouraged to activate more languages.  The customize interface of
-    `=org-babel-load-languages=' contains an up to date list of the
-    currently supported languages.
-    #+name:babel-lang
-    #+begin_src emacs-lisp
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((emacs-lisp . t)
-         (sh . t)
-         (matlab . t)
-         (gnuplot . t)
-         (python . t)
-         (dot . t)
-         (latex . t)))
-    #+end_src
+**** Don't clutter up directories with files~
+     Rather than saving backup files scattered all over the file system,
+     let them live in the =backups/= directory inside of the emacs init.
+     #+begin_src emacs-lisp
+       (setq backup-directory-alist `(("." . ,(expand-file-name
+                                               (concat emacs-init-dir "backups")))))
+     #+end_src
 
-    Adding unsecure evaluation of code-blocks
-    #+begin_src emacs-lisp
-      (setq org-confirm-babel-evaluate nil)
-    #+end_src
+**** Make colors work in M-x shell
+     #+begin_src emacs-lisp
+       (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+     #+end_src
 
-*** Code block fontification
+**** Color Themes
+     :PROPERTIES:
+     :CUSTOM_ID: color-theme
+     :END:
+     The [[http://www.nongnu.org/color-theme/][Color Themes]] package provides support for changing, saving,
+     sharing Emacs color themes.  To view and apply color themes available
+     on your system run =M-x color-theme-select=.  See the color theme
+     website and EmacsWiki pages for more information.
+     - http://www.nongnu.org/color-theme/
+     - http://www.emacswiki.org/emacs/ColorTheme
+     - https://github.com/bbatsov/zenburn-emacs
+
+
+     Add list to load-theme path. use [[elisp:load-theme][load-theme]] RET "theme" to choose a theme.
+     #+begin_src emacs-lisp
+       (add-to-list 'custom-theme-load-path (concat emacs-init-dir "themes"))
+     #+end_src
+
+     Load my prefered theme if availible
+     #+begin_src emacs-lisp
+       (condition-case nil
+            (load-theme 'test t)
+            (error "no theme loaded"))
+     #+end_src
+
+**** Aspell and dictionaries
+     #+begin_src emacs-lisp
+       (setq-default ispell-program-name "aspell")
+     #+end_src
+
+     Set default ispell dict
+     #+begin_src emacs-lisp
+       (setq ispell-dictionary "en")
+     #+end_src
+
+     Set ispell personal dictionary, this has some weird consequences
+     (what consequences!!)
+     #+begin_src emacs-lisp
+       (setq ispell-personal-dictionary
+             (concat emacs-init-dir "ispell-personal-dict"))
+     #+end_src
+
+**** Open my specific bashrc files in the right mode
+     #+begin_src emacs-lisp
+       (add-to-list 'auto-mode-alist '("bashrc\\'" . shell-script-mode))
+       (add-to-list 'auto-mode-alist '("bash_variables\\'" . shell-script-mode))
+       (add-to-list 'auto-mode-alist '("bash_aliases\\'" . shell-script-mode))
+     #+end_src
+
+**** Transparently open compressed files
+     #+begin_src emacs-lisp
+       (auto-compression-mode t)
+     #+end_src
+
+**** Save a list of recent files visited.
+     #+begin_src emacs-lisp
+       (recentf-mode 1)
+     #+end_src
+**** Save last place in visited files
+     #+begin_src emacs-lisp
+       (setq save-place-file (concat emacs-init-dir "saved-places"))
+       (setq-default save-place t)
+     #+end_src
+**** Highlight matching parentheses when the point is on them.
+     #+name: emacs-init-match-parens
+     #+begin_src emacs-lisp
+       (show-paren-mode 1)
+       (set-face-background 'show-paren-match-face (face-background 'default))
+       (set-face-foreground 'show-paren-match-face "#def")
+       (set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
+     #+end_src
+
+**** Alias for yes-no to y-n choice, init random seed.
+     #+begin_src emacs-lisp
+       (defalias 'yes-or-no-p 'y-or-n-p)
+       ;; Seed the random-number generator
+       (random t)
+     #+end_src
+**** Tramp mode defaults
+     #+begin_src emacs-lisp
+       (setq tramp-default-method "ssh")
+     #+end_src
+
+**** Remove trailing whitespaces
+     #+begin_src emacs-lisp
+       (add-hook 'before-save-hook 'delete-trailing-whitespace)
+     #+end_src
+**** Set exec-path same as PATH in bash
+     Source: [[http://stackoverflow.com/questions/9663396/how-do-i-make-emacs-recognize-bash-environment-variables-for-compilation][stackoverflow]]
+     #+begin_src emacs-lisp
+       (let ((path (shell-command-to-string ". ~/.bash_variables; echo -n $PATH")))
+         (setenv "PATH" path)
+         (setq exec-path
+               (append
+               	(split-string-and-unquote path ":")
+               	exec-path)))
+     #+end_src emacs-lisp
+**** Default to unified diffs
+     #+begin_src emacs-lisp
+       (setq diff-switches "-u")
+     #+end_src
+
+*** LaTeX mode
     :PROPERTIES:
-    :CUSTOM_ID: code-block-fontification
+    :CUSTOM_ID: latex
     :END:
-    The following displays the contents of code blocks in Org-mode files
-    using the major-mode of the code.  It also changes the behavior of
-    =TAB= to as if it were used in the appropriate major mode.  This means
-    that reading and editing code from inside of your Org-mode files is
-    much more like reading and editing of code using its major mode.
-    #+begin_src emacs-lisp
-      (setq org-src-fontify-natively t)
-      (setq org-src-tab-acts-natively t)
-    #+end_src
+**** Fly spell mode for latex mode
+     #+begin_src emacs-lisp
+       (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+     #+end_src
 
-*** Org general export
-    #+begin_src emacs-lisp
-      (setq org-export-with-sub-superscripts nil)
-    #+end_src
+**** Auto fill for latex mode, wrap lines automatically
+     #+begin_src emacs-lisp
+       (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
+     #+end_src
 
-*** Org LaTeX export types
-    Originally taken from Bruno Tavernier: [[http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432][here]], but adapted to use latexmk
-    4.20 or higher.
-    #+begin_src emacs-lisp
-      (defun my-auto-tex-cmd ()
-	"When exporting from .org with latex, automatically run latex,
-	   pdflatex, or xelatex as appropriate, using latexmk."
-	(let ((texcmd)))
-	;; default command: oldstyle latex via dvi
-	(setq texcmd "latexmk -pdfdvi -quiet %f")
-	;; bibtex -> pdf
-	(if (string-match "LATEX_CMD: texbibtex" (buffer-string))
-	    (setq texcmd "latexmk -pdfdvi -bibtex -quiet %f"))
-	;; longway tex -> pdf
-	(if (string-match "LATEX_CMD: dvipdfps" (buffer-string))
-	    (setq texcmd "latexmk -pdf -quiet %f"))
-	;; pdflatex -> .pdf
-	(if (string-match "LATEX_CMD: pdflatex" (buffer-string))
-	    (setq texcmd "latexmk -pdf -quiet %f"))
-	;; xelatex -> .pdf
-	(if (string-match "LATEX_CMD: xelatex" (buffer-string))
-	    (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
-	;; LaTeX compilation command
-	(setq org-latex-to-pdf-process (list texcmd)))
+**** Some auctex specific settings.
+     Install and sync auctex repository with el-get
+     #+begin_src emacs-lisp
+       (el-get 'sync '(auctex))
+     #+end_src
 
-      (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
-    #+end_src
+     #+begin_src emacs-lisp
+       (setq TeX-auto-save t)
+       (setq TeX-parse-self t)
+       (setq-default TeX-master nil)
+     #+end_src
+**** RefTeX
+     :PROPERTIES:
+     :CUSTOM_ID: reftex
+     :END:
+     Install and sync reftex repository with el-get
+     #+begin_src emacs-lisp
+       (el-get 'sync '(reftex))
+     #+end_src
 
-*** Org LaTeX export with default packages
+*** Python
     :PROPERTIES:
+    :CUSTOM_ID: python
+    :END:
+    Support for the Python programming language.
+**** Use Python's python-mode.el instead of Emacs' python.el
+     :PROPERTIES:
+     :CUSTOM_ID: python-mode
+     :END:
+     Install and sync python-mode repository with el-get
+     #+begin_src emacs-lisp
+       (el-get 'sync '(python-mode))
+     #+end_src
+     Replace the Python mode that comes with Emacs by the Python mode
+     supplied by the Python distribution itself.
+     #+begin_src emacs-lisp
+       (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+       (add-to-list 'interpreter-mode-alist '("python" . python-mode))
+     #+end_src
+
+**** Use IPython if =ipython= command is present
+    :PROPERTIES:
+    :CUSTOM_ID: ipython
+    :END:
+     Install and sync ipython repository with el-get
+     #+begin_src emacs-lisp
+       (el-get 'sync '(ipython))
+     #+end_src
+     If an =ipython= executable is on the path, then assume that
+     IPython is the preferred method for python evaluation.
+     #+begin_src emacs-lisp
+       (when (executable-find "ipython")
+         (setq org-babel-python-mode 'python-mode))
+     #+end_src
+**** Use Cython mode
+    :PROPERTIES:
+    :CUSTOM_ID: cython
     :tangle:   no
     :END:
-    Specify default packages to be included in every tex file, whether
-    pdflatex or xelatex. This is kept as an example. Some packages are
-    still included in the output.
-    #+begin_src emacs-lisp
-      (setq org-export-latex-packages-alist
-	    '(("" "graphicx" t)
-	      ("" "longtable" nil)
-	      ("" "float" nil)))
-    #+end_src
-
-    Define packages for each latex command. Using latexmk...
-    #+begin_src emacs-lisp
-      (defun my-auto-tex-parameters ()
-            "Automatically select the tex packages to include."
-            ;; default packages for ordinary latex or pdflatex export
-            (setq org-export-latex-default-packages-alist
-                  '(("" "graphicx" t)
-                    ("" "longtable" nil)
-                    ("" "float" nil)
-                    ("AUTO" "inputenc" t)
-                    ("T1"   "fontenc"   t)
-                    (""     "fixltx2e"  t)
-                    (""     "hyperref"  nil)))
-
-            ;; Packages to include when xelatex is used
-            (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-                (setq org-export-latex-default-packages-alist
-                      '(("" "fontspec" t)
-                        ("" "xunicode" t)
-                        ("" "url" t)
-                        ("" "rotating" t)
-                        ("american" "babel" t)
-                        ("babel" "csquotes" t)
-                        ("" "soul" t)
-                        ("xetex" "hyperref" nil)
-                        )))
-
-            (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-                (setq org-export-latex-classes
-                      (cons '("article"
-                              "\\documentclass[11pt,article,oneside]{memoir}"
-                              ("\\section{%s}" . "\\section*{%s}")
-                              ("\\subsection{%s}" . "\\subsection*{%s}")
-                              ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                              ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                              ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-                            org-export-latex-classes))))
-      (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
-    #+end_src
-
-*** Org RefTeX integration
+     Install and sync cython-mode repository with el-get
+     #+begin_src emacs-lisp
+       (el-get 'sync '(cython-mode))
+     #+end_src
+     Set cython-mode file associations
+     #+begin_src emacs-lisp
+       (add-to-list 'auto-mode-alist '("\\.pyx\\'" . cython-mode))
+       (add-to-list 'auto-mode-alist '("\\.pxd\\'" . cython-mode))
+       (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode))
+     #+end_src
+*** Code-modes
     :PROPERTIES:
-    :CUSTOM_ID: org-reftex
-    :END:
-     source: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
-     #+begin_src emacs-lisp
-       (defun org-mode-reftex-setup ()
-         (load-library "reftex")
-         (and (buffer-file-name) (file-exists-p (buffer-file-name))
-              (progn
-                ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
-                ;; (global-auto-revert-mode t)
-                ;; (reftex-parse-all)
-                ;; add a custom reftex cite format to insert links
-                (reftex-set-cite-format
-                 '((?b . "[[bib:%l][%l-bib]]")
-                   (?n . "[[notes:%l][%l-notes]]")
-                   (?p . "[[papers:%l][%l-paper]]")
-                   (?t . "%t")
-                   (?c . "\\cite{%l}")
-                   (?h . "*** %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
-         (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
-         (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
-
-       (add-hook 'org-mode-hook 'org-mode-reftex-setup)
-     #+end_src
-
-     Jump to entry
-     #+begin_src emacs-lisp
-       (defun org-mode-reftex-search ()
-         ;;jump to the notes for the paper pointed to at from reftex search
-         (interactive)
-         (org-open-link-from-string (format "[[notes:%s]]" (reftex-citation t))))
-     #+end_src
-
-     Paths
-     #+begin_src emacs-lisp
-       (setq org-link-abbrev-alist
-             '(("bib" . "~/research/library.bib::%s")
-               ("notes" . "~/research/notes.txt::#%s")
-               ("papers" . "~/research/papers/%s.pdf")))
-     #+end_src
-
-*** MobileOrg
-    :PROPERTIES:
+    :CUSTOM_ID: coding
     :tangle:   yes
     :END:
-    Mobile org push/pull directory
+**** cedet
+     I am not sure what this does expect enableing cedet when coding,
+     whatever that means
+     #+begin_src emacs-lisp
+       (require 'semantic/sb)
+       (global-ede-mode 1)
+       (semantic-mode 1)
+     #+end_src
+
+**** gnuplot-mode
+     :PROPERTIES:
+     :CUSTOM_ID: gnuplot
+     :END:
+     Install and sync gnuplot-mode repository with el-get
+     #+begin_src emacs-lisp
+       (el-get 'sync '(gnuplot-mode))
+     #+end_src
+     Associate .gp files with gnuplot.
+     #+begin_src emacs-lisp
+       (setq auto-mode-alist
+             (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
+     #+end_src
+
+**** MATLAB-mode
+     :PROPERTIES:
+     :CUSTOM_ID: matlab
+     :tangle:   no
+     :END:
+     Install and sync matlab-mode repository with el-get
+     #+begin_src emacs-lisp
+       (el-get 'sync '(matlab-mode))
+     #+end_src
+
+     The indent function -1 will couse functions to not indent
+     #+begin_src emacs-lisp
+       (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
+       (setq matlab-indent-function nil)
+       (setq matlab-shell-command "matlab")
+     #+end_src
+
+     Make sure matlab does not auto wrap lines. It's really enoying and
+     it does not work! Do manually with 'M-q'
+     #+begin_src emacs-lisp
+       (add-hook 'matlab-mode-hook '(lambda () (auto-fill-mode -1)))
+     #+end_src
+
+**** Maxima-mode
+     :PROPERTIES:
+     :tangle:   no
+     :CUSTOM_ID: maxima
+     :END:
+     Install and sync maxima-mode repository with el-get
+     #+begin_src emacs-lisp
+       (el-get 'sync '(maxima-mode))
+     #+end_src
+
+     Why is the load-path here so specific
+     #+begin_src emacs-lisp
+       (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
+       (setq load-path (cons  "/usr/share/maxima/5.9.2/emacs" load-path))
+       (autoload 'maxima "maxima" "Running Maxima interactively" t)
+       (autoload 'maxima-mode "maxima" "Maxima editing mode" t)
+     #+end_src
+
+*** Org Mode <3
+     :PROPERTIES:
+     :tangle:   yes
+     :END:
+     Install and sync org-mode repository with el-get
+**** El-getting org-mode
+     :PROPERTIES:
+     :tangle:   yes
+     :END:
+     Providing org-mode this way will not update the version in emacs
+     when running =M-x org-version=. I don't know why but it is
+     annoying. This forces me to run =M-x org-reload= to update org.
+
+     It turns out that the el-get recipe is to blame. Removeing the
+     =:autoloads= and =:features= gets rid of the warning about
+     =requare org-install= but the version problem is still there.
+     This is remedied atleast in part by the =(org-reload)= statement.
+
+     #+begin_src emacs-lisp
+       (el-get 'sync '(org-mode))
+       (org-reload)
+     #+end_src
+
+**** Org-Mode File association
+     Both .org and .txt files should be associated with org-mode
+     #+begin_src emacs-lisp
+       (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+       (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
+     #+end_src
+
+**** Hide leading stars in structure outline
+     #+begin_src emacs-lisp
+       (setq org-hide-leading-stars t)
+     #+end_src
+
+**** Org-Mode Global Keybindings
+     :PROPERTIES:
+     :CUSTOM_ID: org-global-keybindings
+     :END:
+     Two global Emacs bindings for Org-mode
+
+     The [[http://orgmode.org/manual/Agenda-Views.html#Agenda-Views][Org-mode agenda]] is good to have close at hand
+     #+begin_src emacs-lisp
+       (define-key global-map "\C-ca" 'org-agenda)
+     #+end_src
+
+     Org-mode supports [[http://orgmode.org/manual/Hyperlinks.html#Hyperlinks][links]], this command allows you to store links
+     globally for later insertion into an Org-mode buffer.  See
+     [[http://orgmode.org/manual/Handling-links.html#Handling-links][Handling-links]] in the Org-mode manual.
+     #+begin_src emacs-lisp
+       (define-key global-map "\C-cl" 'org-store-link)
+     #+end_src
+
+**** Local Org files
+     Set to the location of your Org files on your local system
+     #+begin_src emacs-lisp
+       (setq org-directory "~/notebook")
+     #+end_src
+
+**** Org-Mode ToDo
+    Org mode todo states and agenda mode navigation.
     #+begin_src emacs-lisp
-      (setq org-mobile-directory "~/Dropbox/MobileOrg" )
-      (setq org-mobile-inbox-for-pull "~/Dropbox/MobileOrg/from-mobile.org" )
+      (eval-after-load "org"
+       	'(progn
+           (define-prefix-command 'org-todo-state-map)
+           (define-key org-mode-map "\C-cx" 'org-todo-state-map)
+           (define-key org-todo-state-map "x"
+             #'(lambda nil (interactive) (org-todo "CANCELLED")))
+           (define-key org-todo-state-map "d"
+             #'(lambda nil (interactive) (org-todo "DONE")))
+           (define-key org-todo-state-map "f"
+             #'(lambda nil (interactive) (org-todo "DEFERRED")))
+           (define-key org-todo-state-map "l"
+             #'(lambda nil (interactive) (org-todo "DELEGATED")))
+           (define-key org-todo-state-map "s"
+             #'(lambda nil (interactive) (org-todo "STARTED")))
+           (define-key org-todo-state-map "w"
+             #'(lambda nil (interactive) (org-todo "WAITING")))
+           ;; reset keys to original functions
+           (add-hook 'org-agenda-mode-hook
+                     (lambda ()
+                       (define-key org-agenda-mode-map "\C-n" 'next-line)
+                       (define-key org-agenda-keymap "\C-n" 'next-line)
+                       (define-key org-agenda-mode-map "\C-p" 'previous-line)
+                       (define-key org-agenda-keymap "\C-p" 'previous-line)))))
     #+end_src
 
-    #+begin_src emacs-lisp
-      (setq org-mobile-files '("~/notebook/notes.org" "~/notebook/todo.org") )
+**** Remember-Mode
+     Remember mode makes it possible to store notes and todos in
+     different files automaticly with a simple key command.
+     #+begin_src emacs-lisp
+       (add-hook 'remember-mode-hook 'org-remember-apply-template)
+       (define-key global-map [(meta ?r)] 'remember)
+
+       (custom-set-variables
+       '(org-agenda-files (quote ("~/notebook/todo.org")))
+       	'(org-default-notes-file "~/notebook/notes.org")
+       	'(org-agenda-ndays 7)
+       	'(org-deadline-warning-days 14)
+       	'(org-agenda-show-all-dates t)
+       	'(org-agenda-skip-deadline-if-done t)
+       	'(org-agenda-skip-scheduled-if-done t)
+       	'(org-agenda-start-on-weekday nil)
+       	'(org-reverse-note-order t)
+       	'(org-fast-tag-selection-single-key (quote expert))
+       	'(org-agenda-custom-commands
+          (quote (("d" todo "DELEGATED" nil)
+                  ("c" todo "DONE|DEFERRED|CANCELLED" nil)
+                  ("w" todo "WAITING" nil)
+                  ("W" agenda "" ((org-agenda-ndays 21)))
+                  ("A" agenda ""
+                   ((org-agenda-skip-function
+                     (lambda nil
+                       (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]")))
+                    (org-agenda-ndays 1)
+                    (org-agenda-overriding-header "Today's Priority #A tasks: ")))
+                  ("u" alltodo ""
+                   ((org-agenda-skip-function
+                     (lambda nil
+                       (org-agenda-skip-entry-if (quote scheduled) (quote deadline)
+                                                 (quote regexp) "\n]+>")))
+                    (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
+
+       	'(org-remember-store-without-prompt t)
+       	'(org-remember-templates
+          (quote ((116 "* TODO %?\n  %u" "~/notebook/todo.org" "Tasks")
+                  (110 "* %u %?" "~/notebook/notes.org" "Notes"))))
+       	'(remember-annotation-functions (quote (org-remember-annotation)))
+       	'(remember-handler-functions (quote (org-remember-handler))))
+     #+end_src
+
+**** Activate babel languages
+     :PROPERTIES:
+     :CUSTOM_ID: babel
+     :END:
+     This activates a number of widely used languages, you are
+     encouraged to activate more languages.  The customize interface of
+     `=org-babel-load-languages=' contains an up to date list of the
+     currently supported languages.
+     #+name:babel-lang
+     #+begin_src emacs-lisp
+       (org-babel-do-load-languages
+       	'org-babel-load-languages
+       	'((emacs-lisp . t)
+          (sh . t)
+          (matlab . t)
+          (gnuplot . t)
+          (python . t)
+          (dot . t)
+          (latex . t)))
+     #+end_src
+
+     Adding unsecure evaluation of code-blocks
+     #+begin_src emacs-lisp
+       (setq org-confirm-babel-evaluate nil)
+     #+end_src
+
+**** Code block fontification
+     :PROPERTIES:
+     :CUSTOM_ID: code-block-fontification
+     :END:
+     The following displays the contents of code blocks in Org-mode files
+     using the major-mode of the code.  It also changes the behavior of
+     =TAB= to as if it were used in the appropriate major mode.  This means
+     that reading and editing code from inside of your Org-mode files is
+     much more like reading and editing of code using its major mode.
+     #+begin_src emacs-lisp
+       (setq org-src-fontify-natively t)
+       (setq org-src-tab-acts-natively t)
+     #+end_src
+
+**** Org general export
+     #+begin_src emacs-lisp
+       (setq org-export-with-sub-superscripts nil)
+     #+end_src
+
+**** Org LaTeX export types
+     Originally taken from Bruno Tavernier: [[http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432][here]], but adapted to use latexmk
+     4.20 or higher.
+     #+begin_src emacs-lisp
+       (defun my-auto-tex-cmd ()
+	 "When exporting from .org with latex, automatically run latex,
+	    pdflatex, or xelatex as appropriate, using latexmk."
+	 (let ((texcmd)))
+	 ;; default command: oldstyle latex via dvi
+	 (setq texcmd "latexmk -pdfdvi -quiet %f")
+	 ;; bibtex -> pdf
+	 (if (string-match "LATEX_CMD: texbibtex" (buffer-string))
+	     (setq texcmd "latexmk -pdfdvi -bibtex -quiet %f"))
+	 ;; longway tex -> pdf
+	 (if (string-match "LATEX_CMD: dvipdfps" (buffer-string))
+	     (setq texcmd "latexmk -pdf -quiet %f"))
+	 ;; pdflatex -> .pdf
+	 (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
+	     (setq texcmd "latexmk -pdf -quiet %f"))
+	 ;; xelatex -> .pdf
+	 (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+	     (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
+	 ;; LaTeX compilation command
+	 (setq org-latex-to-pdf-process (list texcmd)))
+
+       (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
+     #+end_src
+
+**** Org LaTeX export with default packages
+     :PROPERTIES:
+     :tangle:   no
+     :END:
+     Specify default packages to be included in every tex file, whether
+     pdflatex or xelatex. This is kept as an example. Some packages are
+     still included in the output.
+     #+begin_src emacs-lisp
+       (setq org-export-latex-packages-alist
+	     '(("" "graphicx" t)
+	       ("" "longtable" nil)
+	       ("" "float" nil)))
+     #+end_src
+
+     Define packages for each latex command. Using latexmk...
+     #+begin_src emacs-lisp
+       (defun my-auto-tex-parameters ()
+             "Automatically select the tex packages to include."
+             ;; default packages for ordinary latex or pdflatex export
+             (setq org-export-latex-default-packages-alist
+                   '(("" "graphicx" t)
+                     ("" "longtable" nil)
+                     ("" "float" nil)
+                     ("AUTO" "inputenc" t)
+                     ("T1"   "fontenc"   t)
+                     (""     "fixltx2e"  t)
+                     (""     "hyperref"  nil)))
+
+             ;; Packages to include when xelatex is used
+             (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+                 (setq org-export-latex-default-packages-alist
+                       '(("" "fontspec" t)
+                         ("" "xunicode" t)
+                         ("" "url" t)
+                         ("" "rotating" t)
+                         ("american" "babel" t)
+                         ("babel" "csquotes" t)
+                         ("" "soul" t)
+                         ("xetex" "hyperref" nil)
+                         )))
+
+             (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+                 (setq org-export-latex-classes
+                       (cons '("article"
+                               "\\documentclass[11pt,article,oneside]{memoir}"
+                               ("\\section{%s}" . "\\section*{%s}")
+                               ("\\subsection{%s}" . "\\subsection*{%s}")
+                               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                             org-export-latex-classes))))
+       (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
+     #+end_src
+
+**** Org RefTeX integration
+     :PROPERTIES:
+     :CUSTOM_ID: org-reftex
+     :END:
+      source: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
+      #+begin_src emacs-lisp
+       	(defun org-mode-reftex-setup ()
+          (load-library "reftex")
+          (and (buffer-file-name) (file-exists-p (buffer-file-name))
+               (progn
+                 ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
+                 ;; (global-auto-revert-mode t)
+                 ;; (reftex-parse-all)
+                 ;; add a custom reftex cite format to insert links
+                 (reftex-set-cite-format
+                  '((?b . "[[bib:%l][%l-bib]]")
+                    (?n . "[[notes:%l][%l-notes]]")
+                    (?p . "[[papers:%l][%l-paper]]")
+                    (?t . "%t")
+                    (?c . "\\cite{%l}")
+                    (?h . "*** %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
+          (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
+          (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
+
+       	(add-hook 'org-mode-hook 'org-mode-reftex-setup)
+      #+end_src
+
+      Jump to entry
+      #+begin_src emacs-lisp
+       	(defun org-mode-reftex-search ()
+          ;;jump to the notes for the paper pointed to at from reftex search
+          (interactive)
+          (org-open-link-from-string (format "[[notes:%s]]" (reftex-citation t))))
+      #+end_src
+
+      Paths
+      #+begin_src emacs-lisp
+       	(setq org-link-abbrev-alist
+              '(("bib" . "~/research/library.bib::%s")
+               	("notes" . "~/research/notes.txt::#%s")
+               	("papers" . "~/research/papers/%s.pdf")))
+      #+end_src
+
+**** MobileOrg
+     :PROPERTIES:
+     :tangle:   yes
+     :END:
+     Mobile org push/pull directory
+     #+begin_src emacs-lisp
+       (setq org-mobile-directory "~/Dropbox/MobileOrg" )
+       (setq org-mobile-inbox-for-pull "~/Dropbox/MobileOrg/from-mobile.org" )
+     #+end_src
+
+     #+begin_src emacs-lisp
+       (setq org-mobile-files '("~/notebook/notes.org" "~/notebook/todo.org") )
+     #+end_src
+
+*** Publish emacs init
+    Publishing require the htmlize package. Can be found in
+    emacs-goodies or as a standalone elisp file. I use el-get in
+    emacs-init-publish to make sure hymlize is installed and
+    initialized.
+
+    Evaluate this to publish this file to ./doc
+    #+begin_src emacs-lisp :tangle no
+      (emacs-init-load "emacs-init-publish.org")
     #+end_src
 
-** Publish emacs init
-   Publishing require the htmlize package. Can be found in
-   emacs-goodies or as a standalone elisp file. I use el-get in
-   emacs-init-publish to make sure hymlize is installed and
-   initialized.
+*** Yasnippet
+    :PROPERTIES:
+    :tangle:   yes
+    :CUSTOM_ID: yasnippet
+    :END:
+     - [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs. It is
+      inspired by TextMate's templating syntax.
+      - watch the [[http://www.youtube.com/watch?v=vOj7btx3ATg][video on YouTube]]
+      - see the [[http://yasnippet.googlecode.com/svn/trunk/doc/index.html][intro and tutorial]]
 
-   Evaluate this to publish this file to ./doc
-   #+begin_src emacs-lisp :tangle no
-     (emacs-init-load "emacs-init-publish.org")
-   #+end_src
+    Install yasnippet with el-get
+    #+begin_src emacs-lisp
+      (el-get 'sync '(yasnippet))
+    #+end_src
 
-** Yasnippet
-   :PROPERTIES:
-   :tangle:   yes
-   :CUSTOM_ID: yasnippet
-   :END:
-    - [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs. It is
-     inspired by TextMate's templating syntax.
-     - watch the [[http://www.youtube.com/watch?v=vOj7btx3ATg][video on YouTube]]
-     - see the [[http://yasnippet.googlecode.com/svn/trunk/doc/index.html][intro and tutorial]]
+    TODO: move elpa install of bundle here
 
-   Install yasnippet with el-get
-   #+begin_src emacs-lisp
-     (el-get 'sync '(yasnippet))
-   #+end_src
+    Add loadpath to yasnippet from el-get. Seems pointless
+    #+begin_src emacs-lisp
+      (add-to-list 'load-path
+                   (expand-file-name  "yasnippet"
+                                      (expand-file-name "el-get"
+                                                       	emacs-init-dir)))
+      (yas/initialize)
+    #+end_src
 
-   TODO: move elpa install of bundle here
+    Load the snippets defined in the =./snippets/= directory
+    #+begin_src emacs-lisp
+      (yas/load-directory (expand-file-name "snippets" emacs-init-dir))
+    #+end_src
 
-   Add loadpath to yasnippet from el-get. Seems pointless
-   #+begin_src emacs-lisp
-     (add-to-list 'load-path
-                  (expand-file-name  "yasnippet"
-                                     (expand-file-name "el-get"
-                                                       emacs-init-dir)))
-     (yas/initialize)
-   #+end_src
+    The latest version of yasnippets doesn't play well with Org-Mode, the
+    following function allows these two to play nicely together.
+    This [[http://stackoverflow.com/questions/9418148/conflicts-between-org-mode-and-yasnippet][stackoverflow post]] might be usefull as well.
+    #+begin_src emacs-lisp
+      (defun yas/org-very-safe-expand ()
+       	(let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
-   Load the snippets defined in the =./snippets/= directory
-   #+begin_src emacs-lisp
-     (yas/load-directory (expand-file-name "snippets" emacs-init-dir))
-   #+end_src
+      (defun yas/org-setup ()
+       	;; yasnippet (using the new org-cycle hooks)
+       	(make-variable-buffer-local 'yas/trigger-key)
+       	(setq yas/trigger-key [tab])
+       	(add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+       	(define-key yas/keymap [tab] 'yas/next-field))
 
-   The latest version of yasnippets doesn't play well with Org-Mode, the
-   following function allows these two to play nicely together.
-   This [[http://stackoverflow.com/questions/9418148/conflicts-between-org-mode-and-yasnippet][stackoverflow post]] might be usefull as well.
-   #+begin_src emacs-lisp
-     (defun yas/org-very-safe-expand ()
-       (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
-
-     (defun yas/org-setup ()
-       ;; yasnippet (using the new org-cycle hooks)
-       (make-variable-buffer-local 'yas/trigger-key)
-       (setq yas/trigger-key [tab])
-       (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-       (define-key yas/keymap [tab] 'yas/next-field))
-
-     (add-hook 'org-mode-hook #'yas/org-setup)
-   #+end_src
+      (add-hook 'org-mode-hook #'yas/org-setup)
+    #+end_src
 
 * Load User/System Specific Files
   :PROPERTIES:
