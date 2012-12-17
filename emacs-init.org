@@ -187,18 +187,19 @@
             (eval-print-last-sexp)))
        #+end_src
      - Install :: # <<Install>>
-       #+begin_src emacs-lisp
-         (setq el-get-dir (expand-file-name "el-get" emacs-init-dir))
-         (add-to-list 'load-path (concat emacs-init-dir "el-get/el-get"))
-         (unless (require 'el-get nil t)
-           (url-retrieve
-            "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
-            (lambda (s)
-              (goto-char (point-max))
-              (eval-print-last-sexp))))
-
-         (el-get 'sync)
+      #+begin_src emacs-lisp
+        (setq el-get-dir (expand-file-name "el-get" emacs-init-dir))
+        (add-to-list 'load-path (concat emacs-init-dir "el-get/el-get"))
+        (unless (require 'el-get nil t)
+          (url-retrieve
+           "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
+           (lambda (s)
+             (goto-char (point-max))
+             (eval-print-last-sexp))))
+        (add-to-list 'el-get-recipe-path (concat emacs-init-dir "recipes"))
+        (el-get 'sync)
        #+end_src
+
    - Functions for loading other parts of the emacs init ::
      #+name: emacs-init-load
      #+begin_src emacs-lisp
