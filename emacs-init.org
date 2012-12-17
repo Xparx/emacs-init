@@ -560,7 +560,6 @@
 **** MATLAB-mode
      :PROPERTIES:
      :CUSTOM_ID: matlab
-     :tangle:   no
      :END:
      TODO: Matlab-mode fails to install because of cedet for some
      reason. Need to modify el-get recipe.
