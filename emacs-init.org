@@ -445,6 +445,13 @@
        (setq diff-switches "-u")
      #+end_src
 
+**** Dired mode
+     When in dired mode 'a' will find alternative file/dir in the same buffer.
+     source [[http://emacsblog.org/2007/02/25/quick-tip-reuse-dired-buffers/][here]]
+     #+begin_src emacs-lisp
+       (put 'dired-find-alternate-file 'disabled nil)
+     #+end_src
+
 *** LaTeX mode
     :PROPERTIES:
     :CUSTOM_ID: latex
