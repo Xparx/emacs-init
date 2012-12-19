@@ -816,7 +816,21 @@
        (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
      #+end_src
 
-**** Org LaTeX export with default packages
+     Make links work as labels in exports to latex
+     #+begin_src emacs-lisp
+       (setq org-export-latex-hyperref-format "\\ref{%s}")
+     #+end_src
+
+**** Org LaTeX export with(out) default packages
+     Resetting the org default exported latex packages list. It messes
+     with my latex. Storing an extra list for insertion if needed.
+     #+begin_src emacs-lisp
+       (setq org-export-latex-default-packages-bkup-alist
+             org-export-latex-default-packages-alist)
+       (setq org-export-latex-default-packages-alist ())
+     #+end_src
+
+**** Org LaTeX export with extra packages
      :PROPERTIES:
      :tangle:   no
      :END:
@@ -874,44 +888,44 @@
      :PROPERTIES:
      :CUSTOM_ID: org-reftex
      :END:
-      source: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
-      #+begin_src emacs-lisp
-       	(defun org-mode-reftex-setup ()
-          (load-library "reftex")
-          (and (buffer-file-name) (file-exists-p (buffer-file-name))
-               (progn
-                 ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
-                 ;; (global-auto-revert-mode t)
-                 ;; (reftex-parse-all)
-                 ;; add a custom reftex cite format to insert links
-                 (reftex-set-cite-format
-                  '((?b . "[[bib:%l][%l-bib]]")
-                    (?n . "[[notes:%l][%l-notes]]")
-                    (?p . "[[papers:%l][%l-paper]]")
-                    (?t . "%t")
-                    (?c . "\\cite{%l}")
-                    (?h . "*** %l %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
-          (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
-          (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
+     source: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
+     #+begin_src emacs-lisp
+       (defun org-mode-reftex-setup ()
+         (load-library "reftex")
+         (and (buffer-file-name) (file-exists-p (buffer-file-name))
+              (progn
+                ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
+                ;; (global-auto-revert-mode t)
+                ;; (reftex-parse-all)
+                ;; add a custom reftex cite format to insert links
+                (reftex-set-cite-format
+                 '((?b . "[[bib:%l][%l-bib]]")
+                   (?n . "[[notes:%l][%l-notes]]")
+                   (?p . "[[papers:%l][%l-paper]]")
+                   (?t . "%t")
+                   (?c . "\\cite{%l}")
+                   (?h . "*** %l %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
+         (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
+         (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
 
-       	(add-hook 'org-mode-hook 'org-mode-reftex-setup)
-      #+end_src
+       (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+     #+end_src
 
-      Jump to entry
-      #+begin_src emacs-lisp
-       	(defun org-mode-reftex-search ()
-          ;;jump to the notes for the paper pointed to at from reftex search
-          (interactive)
-          (org-open-link-from-string (format "[[notes:%s]]" (reftex-citation t))))
-      #+end_src
+     Jump to entry
+     #+begin_src emacs-lisp
+       (defun org-mode-reftex-search ()
+         ;;jump to the notes for the paper pointed to at from reftex search
+         (interactive)
+         (org-open-link-from-string (format "[[notes:%s]]" (reftex-citation t))))
+     #+end_src
 
-      Paths
-      #+begin_src emacs-lisp
-       	(setq org-link-abbrev-alist
-              '(("bib" . "~/research/library.bib::%s")
-               	("notes" . "~/research/notes.txt::#%s")
-               	("papers" . "~/research/papers/%s.pdf")))
-      #+end_src
+     Paths to files
+     #+begin_src emacs-lisp
+       (setq org-link-abbrev-alist
+             '(("bib" . "~/research/library.bib::%s")
+               ("notes" . "~/research/notes.txt::#%s")
+               ("papers" . "~/research/papers/%s.pdf")))
+     #+end_src
 
 **** MobileOrg
      :PROPERTIES:
@@ -940,13 +954,13 @@
 
 *** Yasnippet
     :PROPERTIES:
-    :tangle:   yes
     :CUSTOM_ID: yasnippet
+    :tangle:   yes
     :END:
-     - [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs. It is
-      inspired by TextMate's templating syntax.
-      - watch the [[http://www.youtube.com/watch?v=vOj7btx3ATg][video on YouTube]]
-      - see the [[http://yasnippet.googlecode.com/svn/trunk/doc/index.html][intro and tutorial]]
+    - [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs. It is
+     inspired by TextMate's templating syntax.
+     - watch the [[http://www.youtube.com/watch?v=vOj7btx3ATg][video on YouTube]]
+     - see the [[http://yasnippet.googlecode.com/svn/trunk/doc/index.html][intro and tutorial]]
 
     Install yasnippet with el-get
     #+begin_src emacs-lisp
