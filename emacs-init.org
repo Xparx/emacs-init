@@ -474,9 +474,14 @@
      :PROPERTIES:
      :CUSTOM_ID: reftex
      :END:
-     Install and sync reftex repository with el-get
+     Install and sync reftex repository with el-get.
      #+begin_src emacs-lisp
        (el-get 'sync '(reftex))
+     #+end_src
+
+     Set path to default bibfile
+     #+begin_src emacs-lisp
+       (setq reftex-default-bibliography '("./refs.bib" "~/research/library.bib"))
      #+end_src
 
 *** Python
@@ -736,14 +741,14 @@
      :CUSTOM_ID: babel
      :END:
      This activates a number of widely used languages, you are
-     encouraged to activate more languages.  The customize interface of
-     `=org-babel-load-languages=' contains an up to date list of the
-     currently supported languages.
+     encouraged to activate more languages.  The customize interface
+     of '=org-babel-load-languages=' contains an up to date list of
+     the currently supported languages.
      #+name:babel-lang
      #+begin_src emacs-lisp
        (org-babel-do-load-languages
-       	'org-babel-load-languages
-       	'((emacs-lisp . t)
+        'org-babel-load-languages
+        '((emacs-lisp . t)
           (sh . t)
           (matlab . t)
           (gnuplot . t)
@@ -878,7 +883,7 @@
                     (?p . "[[papers:%l][%l-paper]]")
                     (?t . "%t")
                     (?c . "\\cite{%l}")
-                    (?h . "*** %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
+                    (?h . "*** %l %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
           (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
           (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
 
