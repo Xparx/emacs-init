@@ -15,3 +15,5 @@ saved-places
 *gpg
 themes/*
 backups/*
+url/*
+oauth2.plstore

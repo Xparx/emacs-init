@@ -472,23 +472,30 @@
        (el-get 'sync '(auctex))
      #+end_src
 
+     Make emacs aware of auctex
      #+begin_src emacs-lisp
        (setq TeX-auto-save t)
        (setq TeX-parse-self t)
        (setq-default TeX-master nil)
      #+end_src
+
 **** RefTeX
      :PROPERTIES:
      :CUSTOM_ID: reftex
      :END:
-     Install and sync reftex repository with el-get.
+     Install and sync reftex repository with el-get...
      #+begin_src emacs-lisp
        (el-get 'sync '(reftex))
      #+end_src
 
-     Set path to default bibfile
+     Set path to default bibfile.
      #+begin_src emacs-lisp
        (setq reftex-default-bibliography '("./refs.bib" "~/research/library.bib"))
+     #+end_src
+
+     Turn on reftex-mode in Auctex mode.
+     #+begin_src emacs-lisp
+       (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
      #+end_src
 
 *** Python
@@ -896,6 +903,7 @@
               (progn
                 ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
                 ;; (global-auto-revert-mode t)
+                (setq TeX-master t)
                 ;; (reftex-parse-all)
                 ;; add a custom reftex cite format to insert links
                 (reftex-set-cite-format
@@ -927,14 +935,20 @@
                ("papers" . "~/research/papers/%s.pdf")))
      #+end_src
 
+**** After init hooks
+     Org agenda list
+     #+begin_src emacs-lisp
+       (add-hook 'after-init-hook 'org-todo-list)
+     #+end_src
+
 **** MobileOrg
      :PROPERTIES:
      :tangle:   yes
      :END:
      Mobile org push/pull directory
      #+begin_src emacs-lisp
-       (setq org-mobile-directory "~/Dropbox/MobileOrg" )
-       (setq org-mobile-inbox-for-pull "~/Dropbox/MobileOrg/from-mobile.org" )
+       (setq org-mobile-directory "~/Ubuntu One/MobileOrg" )
+       (setq org-mobile-inbox-for-pull "~/Ubuntu One/MobileOrg/from-mobile.org" )
      #+end_src
 
      #+begin_src emacs-lisp
@@ -999,6 +1013,7 @@
 
       (add-hook 'org-mode-hook #'yas/org-setup)
     #+end_src
+
 
 * Load User/System Specific Files
   :PROPERTIES:
