@@ -321,7 +321,7 @@
     :PROPERTIES:
     :CUSTOM_ID: magit
     :END:
-**** El-get magit repository
+**** El-get magit
      #+begin_src emacs-lisp
        (el-get 'sync '(magit))
      #+end_src
@@ -712,19 +712,27 @@
      #+begin_src emacs-lisp
        (add-hook 'remember-mode-hook 'org-remember-apply-template)
        (define-key global-map [(meta ?r)] 'remember)
+     #+end_src
 
+     Display org todo list at startup.
+     #+begin_src emacs-lisp
+       (add-hook 'after-init-hook 'org-todo-list)
+     #+end_src
+
+     Remember capture file and command. NOTE: Could probably use some cleanup
+     #+begin_src emacs-lisp
        (custom-set-variables
        '(org-agenda-files (quote ("~/notebook/todo.org")))
-       	'(org-default-notes-file "~/notebook/notes.org")
-       	'(org-agenda-ndays 7)
-       	'(org-deadline-warning-days 14)
-       	'(org-agenda-show-all-dates t)
-       	'(org-agenda-skip-deadline-if-done t)
-       	'(org-agenda-skip-scheduled-if-done t)
-       	'(org-agenda-start-on-weekday nil)
-       	'(org-reverse-note-order t)
-       	'(org-fast-tag-selection-single-key (quote expert))
-       	'(org-agenda-custom-commands
+        '(org-default-notes-file "~/notebook/notes.org")
+        '(org-agenda-ndays 7)
+        '(org-deadline-warning-days 14)
+        '(org-agenda-show-all-dates t)
+        '(org-agenda-skip-deadline-if-done t)
+        '(org-agenda-skip-scheduled-if-done t)
+        '(org-agenda-start-on-weekday nil)
+        '(org-reverse-note-order t)
+        '(org-fast-tag-selection-single-key (quote expert))
+        '(org-agenda-custom-commands
           (quote (("d" todo "DELEGATED" nil)
                   ("c" todo "DONE|DEFERRED|CANCELLED" nil)
                   ("w" todo "WAITING" nil)
@@ -742,12 +750,12 @@
                                                  (quote regexp) "\n]+>")))
                     (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
 
-       	'(org-remember-store-without-prompt t)
-       	'(org-remember-templates
+        '(org-remember-store-without-prompt t)
+        '(org-remember-templates
           (quote ((116 "* TODO %?\n  %u" "~/notebook/todo.org" "Tasks")
                   (110 "* %u %?" "~/notebook/notes.org" "Notes"))))
-       	'(remember-annotation-functions (quote (org-remember-annotation)))
-       	'(remember-handler-functions (quote (org-remember-handler))))
+        '(remember-annotation-functions (quote (org-remember-annotation)))
+        '(remember-handler-functions (quote (org-remember-handler))))
      #+end_src
 
 **** Activate babel languages
@@ -935,15 +943,8 @@
                ("papers" . "~/research/papers/%s.pdf")))
      #+end_src
 
-**** After init hooks
-     Org agenda list
-     #+begin_src emacs-lisp
-       (add-hook 'after-init-hook 'org-todo-list)
-     #+end_src
-
 **** MobileOrg
      :PROPERTIES:
-     :tangle:   yes
      :END:
      Mobile org push/pull directory
      #+begin_src emacs-lisp
@@ -953,6 +954,16 @@
 
      #+begin_src emacs-lisp
        (setq org-mobile-files '("~/notebook/notes.org" "~/notebook/todo.org") )
+     #+end_src
+
+     Pull at startup
+     #+begin_src emacs-lisp
+       (add-hook 'after-init-hook 'org-mobile-pull)
+     #+end_src
+
+     Push at exit
+     #+begin_src emacs-lisp
+       (add-hook 'kill-emacs-hook 'org-mobile-push)
      #+end_src
 
 *** Publish emacs init
