@@ -722,7 +722,7 @@
      Remember capture file and command. NOTE: Could probably use some cleanup
      #+begin_src emacs-lisp
        (custom-set-variables
-       '(org-agenda-files (quote ("~/notebook/todo.org")))
+        '(org-agenda-files (quote ("~/notebook/todo.org")))
         '(org-default-notes-file "~/notebook/notes.org")
         '(org-agenda-ndays 7)
         '(org-deadline-warning-days 14)
@@ -734,7 +734,7 @@
         '(org-fast-tag-selection-single-key (quote expert))
         '(org-agenda-custom-commands
           (quote (("d" todo "DELEGATED" nil)
-                  ("c" todo "DONE|DEFERRED|CANCELLED" nil)
+                  ("c" todo "DONE|DEFERRED|CANCELLED|STARTED" nil)
                   ("w" todo "WAITING" nil)
                   ("W" agenda "" ((org-agenda-ndays 21)))
                   ("A" agenda ""
@@ -920,7 +920,7 @@
                    (?p . "[[papers:%l][%l-paper]]")
                    (?t . "%t")
                    (?c . "\\cite{%l}")
-                   (?h . "*** %l %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
+                   (?h . "*** %2a %y\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
          (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
          (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
 
