@@ -953,7 +953,9 @@
      #+end_src
 
      #+begin_src emacs-lisp
-       (setq org-mobile-files '("~/notebook/notes.org" "~/notebook/todo.org") )
+       (setq org-mobile-files '(
+                                "~/notebook/notes.org"
+                                "~/notebook/todo.org"))
      #+end_src
 
      Pull at startup

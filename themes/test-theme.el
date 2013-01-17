@@ -152,8 +152,8 @@
 
    ;;; font lock
    `(font-lock-builtin-face ((,class (:foreground ,test-blue))))
-   `(font-lock-comment-face ((,class (:foreground ,test-green))))
-   `(font-lock-comment-delimiter-face ((,class (:foreground ,test-green))))
+   `(font-lock-comment-face ((,class (:foreground ,test-red-4))))
+   `(font-lock-comment-delimiter-face ((,class (:foreground ,test-red-4))))
    `(font-lock-constant-face ((,class (:foreground ,test-green+4))))
    `(font-lock-doc-face ((,class (:foreground ,test-green+1))))
    `(font-lock-doc-string-face ((,class (:foreground ,test-blue+1))))
