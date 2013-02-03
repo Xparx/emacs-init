@@ -426,6 +426,11 @@
      #+end_src
 
 **** Remove trailing whitespaces
+     :PROPERTIES:
+     :tangle:   no
+     :END:
+     This is utterly broken especially with python. Disabled for now
+
      #+begin_src emacs-lisp
        (add-hook 'before-save-hook 'whitespace-cleanup)
      #+end_src
