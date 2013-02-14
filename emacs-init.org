@@ -668,6 +668,13 @@
        (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
      #+end_src
 
+     Make it so that org-mode opens external pdf files in evince
+     #+begin_src emacs-lisp
+       (eval-after-load "org"
+         '(progn (setcdr (assoc "\\.pdf\\'" org-file-apps) "evince %s")))
+     #+end_src
+
+
 **** Hide leading stars in structure outline
      #+begin_src emacs-lisp
        (setq org-hide-leading-stars t)
