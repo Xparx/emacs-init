@@ -4,16 +4,25 @@
 # exclude patterns (uncomment them if you want to use them):
 # *.[oa]
 
-*~
-el-get/*
-doc/*
-elpa/*
-emacs-init*.el
-ede-projects.el
+# Dirs
+el-get
+doc
+elpa
 bookmarks
 saved-places
+semanticdb
+request
+
+.org-id-locations
+ac-comphist.dat
+session.*
+
+# Files
+*~
+emacs-init*.el
+ede-projects.el
 *gpg
 themes/*
-backups/*
-url/*
+backups
+url
 oauth2.plstore
