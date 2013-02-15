@@ -521,7 +521,7 @@
     :PROPERTIES:
     :CUSTOM_ID: ipython
     :END:
-     Install and sync ipython repository with el-get
+     Install and sync ipython repository with el-get.
      #+begin_src emacs-lisp
        (el-get 'sync '(ipython))
      #+end_src
@@ -547,9 +547,9 @@
        (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode))
      #+end_src
 **** Emacs ipython notebook
-     Enables completion in ein buffer. This gives a bit of
-     unexpected behaviour. No popup occure even though latest popup.el
-     is installed.
+     Enables completion in ein buffer. This gives a bit of unexpected
+     behaviour. No popup occure even though latest popup.el is
+     installed.
      #+begin_src emacs-lisp
        (setq ein:use-auto-complete t)
      #+end_src
