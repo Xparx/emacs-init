@@ -571,7 +571,7 @@
     :CUSTOM_ID: coding
     :END:
 **** cedet
-     I am not sure what this does expect enableing cedet when coding,
+     I am not sure what this does except enabling cedet when coding,
      whatever that means. =org-edit-src-code: Symbol's function
      definition is void: user-error= error if this sentence is
      removed, odd but true.
@@ -673,7 +673,6 @@
        (eval-after-load "org"
          '(progn (setcdr (assoc "\\.pdf\\'" org-file-apps) "evince %s")))
      #+end_src
-
 
 **** Hide leading stars in structure outline
      #+begin_src emacs-lisp
@@ -956,9 +955,9 @@
      Jump to entry
      #+begin_src emacs-lisp
        (defun org-mode-reftex-search ()
-	 ;;jump to the notes for the paper pointed to at from reftex search
-	 (interactive)
-	 (org-open-link-from-string (format "[[notes:%s]]" (reftex-citation t))))
+         ;;jump to the notes for the paper pointed to at from reftex search
+         (interactive)
+         (org-open-link-from-string (format "[[notes:%s]]" (substring (format "%s" (reftex-citation t)) 1 -1))))
      #+end_src
 
      Paths to files
