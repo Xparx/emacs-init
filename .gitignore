@@ -13,10 +13,6 @@ saved-places
 semanticdb
 request
 
-.org-id-locations
-ac-comphist.dat
-session.*
-
 # Files
 *~
 emacs-init*.el
@@ -26,3 +22,7 @@ themes/*
 backups
 url
 oauth2.plstore
+tramp
+.org-id-locations
+ac-comphist.dat
+session.*
