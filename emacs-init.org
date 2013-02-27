@@ -253,12 +253,12 @@
      #+end_src
 
 ** Emacs init core
-    :PROPERTIES:
-    :CUSTOM_ID: emacs-init-core
-    :END:
-    These sub-trees contain the remainder of the core of Emacs Init.  All of
-    the code in this section should be loaded by emacs used on any
-    machine and user.
+   :PROPERTIES:
+   :CUSTOM_ID: emacs-init-core
+   :END:
+   These sub-trees contain the remainder of the core of Emacs Init.  All of
+   the code in this section should be loaded by emacs used on any
+   machine and user.
 *** Emacs bindings
     :PROPERTIES:
     :CUSTOM_ID: emacs-bindings
@@ -639,10 +639,10 @@
      #+end_src
 
 *** Org Mode <3
-     :PROPERTIES:
-     :tangle:   yes
-     :END:
-     Install and sync org-mode repository with el-get
+    :PROPERTIES:
+    :tangle:   yes
+    :END:
+    Install and sync org-mode repository with el-get
 **** El-getting org-mode
      :PROPERTIES:
      :tangle:   yes
@@ -679,7 +679,7 @@
        (setq org-hide-leading-stars t)
      #+end_src
 
-**** Org-Mode Global Keybindings
+**** Org-mode Global Keybindings
      :PROPERTIES:
      :CUSTOM_ID: org-global-keybindings
      :END:
@@ -823,9 +823,15 @@
        (setq org-src-tab-acts-natively t)
      #+end_src
 
-**** Org general export
+**** Org general export options
      #+begin_src emacs-lisp
        (setq org-export-with-sub-superscripts nil)
+     #+end_src
+
+**** Org-mode hooks
+     Make org understand latex syntax
+     #+begin_src emacs-lisp
+       (add-hook 'org-mode-hook (lambda () (setq ispell-parser 'tex)))
      #+end_src
 
 **** Org LaTeX export types
@@ -855,7 +861,7 @@
 
        (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
      #+end_src
-
+     
      Make links work as labels in exports to latex
      #+begin_src emacs-lisp
        (setq org-export-latex-hyperref-format "\\ref{%s}")
@@ -1065,7 +1071,8 @@
   you want to track the development versions of a project, or if a
   project is not in elpa.
 
-  After we've loaded all the Emacs Init defaults, lets load the User's stuff.
+  After we've loaded all the Emacs Init defaults, lets load the User's
+  stuff.
   #+begin_src emacs-lisp
     (flet ((sk-load (base)
 	      (let* ((path          (expand-file-name base emacs-init-dir))
