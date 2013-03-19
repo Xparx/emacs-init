@@ -23,6 +23,9 @@
 (global-set-key [f1] 'menu-bar-mode) ;; Toggle menu bar mode with f1
 (global-set-key [f12] 'toggle-truncate-lines) ;; toggle-truncate-lines keybinding
 (setq blink-matching-delay .1) ;; matching parenthesis timer default 1
+(setq-default indent-tabs-mode nil) ;; make sure no tabs are present.
+(setq-default tab-width 4)
+
 
 ;; load up emacs init
 (message "Loading emacs-init")
