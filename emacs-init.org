@@ -501,7 +501,7 @@
 
      Set path to default bibfile.
      #+begin_src emacs-lisp
-       (setq reftex-default-bibliography '("./refs.bib" "~/research/library.bib"))
+       (setq reftex-default-bibliography '("./refs.bib" "~/research/bibliography.bib"))
      #+end_src
 
      Turn on reftex-mode in Auctex mode.
@@ -530,9 +530,9 @@
      #+end_src
 
 **** Use IPython if =ipython= command is present
-    :PROPERTIES:
-    :CUSTOM_ID: ipython
-    :END:
+     :PROPERTIES:
+     :CUSTOM_ID: ipython
+     :END:
      Install and sync ipython repository with el-get.
      #+begin_src emacs-lisp
        (el-get 'sync '(ipython))
@@ -541,13 +541,13 @@
      IPython is the preferred method for python evaluation.
      #+begin_src emacs-lisp
        (when (executable-find "ipython")
-	 (setq org-babel-python-mode 'python-mode))
+         (setq org-babel-python-mode 'python-mode))
      #+end_src
 **** Use Cython mode
-    :PROPERTIES:
-    :CUSTOM_ID: cython
-    :tangle:   no
-    :END:
+     :PROPERTIES:
+     :CUSTOM_ID: cython
+     :tangle:   no
+     :END:
      Install and sync cython-mode repository with el-get
      #+begin_src emacs-lisp
        (el-get 'sync '(cython-mode))
@@ -607,7 +607,7 @@
        (el-get 'sync '(matlab-mode))
      #+end_src
 
-     The indent function -1 will couse functions to not indent
+     The indent function -1 or nil will couse functions to not indent
      #+begin_src emacs-lisp
        (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
        (setq matlab-indent-function nil)
@@ -969,7 +969,7 @@
      Paths to files
      #+begin_src emacs-lisp
        (setq org-link-abbrev-alist
-	     '(("bib" . "~/research/library.bib::%s")
+	     '(("bib" . "~/research/bibliography.bib::%s")
 	       ("notes" . "~/research/notes.txt::#%s")
 	       ("papers" . "~/research/papers/%s.pdf")))
      #+end_src
