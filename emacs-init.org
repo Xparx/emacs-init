@@ -829,7 +829,7 @@
      #+end_src
 
 **** Org-mode hooks
-     Make org understand latex syntax
+     Make org understand latex syntax: [[http://stackoverflow.com/questions/11646880/flyspell-in-org-mode-recognize-latex-syntax-like-auctex][source]]
      #+begin_src emacs-lisp
        (add-hook 'org-mode-hook (lambda () (setq ispell-parser 'tex)))
      #+end_src
