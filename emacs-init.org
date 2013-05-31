@@ -264,6 +264,8 @@
     :CUSTOM_ID: emacs-bindings
     :END:
     Custom keybindings
+**** global visual line mode
+     Implemented in init.el
 **** Align your code in a pretty way.
      #+begin_src emacs-lisp
        (global-set-key (kbd "C-x \\") 'align-regexp)
@@ -329,12 +331,21 @@
     :PROPERTIES:
     :CUSTOM_ID: misc
     :END:
-**** Don't clutter up directories with files~
+**** Don't clutter up directories with files~ or #files#
      Rather than saving backup files scattered all over the file system,
      let them live in the =backups/= directory inside of the emacs init.
      #+begin_src emacs-lisp
        (setq backup-directory-alist `(("." . ,(expand-file-name
 					       (concat emacs-init-dir "backups")))))
+     #+end_src
+
+     Autosave to specific directory: [[http://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/][source]]. This does not work... as
+     is always the case. This stops the autosave feature for some
+     reason
+     #+begin_src emacs-lisp :tangle no
+       (setq auto-save-file-name-transforms
+             `((".*" ,(expand-file-name
+                       (concat emacs-init-dir "autosave")) t)))
      #+end_src
 
 **** Make colors work in M-x shell
@@ -990,12 +1001,12 @@
      #+end_src
 
      Pull at startup
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp :tangle no
        (add-hook 'after-init-hook 'org-mobile-pull)
      #+end_src
-
+     
      Push at exit
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp :tangle no
        (add-hook 'kill-emacs-hook 'org-mobile-push)
      #+end_src
 
