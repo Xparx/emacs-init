@@ -22,6 +22,7 @@
 (menu-bar-mode -1) ;; Remove the menu bar, Remove this when menu becomes part of the global menu.
 (global-set-key [f1] 'menu-bar-mode) ;; Toggle menu bar mode with f1
 (global-set-key [f12] 'toggle-truncate-lines) ;; toggle-truncate-lines keybinding
+(global-set-key [f11] 'visual-line-mode)      ;; toggle nice soft line wrapping
 (setq blink-matching-delay .1) ;; matching parenthesis timer default 1
 (setq-default indent-tabs-mode nil) ;; make sure no tabs are present.
 (setq-default tab-width 4)
