@@ -21,8 +21,8 @@
       git clone https://github.com/eschulte/emacs24-starter-kit.git
     #+end_src
 
-    If you want to keep your regular =~/.emacs.d= in place and just launch
-    a single instance, using the starter kit, try the following invocation:
+       If you want to keep your regular =~/.emacs.d= in place and just launch
+       a single instance, using the starter kit, try the following invocation:
     #+begin_src sh
       emacs -q -l ~/src/emacs24-starter-kit/init.el
     #+end_src
@@ -49,53 +49,51 @@
    :PROPERTIES:
    :CUSTOM_ID: customization
    :END:
-
    The defaults built into the emacs init are only the beginning of
    most users customization of Emacs to suite their needs.  This file
    provides a number of places for additional user and system
    specific customization.
 
    - User specific config :: Your personal configuration information can
-	be stored in a user-specific-config file.  This is the file named
-	after your user with the extensions =.el= or =.org= [2].  If
-	you're unsure of your user name evaluate the following code block
-	to find out.
+        be stored in a user-specific-config file.  This is the file named
+        after your user with the extensions =.el= or =.org= [2].  If
+        you're unsure of your user name evaluate the following code block
+        to find out.
      #+begin_src sh
        echo $USER
      #+end_src
-
-	If your configuration starts to feel cramped in a single file
-	(although with the nested headlines of an Org-mode file, that
-	could take a while) and you want to stretch your config's legs,
-	you can also create a directory named after your system user
-	name.  If a such a directory exists, it will be added to the
-	load-path, and any elisp or org-mode w/embedded elisp files in it
-	will be loaded.
+        If your configuration starts to feel cramped in a single file
+        (although with the nested headlines of an Org-mode file, that
+        could take a while) and you want to stretch your config's legs,
+        you can also create a directory named after your system user
+        name.  If a such a directory exists, it will be added to the
+        load-path, and any elisp or org-mode w/embedded elisp files in it
+        will be loaded.
 
    - System specific config :: Finally, you may want to configure
-	different settings for different machines.  The Emacs Init will
-	look for a file named after the current hostname ending in =.el=
-	or =.org= which will allow host-specific configuration. If
-	you're unsure of your hostname the following can be executed to
-	find out.
+        different settings for different machines.  The Emacs Init will
+        look for a file named after the current hostname ending in =.el=
+        or =.org= which will allow host-specific configuration. If
+        you're unsure of your hostname the following can be executed to
+        find out.
      #+begin_src sh
        hostname
      #+end_src
 
    - Installing more elisp libraries :: The easiest way to install new
-	libraries is through the
+        libraries is through the
      - Emacs Lisp Package Archive :: (see [[#emacs-lisp-package-archive][EmacsLisp Package Archive]]
-	  below).  When a library is not available through ELPA you
-	  can grab it's source and place it directly in the =src=
-	  directory. Any packages found there will automatically be
-	  added to your load-path when Emacs starts up. I also install
-	  packages through el-get.
+          below).  When a library is not available through ELPA you
+          can grab it's source and place it directly in the =src=
+          directory. Any packages found there will automatically be
+          added to your load-path when Emacs starts up. I also install
+          packages through el-get.
      - El-get :: (see [[#emacs-lisp-get][El-get]] below). The other easy way to install new
-		 packages is with the package manager el-get. El-get
-		 will automatically initiate the package to be used
-		 with .emacs
+                 packages is with the package manager el-get. El-get
+                 will automatically initiate the package to be used
+                 with .emacs
    - Misc :: Some additional miscellaneous configuration and getting
-	     started suggestions
+             started suggestions
      - First see the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Customization.html#Customization][Customization]] node in the Emacs manual. Available
        online or through the =info= command (run with =C-h i=).
      - read the following [[http://www.gnu.org/software/emacs/elisp/html_node/Key-Binding-Conventions.html][Key-Binding-Conventions]] before defining too
@@ -141,8 +139,8 @@
        (setq custom-file (concat emacs-init-dir "custom.el"))
      #+end_src
    - Ubiquitous Packages ::  which should be loaded on startup rather than
-     autoloaded on demand since they are likely to be used in every
-     session.
+        autoloaded on demand since they are likely to be used in every
+        session.
      #+name: emacs-init-load-on-startup
      #+begin_src emacs-lisp
        (require 'saveplace)
@@ -154,102 +152,105 @@
    - ELPA archive repositories ::
      #+begin_src emacs-lisp
        (setq package-archives
-	     '(("original"    . "http://tromey.com/elpa/")
-	       ("gnu"         . "http://elpa.gnu.org/packages/")
-	       ("org"         . "http://orgmode.org/elpa/")
-	       ("marmalade"   . "http://marmalade-repo.org/packages/")))
+             '(("original"    . "http://tromey.com/elpa/")
+               ("gnu"         . "http://elpa.gnu.org/packages/")
+               ("org"         . "http://orgmode.org/elpa/")
+               ("marmalade"   . "http://marmalade-repo.org/packages/")))
        (package-initialize)
      #+end_src
      - Packages to be installed by default. Put more packages here if
        more default should be installed with elpa.
        #+begin_src emacs-lisp
-	 (defvar emacs-init-packages
-	   (list 'yasnippet-bundle)
-	   "Libraries that should be installed by default.")
-	 (unless package-archive-contents
-	   (package-refresh-contents))
-	 (dolist (package emacs-init-packages)
-	   (unless (package-installed-p package)
-	     (package-install package)))
+         (defvar emacs-init-packages
+           (list 'yasnippet-bundle)
+           "Libraries that should be installed by default.")
+         (unless package-archive-contents
+           (package-refresh-contents))
+         (dolist (package emacs-init-packages)
+           (unless (package-installed-p package)
+             (package-install package)))
        #+end_src
    - El-get initialization ::
      - Lazy Install :: # <<Lazy Install>>
-       To setup el-get the simple way one needs only
-       to evaluate the following emacs lisp block
+                       To setup el-get the simple way one needs only
+                       to evaluate the following emacs lisp block
        #+begin_src emacs-lisp :tangle no
-	 ;; So the idea is that you copy/paste this code into your *scratch* buffer,
-	 ;; hit C-j, and you have a working el-get.
-	 (url-retrieve
-	  "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
-	  (lambda (s)
-	    (goto-char (point-max))
-	    (eval-print-last-sexp)))
+         ;; So the idea is that you copy/paste this code into your *scratch* buffer,
+         ;; hit C-j, and you have a working el-get.
+         (url-retrieve
+          "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
+          (lambda (s)
+            (goto-char (point-max))
+            (eval-print-last-sexp)))
        #+end_src
      - Install :: # <<Install>>
       #+begin_src emacs-lisp
-	(setq el-get-dir (expand-file-name "el-get" emacs-init-dir))
-	(add-to-list 'load-path (concat emacs-init-dir "el-get/el-get"))
-	(unless (require 'el-get nil t)
-	  (url-retrieve
-	   "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
-	   (lambda (s)
-	     (goto-char (point-max))
-	     (eval-print-last-sexp))))
-	(add-to-list 'el-get-recipe-path (concat emacs-init-dir "recipes"))
-	(el-get 'sync)
+        (setq el-get-dir (expand-file-name "el-get" emacs-init-dir))
+        (add-to-list 'load-path (concat emacs-init-dir "el-get/el-get"))
+
+        (unless (require 'el-get nil 'noerror)
+          (with-current-buffer
+              (url-retrieve-synchronously
+               "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+            (let (el-get-master-branch)
+              (goto-char (point-max))
+              (eval-print-last-sexp))))
+
+        (add-to-list 'el-get-recipe-path (concat emacs-init-dir "recipes"))
+        (el-get 'sync)
        #+end_src
 
    - Functions for loading other parts of the emacs init ::
      #+name: emacs-init-load
      #+begin_src emacs-lisp
        (defun emacs-init-load (file &optional header-or-tag)
-	 "Load configuration from other emacs-init-*.org files.
-       If the optional argument is the id of a subtree then only
-       configuration from within that subtree will be loaded.  If it is
-       not an id then it will be interpreted as a tag, and only subtrees
-       marked with the given tag will be loaded.
+         "Load configuration from other emacs-init-*.org files.
+          If the optional argument is the id of a subtree then only
+          configuration from within that subtree will be loaded.  If it is
+          not an id then it will be interpreted as a tag, and only subtrees
+          marked with the given tag will be loaded.
 
-       ! STARTER-KIT Configurations:
-       For example, to load all of emacs-init-lisp.org simply
-       add (emacs-init-load \"lisp\") to your configuration.
-       To load only the 'window-system' config from
-       emacs-init-misc-recommended.org add
-	(emacs-init-load \"misc-recommended\" \"window-system\")
+          ! STARTER-KIT Configurations:
+          For example, to load all of emacs-init-lisp.org simply
+          add (emacs-init-load \"lisp\") to your configuration.
+          To load only the 'window-system' config from
+          emacs-init-misc-recommended.org add
+       (emacs-init-load \"misc-recommended\" \"window-system\")
        to your configuration."
-	 (let ((file (expand-file-name (if (string-match "emacs-init-.+\.org" file)
-					   file
-					 (format "emacs-init-%s.org" file))
-				       emacs-init-dir)))
-	   (org-babel-load-file
-	    (if header-or-tag
-		(let* ((base (file-name-nondirectory file))
-		       (dir  (file-name-directory file))
-		       (partial-file (expand-file-name
-				      (concat "." (file-name-sans-extension base)
-					      ".part." header-or-tag ".org")
-				      dir)))
-		  (unless (file-exists-p partial-file)
-		    (with-temp-file partial-file
-		      (insert
-		       (with-temp-buffer
-			 (insert-file-contents file)
-			 (save-excursion
-			   (condition-case nil ;; collect as a header
-			       (progn
-				 (org-link-search (concat"#"header-or-tag))
-				 (org-narrow-to-subtree)
-				 (buffer-string))
-			     (error ;; collect all entries with as tags
-			      (let (body)
-				(org-map-entries
-				 (lambda ()
-				   (save-restriction
-				     (org-narrow-to-subtree)
-				     (setq body (concat body "\n" (buffer-string)))))
-				 header-or-tag)
-				body))))))))
-		  partial-file)
-	      file))))
+        (let ((file (expand-file-name (if (string-match "emacs-init-.+\.org" file)
+                          file
+                        (format "emacs-init-%s.org" file))
+                          emacs-init-dir)))
+          (org-babel-load-file
+           (if header-or-tag
+           (let* ((base (file-name-nondirectory file))
+                  (dir  (file-name-directory file))
+                  (partial-file (expand-file-name
+                         (concat "." (file-name-sans-extension base)
+                             ".part." header-or-tag ".org")
+                         dir)))
+             (unless (file-exists-p partial-file)
+               (with-temp-file partial-file
+                 (insert
+                  (with-temp-buffer
+                (insert-file-contents file)
+                (save-excursion
+                  (condition-case nil ;; collect as a header
+                      (progn
+                    (org-link-search (concat"#"header-or-tag))
+                    (org-narrow-to-subtree)
+                    (buffer-string))
+                    (error ;; collect all entries with as tags
+                     (let (body)
+                   (org-map-entries
+                    (lambda ()
+                      (save-restriction
+                        (org-narrow-to-subtree)
+                        (setq body (concat body "\n" (buffer-string)))))
+                    header-or-tag)
+                   body))))))))
+             partial-file)
+             file))))
      #+end_src
 
 ** Emacs init core
@@ -336,7 +337,7 @@
      let them live in the =backups/= directory inside of the emacs init.
      #+begin_src emacs-lisp
        (setq backup-directory-alist `(("." . ,(expand-file-name
-					       (concat emacs-init-dir "backups")))))
+                                               (concat emacs-init-dir "backups")))))
      #+end_src
 
      Autosave to specific directory: [[http://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/][source]]. This does not work... as
@@ -374,8 +375,8 @@
      Load my prefered theme if availible
      #+begin_src emacs-lisp
        (condition-case nil
-	    (load-theme 'my-z t)
-	    (error "no theme loaded"))
+           (load-theme 'my-z t)
+         (error "no theme loaded"))
      #+end_src
 
 **** Aspell and dictionaries
@@ -392,7 +393,7 @@
      (what consequences!!)
      #+begin_src emacs-lisp
        (setq ispell-personal-dictionary
-	     (concat emacs-init-dir "ispell-personal-dict"))
+             (concat emacs-init-dir "ispell-personal-dict"))
      #+end_src
 
 **** Open my specific bashrc files in the right mode
@@ -445,7 +446,7 @@
      #+begin_src emacs-lisp
        (add-hook 'before-save-hook 'whitespace-cleanup)
      #+end_src
-     
+
      The below changes the behaviour of whitespace-cleanup to not
      remove whitespaces on empty lines. Source [[http://stackoverflow.com/questions/1412913/show-trailing-whitespace-on-emacs-only-on-non-empty-lines][here]]
      #+begin_src emacs-lisp
@@ -456,11 +457,11 @@
      Source: [[http://stackoverflow.com/questions/9663396/how-do-i-make-emacs-recognize-bash-environment-variables-for-compilation][stackoverflow]]
      #+begin_src emacs-lisp
        (let ((path (shell-command-to-string ". ~/.bash_variables; echo -n $PATH")))
-	 (setenv "PATH" path)
-	 (setq exec-path
-	       (append
-		(split-string-and-unquote path ":")
-		exec-path)))
+         (setenv "PATH" path)
+         (setq exec-path
+               (append
+                (split-string-and-unquote path ":")
+                exec-path)))
      #+end_src emacs-lisp
 **** Default to unified diffs
      #+begin_src emacs-lisp
@@ -603,7 +604,7 @@
      Associate .gp files with gnuplot.
      #+begin_src emacs-lisp
        (setq auto-mode-alist
-	     (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
+             (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
      #+end_src
 
 **** MATLAB-mode
@@ -715,32 +716,32 @@
      #+end_src
 
 **** Org-Mode ToDo
-    Org mode todo states and agenda mode navigation.
-    #+begin_src emacs-lisp
-      (eval-after-load "org"
-	'(progn
-	   (define-prefix-command 'org-todo-state-map)
-	   (define-key org-mode-map "\C-cx" 'org-todo-state-map)
-	   (define-key org-todo-state-map "x"
-	     #'(lambda nil (interactive) (org-todo "CANCELLED")))
-	   (define-key org-todo-state-map "d"
-	     #'(lambda nil (interactive) (org-todo "DONE")))
-	   (define-key org-todo-state-map "f"
-	     #'(lambda nil (interactive) (org-todo "DEFERRED")))
-	   (define-key org-todo-state-map "l"
-	     #'(lambda nil (interactive) (org-todo "DELEGATED")))
-	   (define-key org-todo-state-map "s"
-	     #'(lambda nil (interactive) (org-todo "STARTED")))
-	   (define-key org-todo-state-map "w"
-	     #'(lambda nil (interactive) (org-todo "WAITING")))
-	   ;; reset keys to original functions
-	   (add-hook 'org-agenda-mode-hook
-		     (lambda ()
-		       (define-key org-agenda-mode-map "\C-n" 'next-line)
-		       (define-key org-agenda-keymap "\C-n" 'next-line)
-		       (define-key org-agenda-mode-map "\C-p" 'previous-line)
-		       (define-key org-agenda-keymap "\C-p" 'previous-line)))))
-    #+end_src
+     Org mode todo states and agenda mode navigation.
+     #+begin_src emacs-lisp
+       (eval-after-load "org"
+         '(progn
+            (define-prefix-command 'org-todo-state-map)
+            (define-key org-mode-map "\C-cx" 'org-todo-state-map)
+            (define-key org-todo-state-map "x"
+              #'(lambda nil (interactive) (org-todo "CANCELLED")))
+            (define-key org-todo-state-map "d"
+              #'(lambda nil (interactive) (org-todo "DONE")))
+            (define-key org-todo-state-map "f"
+              #'(lambda nil (interactive) (org-todo "DEFERRED")))
+            (define-key org-todo-state-map "l"
+              #'(lambda nil (interactive) (org-todo "DELEGATED")))
+            (define-key org-todo-state-map "s"
+              #'(lambda nil (interactive) (org-todo "STARTED")))
+            (define-key org-todo-state-map "w"
+              #'(lambda nil (interactive) (org-todo "WAITING")))
+            ;; reset keys to original functions
+            (add-hook 'org-agenda-mode-hook
+                      (lambda ()
+                        (define-key org-agenda-mode-map "\C-n" 'next-line)
+                        (define-key org-agenda-keymap "\C-n" 'next-line)
+                        (define-key org-agenda-mode-map "\C-p" 'previous-line)
+                  (define-key org-agenda-keymap "\C-p" 'previous-line)))))
+     #+end_src
 
 **** Remember-Mode
      Remember mode makes it possible to store notes and todos in
@@ -758,40 +759,40 @@
      Remember capture file and command. NOTE: Could probably use some cleanup
      #+begin_src emacs-lisp
        (custom-set-variables
-	'(org-agenda-files (quote ("~/notebook/todo.org")))
-	'(org-default-notes-file "~/notebook/notes.org")
-	'(org-agenda-ndays 7)
-	'(org-deadline-warning-days 14)
-	'(org-agenda-show-all-dates t)
-	'(org-agenda-skip-deadline-if-done t)
-	'(org-agenda-skip-scheduled-if-done t)
-	'(org-agenda-start-on-weekday nil)
-	'(org-reverse-note-order t)
-	'(org-fast-tag-selection-single-key (quote expert))
-	'(org-agenda-custom-commands
-	  (quote (("d" todo "DELEGATED" nil)
-		  ("c" todo "DONE|DEFERRED|CANCELLED|STARTED" nil)
-		  ("w" todo "WAITING" nil)
-		  ("W" agenda "" ((org-agenda-ndays 21)))
-		  ("A" agenda ""
-		   ((org-agenda-skip-function
-		     (lambda nil
-		       (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]")))
-		    (org-agenda-ndays 1)
-		    (org-agenda-overriding-header "Today's Priority #A tasks: ")))
-		  ("u" alltodo ""
-		   ((org-agenda-skip-function
-		     (lambda nil
-		       (org-agenda-skip-entry-if (quote scheduled) (quote deadline)
-						 (quote regexp) "\n]+>")))
-		    (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
+        '(org-agenda-files (quote ("~/notebook/todo.org")))
+        '(org-default-notes-file "~/notebook/notes.org")
+        '(org-agenda-ndays 7)
+        '(org-deadline-warning-days 14)
+        '(org-agenda-show-all-dates t)
+        '(org-agenda-skip-deadline-if-done t)
+        '(org-agenda-skip-scheduled-if-done t)
+        '(org-agenda-start-on-weekday nil)
+        '(org-reverse-note-order t)
+        '(org-fast-tag-selection-single-key (quote expert))
+        '(org-agenda-custom-commands
+          (quote (("d" todo "DELEGATED" nil)
+                  ("c" todo "DONE|DEFERRED|CANCELLED|STARTED" nil)
+                  ("w" todo "WAITING" nil)
+                  ("W" agenda "" ((org-agenda-ndays 21)))
+                  ("A" agenda ""
+                   ((org-agenda-skip-function
+                     (lambda nil
+                       (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]")))
+                    (org-agenda-ndays 1)
+                    (org-agenda-overriding-header "Today's Priority #A tasks: ")))
+                  ("u" alltodo ""
+                   ((org-agenda-skip-function
+                     (lambda nil
+                       (org-agenda-skip-entry-if (quote scheduled) (quote deadline)
+                                                 (quote regexp) "\n]+>")))
+                    (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
 
-	'(org-remember-store-without-prompt t)
-	'(org-remember-templates
-	  (quote ((116 "* TODO %?\n  %u" "~/notebook/todo.org" "Tasks")
-		  (110 "* %u %?" "~/notebook/notes.org" "Notes"))))
-	'(remember-annotation-functions (quote (org-remember-annotation)))
-	'(remember-handler-functions (quote (org-remember-handler))))
+        '(org-remember-store-without-prompt t)
+        '(org-remember-templates
+          (quote ((116 "* TODO %?\n  %u" "~/notebook/todo.org" "Tasks")
+                  (110 "* %u %?" "~/notebook/notes.org" "Notes"))))
+        '(remember-annotation-functions (quote (org-remember-annotation)))
+       '(remember-handler-functions (quote (org-remember-handler))))
      #+end_src
 
 **** Activate babel languages
@@ -805,14 +806,14 @@
      #+name:babel-lang
      #+begin_src emacs-lisp
        (org-babel-do-load-languages
-	'org-babel-load-languages
-	'((emacs-lisp . t)
-	  (sh . t)
-	  (matlab . t)
-	  (gnuplot . t)
-	  (python . t)
-	  (dot . t)
-	  (latex . t)))
+        'org-babel-load-languages
+        '((emacs-lisp . t)
+          (sh . t)
+          (matlab . t)
+          (gnuplot . t)
+          (python . t)
+          (dot . t)
+         (latex . t)))
      #+end_src
 
      Adding unsecure evaluation of code-blocks
@@ -850,29 +851,29 @@
      4.20 or higher.
      #+begin_src emacs-lisp
        (defun my-auto-tex-cmd ()
-	 "When exporting from .org with latex, automatically run latex,
-	    pdflatex, or xelatex as appropriate, using latexmk."
-	 (let ((texcmd)))
-	 ;; default command: oldstyle latex via dvi
-	 (setq texcmd "latexmk -pdfdvi -quiet %f")
-	 ;; bibtex -> pdf
-	 (if (string-match "LATEX_CMD: texbibtex" (buffer-string))
-	     (setq texcmd "latexmk -pdfdvi -bibtex -quiet %f"))
-	 ;; longway tex -> pdf
-	 (if (string-match "LATEX_CMD: dvipdfps" (buffer-string))
-	     (setq texcmd "latexmk -pdf -quiet %f"))
-	 ;; pdflatex -> .pdf
-	 (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
-	     (setq texcmd "latexmk -pdf -quiet %f"))
-	 ;; xelatex -> .pdf
-	 (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-	     (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
-	 ;; LaTeX compilation command
-	 (setq org-latex-to-pdf-process (list texcmd)))
+         "When exporting from .org with latex, automatically run latex,
+          pdflatex, or xelatex as appropriate, using latexmk."
+         (let ((texcmd)))
+         ;; default command: oldstyle latex via dvi
+         (setq texcmd "latexmk -pdfdvi -quiet %f")
+         ;; bibtex -> pdf
+         (if (string-match "LATEX_CMD: texbibtex" (buffer-string))
+             (setq texcmd "latexmk -pdfdvi -bibtex -quiet %f"))
+         ;; longway tex -> pdf
+         (if (string-match "LATEX_CMD: dvipdfps" (buffer-string))
+             (setq texcmd "latexmk -pdf -quiet %f"))
+         ;; pdflatex -> .pdf
+         (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
+             (setq texcmd "latexmk -pdf -quiet %f"))
+         ;; xelatex -> .pdf
+         (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+             (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
+         ;; LaTeX compilation command
+         (setq org-latex-to-pdf-process (list texcmd)))
 
-       (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
+         (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
      #+end_src
-     
+
      Make links work as labels in exports to latex
      #+begin_src emacs-lisp
        (setq org-export-latex-hyperref-format "\\ref{%s}")
@@ -883,7 +884,7 @@
      with my latex. Storing an extra list for insertion if needed.
      #+begin_src emacs-lisp
        (setq org-export-latex-default-packages-bkup-alist
-	     org-export-latex-default-packages-alist)
+             org-export-latex-default-packages-alist)
        (setq org-export-latex-default-packages-alist ())
      #+end_src
 
@@ -896,48 +897,48 @@
      still included in the output.
      #+begin_src emacs-lisp
        (setq org-export-latex-packages-alist
-	     '(("" "graphicx" t)
-	       ("" "longtable" nil)
-	       ("" "float" nil)))
+             '(("" "graphicx" t)
+               ("" "longtable" nil)
+               ("" "float" nil)))
      #+end_src
 
      Define packages for each latex command. Using latexmk...
      #+begin_src emacs-lisp
        (defun my-auto-tex-parameters ()
-	     "Automatically select the tex packages to include."
-	     ;; default packages for ordinary latex or pdflatex export
-	     (setq org-export-latex-default-packages-alist
-		   '(("" "graphicx" t)
-		     ("" "longtable" nil)
-		     ("" "float" nil)
-		     ("AUTO" "inputenc" t)
-		     ("T1"   "fontenc"   t)
-		     (""     "fixltx2e"  t)
-		     (""     "hyperref"  nil)))
+         "Automatically select the tex packages to include."
+         ;; default packages for ordinary latex or pdflatex export
+         (setq org-export-latex-default-packages-alist
+               '(("" "graphicx" t)
+                 ("" "longtable" nil)
+                 ("" "float" nil)
+                 ("AUTO" "inputenc" t)
+                 ("T1"   "fontenc"   t)
+                 (""     "fixltx2e"  t)
+                 (""     "hyperref"  nil)))
 
-	     ;; Packages to include when xelatex is used
-	     (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-		 (setq org-export-latex-default-packages-alist
-		       '(("" "fontspec" t)
-			 ("" "xunicode" t)
-			 ("" "url" t)
-			 ("" "rotating" t)
-			 ("american" "babel" t)
-			 ("babel" "csquotes" t)
-			 ("" "soul" t)
-			 ("xetex" "hyperref" nil)
-			 )))
+         ;; Packages to include when xelatex is used
+         (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+             (setq org-export-latex-default-packages-alist
+                   '(("" "fontspec" t)
+                     ("" "xunicode" t)
+                     ("" "url" t)
+                     ("" "rotating" t)
+                     ("american" "babel" t)
+                     ("babel" "csquotes" t)
+                     ("" "soul" t)
+                     ("xetex" "hyperref" nil)
+                     )))
 
-	     (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-		 (setq org-export-latex-classes
-		       (cons '("article"
-			       "\\documentclass[11pt,article,oneside]{memoir}"
-			       ("\\section{%s}" . "\\section*{%s}")
-			       ("\\subsection{%s}" . "\\subsection*{%s}")
-			       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-			       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-			       ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-			     org-export-latex-classes))))
+         (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+             (setq org-export-latex-classes
+                   (cons '("article"
+                           "\\documentclass[11pt,article,oneside]{memoir}"
+                           ("\\section{%s}" . "\\section*{%s}")
+                           ("\\subsection{%s}" . "\\subsection*{%s}")
+                           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                           ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                         org-export-latex-classes))))
        (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
      #+end_src
 
@@ -948,25 +949,25 @@
      source: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
      #+begin_src emacs-lisp
        (defun org-mode-reftex-setup ()
-	 (load-library "reftex")
-	 (and (buffer-file-name) (file-exists-p (buffer-file-name))
-	      (progn
-		;; enable auto-revert-mode to update reftex when bibtex file changes on disk
-		;; (global-auto-revert-mode t)
-		(setq TeX-master t)
-		;; (reftex-parse-all)
-		;; add a custom reftex cite format to insert links
-		(reftex-set-cite-format
-		 '((?b . "[[bib:%l][%l-bib]]")
-		   (?n . "[[notes:%l][%l-notes]]")
-		   (?p . "[[papers:%l][%l-paper]]")
-		   (?t . "%t")
-		   (?c . "\\cite{%l}")
-		   (?h . "*** %2a %y %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
-	 (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
-	 (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
+         (load-library "reftex")
+         (and (buffer-file-name) (file-exists-p (buffer-file-name))
+              (progn
+                ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
+                ;; (global-auto-revert-mode t)
+                (setq TeX-master t)
+                ;; (reftex-parse-all)
+                ;; add a custom reftex cite format to insert links
+                (reftex-set-cite-format
+                 '((?b . "[[bib:%l][%l-bib]]")
+                   (?n . "[[notes:%l][%l-notes]]")
+                   (?p . "[[papers:%l][%l-paper]]")
+                   (?t . "%t")
+                   (?c . "\\cite{%l}")
+                   (?h . "*** %2a %y %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
+         (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
+         (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
 
-       (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+         (add-hook 'org-mode-hook 'org-mode-reftex-setup)
      #+end_src
 
      Jump to entry
@@ -980,9 +981,9 @@
      Paths to files
      #+begin_src emacs-lisp
        (setq org-link-abbrev-alist
-	     '(("bib" . "~/research/bibliography.bib::%s")
-	       ("notes" . "~/research/notes.txt::#%s")
-	       ("papers" . "~/research/papers/%s.pdf")))
+             '(("bib" . "~/research/bibliography.bib::%s")
+               ("notes" . "~/research/notes.txt::#%s")
+               ("papers" . "~/research/papers/%s.pdf")))
      #+end_src
 
 **** MobileOrg
@@ -996,15 +997,15 @@
 
      #+begin_src emacs-lisp
        (setq org-mobile-files '(
-				"~/notebook/notes.org"
-				"~/notebook/todo.org"))
+                                "~/notebook/notes.org"
+                                "~/notebook/todo.org"))
      #+end_src
 
      Pull at startup
      #+begin_src emacs-lisp :tangle no
        (add-hook 'after-init-hook 'org-mobile-pull)
      #+end_src
-     
+
      Push at exit
      #+begin_src emacs-lisp :tangle no
        (add-hook 'kill-emacs-hook 'org-mobile-push)
@@ -1027,7 +1028,7 @@
     :tangle:   yes
     :END:
     - [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs. It is
-     inspired by TextMate's templating syntax.
+      inspired by TextMate's templating syntax.
      - watch the [[http://www.youtube.com/watch?v=vOj7btx3ATg][video on YouTube]]
      - see the [[http://yasnippet.googlecode.com/svn/trunk/doc/index.html][intro and tutorial]]
 
@@ -1041,9 +1042,9 @@
     Add loadpath to yasnippet from el-get. Seems pointless
     #+begin_src emacs-lisp
       (add-to-list 'load-path
-		   (expand-file-name  "yasnippet"
-				      (expand-file-name "el-get"
-							emacs-init-dir)))
+                   (expand-file-name  "yasnippet"
+                                      (expand-file-name "el-get"
+                                                        emacs-init-dir)))
       (yas/initialize)
     #+end_src
 
@@ -1057,16 +1058,16 @@
     This [[http://stackoverflow.com/questions/9418148/conflicts-between-org-mode-and-yasnippet][stackoverflow post]] might be usefull as well.
     #+begin_src emacs-lisp
       (defun yas/org-very-safe-expand ()
-	(let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+        (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
       (defun yas/org-setup ()
-	;; yasnippet (using the new org-cycle hooks)
-	(make-variable-buffer-local 'yas/trigger-key)
-	(setq yas/trigger-key [tab])
-	(add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-	(define-key yas/keymap [tab] 'yas/next-field))
+        ;; yasnippet (using the new org-cycle hooks)
+        (make-variable-buffer-local 'yas/trigger-key)
+        (setq yas/trigger-key [tab])
+        (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+        (define-key yas/keymap [tab] 'yas/next-field))
 
-      (add-hook 'org-mode-hook #'yas/org-setup)
+        (add-hook 'org-mode-hook #'yas/org-setup)
     #+end_src
 
 * Load User/System Specific Files
@@ -1086,39 +1087,39 @@
   stuff.
   #+begin_src emacs-lisp
     (flet ((sk-load (base)
-	      (let* ((path          (expand-file-name base emacs-init-dir))
-		     (literate      (concat path ".org"))
-		     (encrypted-org (concat path ".org.gpg"))
-		     (plain         (concat path ".el"))
-		     (encrypted-el  (concat path ".el.gpg")))
-		(cond
-		 ((file-exists-p encrypted-org) (org-babel-load-file encrypted-org))
-		 ((file-exists-p encrypted-el)  (load encrypted-el))
-		 ((file-exists-p literate)      (org-babel-load-file literate))
-		 ((file-exists-p plain)         (load plain)))))
-	    (remove-extension (name)
-	      (string-match "\\(.*?\\)\.\\(org\\(\\.el\\)?\\|el\\)\\(\\.gpg\\)?$" name)
-	      (match-string 1 name)))
+                    (let* ((path          (expand-file-name base emacs-init-dir))
+                           (literate      (concat path ".org"))
+                           (encrypted-org (concat path ".org.gpg"))
+                           (plain         (concat path ".el"))
+                           (encrypted-el  (concat path ".el.gpg")))
+                      (cond
+                       ((file-exists-p encrypted-org) (org-babel-load-file encrypted-org))
+                       ((file-exists-p encrypted-el)  (load encrypted-el))
+                       ((file-exists-p literate)      (org-babel-load-file literate))
+                       ((file-exists-p plain)         (load plain)))))
+           (remove-extension (name)
+                             (string-match "\\(.*?\\)\.\\(org\\(\\.el\\)?\\|el\\)\\(\\.gpg\\)?$" name)
+                             (match-string 1 name)))
       (let ((elisp-dir (expand-file-name "src" emacs-init-dir))
-	     (user-dir (expand-file-name user-login-name emacs-init-dir)))
-	 ;; add the src directory to the load path
-	 (add-to-list 'load-path elisp-dir)
-	 ;; load specific files
-	 (when (file-exists-p elisp-dir)
-	   (let ((default-directory elisp-dir))
-	     (normal-top-level-add-subdirs-to-load-path)))
-	 ;; load system-specific config
-	 (sk-load system-name)
-	 ;; load user-specific config
-	 (sk-load user-login-name)
-	 ;; load any files in the user's directory
-	 (when (file-exists-p user-dir)
-	   (add-to-list 'load-path user-dir)
-	   (mapc #'sk-load
-		 (remove-duplicates
-		  (mapcar #'remove-extension
-			  (directory-files user-dir t ".*\.\\(org\\|el\\)\\(\\.gpg\\)?$"))
-		  :test #'string=)))))
+            (user-dir (expand-file-name user-login-name emacs-init-dir)))
+        ;; add the src directory to the load path
+        (add-to-list 'load-path elisp-dir)
+        ;; load specific files
+        (when (file-exists-p elisp-dir)
+          (let ((default-directory elisp-dir))
+            (normal-top-level-add-subdirs-to-load-path)))
+        ;; load system-specific config
+        (sk-load system-name)
+        ;; load user-specific config
+        (sk-load user-login-name)
+        ;; load any files in the user's directory
+        (when (file-exists-p user-dir)
+          (add-to-list 'load-path user-dir)
+          (mapc #'sk-load
+                (remove-duplicates
+                 (mapcar #'remove-extension
+                         (directory-files user-dir t ".*\.\\(org\\|el\\)\\(\\.gpg\\)?$"))
+          :test #'string=)))))
   #+end_src
 
 ** Settings from M-x customize
