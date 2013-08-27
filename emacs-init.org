@@ -548,8 +548,8 @@
      :PROPERTIES:
      :CUSTOM_ID: reftex
      :END:
-     Install and sync reftex repository with el-get...
-     #+begin_src emacs-lisp
+     Install and sync reftex repository with el-get manually.
+     #+begin_src emacs-lisp :tangle no
        (el-get 'sync '(reftex))
      #+end_src
 
