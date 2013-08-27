@@ -572,8 +572,8 @@
      :PROPERTIES:
      :CUSTOM_ID: python-mode
      :END:
-     Install and sync python-mode repository with el-get
-     #+begin_src emacs-lisp
+     Install and sync python-mode repository with el-get manually
+     #+begin_src emacs-lisp :tangle no
        (el-get 'sync '(python-mode))
      #+end_src
      Replace the Python mode that comes with Emacs by the Python mode
@@ -587,8 +587,8 @@
      :PROPERTIES:
      :CUSTOM_ID: ipython
      :END:
-     Install and sync ipython repository with el-get.
-     #+begin_src emacs-lisp
+     Install and sync ipython repository with el-get manually.
+     #+begin_src emacs-lisp :tangle no
        (el-get 'sync '(ipython))
      #+end_src
      If an =ipython= executable is on the path, then assume that
@@ -602,8 +602,8 @@
      :CUSTOM_ID: cython
      :tangle:   no
      :END:
-     Install and sync cython-mode repository with el-get
-     #+begin_src emacs-lisp
+     Install and sync cython-mode repository with el-get manually.
+     #+begin_src emacs-lisp :tangle no
        (el-get 'sync '(cython-mode))
      #+end_src
      Set cython-mode file associations
@@ -639,8 +639,8 @@
      :PROPERTIES:
      :CUSTOM_ID: gnuplot
      :END:
-     Install and sync gnuplot-mode repository with el-get
-     #+begin_src emacs-lisp
+     Install and sync gnuplot-mode repository with el-get manually.
+     #+begin_src emacs-lisp :tangle no
        (el-get 'sync '(gnuplot-mode))
      #+end_src
      Associate .gp files with gnuplot.
@@ -653,11 +653,11 @@
      :PROPERTIES:
      :CUSTOM_ID: matlab
      :END:
-     TODO: Matlab-mode fails to install because of cedet for some
+     DONE: Matlab-mode fails to install because of cedet for some
      reason. Need to modify el-get recipe.
 
-     Install and sync matlab-mode repository with el-get
-     #+begin_src emacs-lisp
+     Install and sync matlab-mode repository with el-get manually
+     #+begin_src emacs-lisp :tangle no
        (el-get 'sync '(matlab-mode))
      #+end_src
 
