@@ -301,6 +301,13 @@
    These sub-trees contain the remainder of the core of Emacs Init.  All of
    the code in this section should be loaded by emacs used on any
    machine and user.
+*** Personal information
+
+    #+begin_src emacs-lisp
+      (setq user-full-name "Andreas Tjärnberg"
+            user-mail-address "andreas.tjarnberg@fripost.org")
+    #+end_src
+
 *** Emacs bindings
     :PROPERTIES:
     :CUSTOM_ID: emacs-bindings
@@ -705,7 +712,7 @@
      when running =M-x org-version=. I don't know why but it is
      annoying. This forces me to run =M-x org-reload= to update org.
 
-     It turns out that the el-get recipe is to blame. Removeing the
+     It turns out that the el-get recipe is to blame. Removing the
      =:autoloads= and =:features= gets rid of the warning about
      =requare org-install= but the version problem is still there.
      This is remedied atleast in part by the =(org-reload)= statement.
