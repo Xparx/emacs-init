@@ -155,7 +155,8 @@
              '(("original"    . "http://tromey.com/elpa/")
                ("gnu"         . "http://elpa.gnu.org/packages/")
                ("org"         . "http://orgmode.org/elpa/")
-               ("marmalade"   . "http://marmalade-repo.org/packages/")))
+               ("marmalade"   . "http://marmalade-repo.org/packages/")
+               ("SC"   . "http://joseito.republika.pl/sunrise-commander/")))
        (package-initialize)
      #+end_src
      - Packages to be installed by default. Put more packages here if
@@ -251,47 +252,6 @@
                    body))))))))
              partial-file)
              file))))
-     #+end_src
-
-   - TODO: Only load code if package requirements are met. Does not work as expected right now. ::
-        src: [[http://permalink.gmane.org/gmane.emacs.orgmode/75676][here]] and [[https://github.com/fniessen/emacs-leuven/blob/master/emacs-leuven.el][here]],
-     #+name: emacs-init-require
-     #+begin_src emacs-lisp :tangle no
-       (defgroup my-emacs nil
-         "Emacs Leuven."
-         :group 'files
-         :group 'comm)
-
-       (defcustom my-load-verbose nil
-         "If non-nil, means show messages describing progress of loading Emacs Leuven."
-         :group 'my-emacs
-         :type 'integer)
-
-       (defvar my--missing-packages nil
-         "List of packages that `try-require' or `locate-library' can't find.")
-
-       (defun try-require (feature)
-         "Attempt to load a library or module. Return true if the
-              library given as argument is successfully loaded. If not, instead
-              of an error, just add the package to a list of missing packages."
-         (let (time-start)
-           (condition-case err
-               ;; protected form
-               (progn
-                 (when my-load-verbose
-                   (message "(info) Checking for `%s'..." feature))
-                 (if (stringp feature)
-                     (load-library feature)
-                   (setq time-start (float-time))
-                   (require feature))
-                 t)
-             ;; error handler
-             (file-error ;; condition
-              (progn
-                (when my-load-verbose
-                  (message "(info) Checking for `%s'... missing" feature))
-                (add-to-list 'my--missing-packages feature 'append))
-              nil))))
      #+end_src
 
 ** Emacs init core
@@ -539,16 +499,17 @@
      #+end_src
 
 **** Some auctex specific settings.
-     Install and sync auctex repository with el-get, do manually
+     Install and sync auctex repository with el-get manually.
      #+begin_src emacs-lisp :tangle no
        (el-get 'sync '(auctex))
      #+end_src
 
      Make emacs aware of auctex
      #+begin_src emacs-lisp
-       (setq TeX-auto-save t)
-       (setq TeX-parse-self t)
-       (setq-default TeX-master nil)
+       (if (el-get-package-exists-p "auctex")
+           (setq TeX-auto-save t)
+         (setq TeX-parse-self t)
+         (setq-default TeX-master nil))
      #+end_src
 
 **** RefTeX
@@ -562,12 +523,14 @@
 
      Set path to default bibfile.
      #+begin_src emacs-lisp
-       (setq reftex-default-bibliography '("./refs.bib" "~/research/bibliography.bib"))
+       (if (el-get-package-exists-p "reftex")
+       (setq reftex-default-bibliography '("./refs.bib" "~/research/bibliography.bib")))
      #+end_src
 
      Turn on reftex-mode in Auctex mode.
      #+begin_src emacs-lisp
-       (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+       (if (el-get-package-exists-p "reftex")
+           (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
      #+end_src
 
 *** Python
@@ -585,6 +548,7 @@
      #+end_src
      Replace the Python mode that comes with Emacs by the Python mode
      supplied by the Python distribution itself.
+
      #+begin_src emacs-lisp
        (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
        (add-to-list 'interpreter-mode-alist '("python" . python-mode))
@@ -615,16 +579,18 @@
      #+end_src
      Set cython-mode file associations
      #+begin_src emacs-lisp
-       (add-to-list 'auto-mode-alist '("\\.pyx\\'" . cython-mode))
-       (add-to-list 'auto-mode-alist '("\\.pxd\\'" . cython-mode))
-       (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode))
+       (if (el-get-package-exists-p "cython-mode")
+           (add-to-list 'auto-mode-alist '("\\.pyx\\'" . cython-mode))
+         (add-to-list 'auto-mode-alist '("\\.pxd\\'" . cython-mode))
+         (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode)))
      #+end_src
 **** Emacs ipython notebook
      Enables completion in ein buffer. This gives a bit of unexpected
      behaviour. No popup occure even though latest popup.el is
      installed.
      #+begin_src emacs-lisp
-       (setq ein:use-auto-complete t)
+       (if (el-get-package-exists-p "ein")
+           (setq ein:use-auto-complete t))
      #+end_src
 
 *** Code-modes
@@ -670,15 +636,17 @@
 
      The indent function -1 or nil will couse functions to not indent
      #+begin_src emacs-lisp
-       (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
-       (setq matlab-indent-function nil)
-       (setq matlab-shell-command "matlab")
+       (if (el-get-package-exists-p "matlab-mode")
+           (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
+         (setq matlab-indent-function nil)
+         (setq matlab-shell-command "matlab"))
      #+end_src
 
      Make sure matlab does not auto wrap lines. It's really enoying and
      it does not work! Do manually with 'M-q'
      #+begin_src emacs-lisp
-       (add-hook 'matlab-mode-hook '(lambda () (auto-fill-mode -1)))
+       (if (el-get-package-exists-p "matlab-mode")
+       (add-hook 'matlab-mode-hook '(lambda () (auto-fill-mode -1))))
      #+end_src
 
 **** Maxima-mode
@@ -686,17 +654,18 @@
      :tangle:   no
      :CUSTOM_ID: maxima
      :END:
-     Install and sync maxima-mode repository with el-get
-     #+begin_src emacs-lisp
+     Install and sync maxima-mode repository with el-get manually
+     #+begin_src emacs-lisp :tangle no
        (el-get 'sync '(maxima-mode))
      #+end_src
 
      Why is the load-path here so specific
      #+begin_src emacs-lisp
-       (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
-       (setq load-path (cons  "/usr/share/maxima/5.9.2/emacs" load-path))
-       (autoload 'maxima "maxima" "Running Maxima interactively" t)
-       (autoload 'maxima-mode "maxima" "Maxima editing mode" t)
+       (if (el-get-package-exists-p "maxima-mode")
+           (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
+         (setq load-path (cons  "/usr/share/maxima/5.9.2/emacs" load-path))
+         (autoload 'maxima "maxima" "Running Maxima interactively" t)
+         (autoload 'maxima-mode "maxima" "Maxima editing mode" t))
      #+end_src
 
 *** Org Mode <3
@@ -717,6 +686,7 @@
      =requare org-install= but the version problem is still there.
      This is remedied atleast in part by the =(org-reload)= statement.
 
+     TODO: Fix error when org-reload is not precent
      #+begin_src emacs-lisp
        (el-get 'sync '(org-mode))
        (org-reload)
@@ -997,37 +967,39 @@
      :END:
      source: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
      #+begin_src emacs-lisp
-       (defun org-mode-reftex-setup ()
-         (load-library "reftex")
-         (and (buffer-file-name) (file-exists-p (buffer-file-name))
-              (progn
-                ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
-                ;; (global-auto-revert-mode t)
-                (setq TeX-master t)
-                ;; (reftex-parse-all)
-                ;; add a custom reftex cite format to insert links
-                (reftex-set-cite-format
-                 '((?b . "[[bib:%l][%l-bib]]")
-                   (?n . "[[notes:%l][%l-notes]]")
-                   (?p . "[[papers:%l][%l-paper]]")
-                   (?t . "%t")
-                   (?c . "\\cite{%l}")
-                   (?h . "*** %2a %y %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
-         (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
-         (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
+       (if (el-get-package-exists-p "reftex")
+           (defun org-mode-reftex-setup ()
+             (load-library "reftex")
+             (and (buffer-file-name) (file-exists-p (buffer-file-name))
+                  (progn
+                    ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
+                    ;; (global-auto-revert-mode t)
+                    (setq TeX-master t)
+                    ;; (reftex-parse-all)
+                    ;; add a custom reftex cite format to insert links
+                    (reftex-set-cite-format
+                     '((?b . "[[bib:%l][%l-bib]]")
+                       (?n . "[[notes:%l][%l-notes]]")
+                       (?p . "[[papers:%l][%l-paper]]")
+                       (?t . "%t")
+                       (?c . "\\cite{%l}")
+                       (?h . "*** %2a %y %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
+             (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
+             (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
 
-         (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+         (add-hook 'org-mode-hook 'org-mode-reftex-setup))
      #+end_src
 
      Jump to entry
      #+begin_src emacs-lisp
-       (defun org-mode-reftex-search ()
-         ;;jump to the notes for the paper pointed to at from reftex search
-         (interactive)
-         (org-open-link-from-string (format "[[notes:%s]]" (substring (format "%s" (reftex-citation t)) 1 -1))))
+       (if (el-get-package-exists-p "reftex")
+           (defun org-mode-reftex-search ()
+             ;;jump to the notes for the paper pointed to at from reftex search
+             (interactive)
+             (org-open-link-from-string (format "[[notes:%s]]" (substring (format "%s" (reftex-citation t)) 1 -1)))))
      #+end_src
 
-     Paths to files
+     Paths to files. This might be more general than reftex.
      #+begin_src emacs-lisp
        (setq org-link-abbrev-alist
              '(("bib" . "~/research/bibliography.bib::%s")
@@ -1063,7 +1035,7 @@
 *** Publish emacs init
     Publishing require the htmlize package. Can be found in
     emacs-goodies or as a standalone elisp file. I use el-get in
-    emacs-init-publish to make sure hymlize is installed and
+    emacs-init-publish to make sure htmlize is installed and
     initialized.
 
     Evaluate this to publish this file to ./doc
@@ -1081,8 +1053,8 @@
      - watch the [[http://www.youtube.com/watch?v=vOj7btx3ATg][video on YouTube]]
      - see the [[http://yasnippet.googlecode.com/svn/trunk/doc/index.html][intro and tutorial]]
 
-    Install yasnippet with el-get
-    #+begin_src emacs-lisp
+    Install yasnippet with el-get manually
+    #+begin_src emacs-lisp :tangle no
       (el-get 'sync '(yasnippet))
     #+end_src
 
@@ -1090,33 +1062,36 @@
 
     Add loadpath to yasnippet from el-get. Seems pointless
     #+begin_src emacs-lisp
+      (if (el-get-package-exists-p "yasnippet")
       (add-to-list 'load-path
                    (expand-file-name  "yasnippet"
                                       (expand-file-name "el-get"
                                                         emacs-init-dir)))
-      (yas/initialize)
+      (yas/initialize))
     #+end_src
 
     Load the snippets defined in the =./snippets/= directory
     #+begin_src emacs-lisp
-      (yas/load-directory (expand-file-name "snippets" emacs-init-dir))
+      (if (el-get-package-exists-p "yasnippet")
+      (yas/load-directory (expand-file-name "snippets" emacs-init-dir)))
     #+end_src
 
     The latest version of yasnippets doesn't play well with Org-Mode, the
     following function allows these two to play nicely together.
     This [[http://stackoverflow.com/questions/9418148/conflicts-between-org-mode-and-yasnippet][stackoverflow post]] might be usefull as well.
     #+begin_src emacs-lisp
-      (defun yas/org-very-safe-expand ()
-        (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+      (if (el-get-package-exists-p "yasnippet")
+          (defun yas/org-very-safe-expand ()
+            (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
-      (defun yas/org-setup ()
-        ;; yasnippet (using the new org-cycle hooks)
-        (make-variable-buffer-local 'yas/trigger-key)
-        (setq yas/trigger-key [tab])
-        (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-        (define-key yas/keymap [tab] 'yas/next-field))
+        (defun yas/org-setup ()
+          ;; yasnippet (using the new org-cycle hooks)
+          (make-variable-buffer-local 'yas/trigger-key)
+          (setq yas/trigger-key [tab])
+          (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+          (define-key yas/keymap [tab] 'yas/next-field))
 
-        (add-hook 'org-mode-hook #'yas/org-setup)
+        (add-hook 'org-mode-hook #'yas/org-setup))
     #+end_src
 
 * Load User/System Specific Files
