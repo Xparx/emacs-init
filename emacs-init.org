@@ -18,7 +18,7 @@
        from emacs24-starter-kit. The latest version can be found at
        http://github.com/eschulte/emacs24-starter-kit/
     #+begin_src sh
-      git clone https://github.com/eschulte/emacs24-starter-kit.git
+      git clone https://github.com/eschulte/emacs24-starter-kit.git ~/src/emacs24-starter-kit
     #+end_src
 
        If you want to keep your regular =~/.emacs.d= in place and just launch
