@@ -1007,6 +1007,19 @@
                ("papers" . "~/research/papers/%s.pdf")))
      #+end_src
 
+**** Org reveal
+     [[https://github.com/hakimel/reveal.js][reveal.js]] is a presentation creation package that creates HTML5
+     presentations. It can be integrated in org-mode export with [[https://github.com/yjwen/org-reveal][org-reveal]].
+
+     To setup and create presentations with org-mode see instructions [[http://blog.jr0cket.co.uk/2013/09/create-html5-presentations-emacs-revealjs.html][here]].
+
+     Set org-reveal-root path.
+     #+begin_src emacs-lisp
+       (if (el-get-package-exists-p "org-reveal")
+           (setq org-reveal-root
+                 (concat "file://" (expand-file-name "~/apps/reveal.js"))))
+     #+end_src
+
 **** MobileOrg
      :PROPERTIES:
      :END:
