@@ -40,13 +40,11 @@
 (add-to-list 'el-get-recipe-path (concat emacs-init-dir "recipes"))
 (el-get 'sync)
 
-;; Inititate org-mode here becouse it's special.
-(el-get 'sync '(org-mode))
-
 ;; load up emacs init
 (message "Loading emacs-init")
 
-(org-babel-load-file (expand-file-name "emacs-init.org" emacs-init-dir))
+(if (el-get-package-exists-p "org-mode")
+    (org-babel-load-file (expand-file-name "emacs-init.org" emacs-init-dir)))
 
 (message "init.el has loaded")
 
