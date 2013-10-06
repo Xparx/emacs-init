@@ -1057,8 +1057,6 @@
                    (expand-file-name  "yasnippet"
                                       (expand-file-name "el-get"
                                                         emacs-init-dir))))
-      (if (el-get-package-exists-p "yasnippet")
-          (yas/initialize))
     #+end_src
 
     Load the snippets defined in the =./snippets/= directory
