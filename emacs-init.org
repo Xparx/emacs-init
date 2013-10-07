@@ -14,26 +14,36 @@
   :PROPERTIES:
   :CUSTOM_ID: introduction
   :END:
-  - emacs24-starter-kit :: This file is inspired by and in part copied
-       from emacs24-starter-kit. The latest version can be found at
-       http://github.com/eschulte/emacs24-starter-kit/
-    #+begin_src sh
-      git clone https://github.com/eschulte/emacs24-starter-kit.git ~/src/emacs24-starter-kit
-    #+end_src
+** My custom emacs-init
+   This is a personalized emacs initialisation file.
+   To get it you can git it.
 
-       If you want to keep your regular =~/.emacs.d= in place and just launch
-       a single instance, using the starter kit, try the following invocation:
-    #+begin_src sh
-      emacs -q -l ~/src/emacs24-starter-kit/init.el
-    #+end_src
+   #+begin_src sh
+     git clone https://github.com/xparx/emacs-init.git ~/src/emacs-init
+   #+end_src
 
-** Why modify the emacs24-starter-kit?
-   The reasons are simple. I want a "me" centered emacs initialization
-   rather then a starter-kit centered one. This means that I should be
-   able to use it the way i feel works for me. Another reason is that
-   introducing alot of new "features" which I haven't tested makes
-   emacs work very far from factory settings without me knowing what
-   is what or where it originated from.
+   To try it out use
+   #+begin_src sh
+     emacs -q -l ~/src/emacs-init/init.el
+   #+end_src
+
+   It should be self contained, meaning that all files it fetches,
+   creates and needs should be in this directory.
+
+** emacs24-starter-kit?
+   This file is inspired by and in part copied
+   from emacs24-starter-kit. The latest version can be found at
+   http://github.com/eschulte/emacs24-starter-kit/
+   #+begin_src sh
+     git clone https://github.com/eschulte/emacs24-starter-kit.git ~/src/emacs24-starter-kit
+   #+end_src
+
+   If you want to keep your regular =~/.emacs.d= in place and just launch
+   a single instance, using the starter kit, try the following invocation:
+   #+begin_src sh
+     emacs -q -l ~/src/emacs24-starter-kit/init.el
+   #+end_src
+
 ** Structure
    :PROPERTIES:
    :CUSTOM_ID: structure
@@ -49,19 +59,14 @@
    :PROPERTIES:
    :CUSTOM_ID: customization
    :END:
-   The defaults built into the emacs init are only the beginning of
-   most users customization of Emacs to suite their needs.  This file
-   provides a number of places for additional user and system
-   specific customization.
-
    - User specific config :: Your personal configuration information can
         be stored in a user-specific-config file.  This is the file named
         after your user with the extensions =.el= or =.org= [2].  If
         you're unsure of your user name evaluate the following code block
         to find out.
-     #+begin_src sh
-       echo $USER
-     #+end_src
+        #+begin_src sh
+          echo $USER
+        #+end_src
         If your configuration starts to feel cramped in a single file
         (although with the nested headlines of an Org-mode file, that
         could take a while) and you want to stretch your config's legs,
@@ -76,28 +81,62 @@
         or =.org= which will allow host-specific configuration. If
         you're unsure of your hostname the following can be executed to
         find out.
-     #+begin_src sh
-       hostname
-     #+end_src
+        #+begin_src sh
+          hostname
+        #+end_src
 
    - Installing more elisp libraries :: The easiest way to install new
-        libraries is through the
-     - Emacs Lisp Package Archive :: (see [[#emacs-lisp-package-archive][EmacsLisp Package Archive]]
+        libraries is through
+     - El-get :: (see [[#emacs-lisp-get][El-get]] below).
+     - Emacs Lisp Package Archive :: (see [[#emacs-lisp-package-archive][Emacs Lisp Package Archive]]
           below).  When a library is not available through ELPA you
           can grab it's source and place it directly in the =src=
           directory. Any packages found there will automatically be
           added to your load-path when Emacs starts up. I also install
           packages through el-get.
-     - El-get :: (see [[#emacs-lisp-get][El-get]] below). The other easy way to install new
-                 packages is with the package manager el-get. El-get
-                 will automatically initiate the package to be used
-                 with .emacs
-   - Misc :: Some additional miscellaneous configuration and getting
-             started suggestions
-     - First see the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Customization.html#Customization][Customization]] node in the Emacs manual. Available
-       online or through the =info= command (run with =C-h i=).
-     - read the following [[http://www.gnu.org/software/emacs/elisp/html_node/Key-Binding-Conventions.html][Key-Binding-Conventions]] before defining too
-       many personal key bindings
+
+** El-get
+   :PROPERTIES:
+   :CUSTOM_ID: el-get-package-manager
+   :END:
+   El-get is a /(foxy el-mexicano, Arriba! Arriba!:)/ package manager using
+   custome recipes for installing and initializing emacs packages from
+   a wide range of different repositories. The source can be fetched
+   [[https://github.com/dimitri/el-get][here]], by doing:
+   #+begin_src sh
+     git clone https://github.com/dimitri/el-get.git
+   #+end_src
+   This can be automated with a [[Lazy%20install][Lazy install]] or regular [[Regular%20Install][Regular Install]], which
+   is the default in this emacs-init. This is done in init.el for conveniance
+*** El-get initialization
+**** Lazy Install
+     To setup el-get the simple way one needs only
+     to evaluate the following emacs lisp block
+     #+begin_src emacs-lisp :tangle no
+       ;; So the idea is that you copy/paste this code into your *scratch* buffer,
+       ;; hit C-j, and you have a working el-get.
+       (url-retrieve
+        "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
+        (lambda (s)
+          (goto-char (point-max))
+          (eval-print-last-sexp)))
+     #+end_src
+**** Regular Install master branch
+     #+begin_src emacs-lisp :tangle no
+       (setq el-get-dir (expand-file-name "el-get" emacs-init-dir))
+       (add-to-list 'load-path (concat emacs-init-dir "el-get/el-get"))
+
+       (unless (require 'el-get nil 'noerror)
+         (with-current-buffer
+             (url-retrieve-synchronously
+              "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+           (let (el-get-master-branch)
+             (goto-char (point-max))
+             (eval-print-last-sexp))))
+
+       (add-to-list 'el-get-recipe-path (concat emacs-init-dir "recipes"))
+       (el-get 'sync)
+      #+end_src
 
 ** Emacs Lisp Package Archive
    :PROPERTIES:
@@ -111,148 +150,86 @@
    installed through ELPA will be stored in the =elpa/= sub-directory of
    this directory.
 
-** El-get
-   :PROPERTIES:
-   :CUSTOM_ID: el-get-package-manager
-   :END:
-   El-get is a /(foxy el-mexicano, Arriba! Arriba!:)/ package manager using
-   custome recipes for installing and initializing emacs packages from
-   a wide range of different repositories. The source can be fetched
-   [[https://github.com/dimitri/el-get][here]], by doing:
-   #+begin_src sh
-     git clone https://github.com/dimitri/el-get.git
-   #+end_src
-   This can be automated with a [[Lazy%20install][Lazy install]] or regular [[Install]], which
-   is the default in this emacs-init.
-
 * Implementation
   :PROPERTIES:
   :CUSTOM_ID: implementation
   :END:
 ** Emacs init basics
-   - Load path etc ::
-     #+name: emacs-init-load-paths
-     #+begin_src emacs-lisp
-       (add-to-list 'load-path emacs-init-dir)
-       (setq autoload-file (concat emacs-init-dir "loaddefs.el"))
-       (setq package-user-dir (concat emacs-init-dir "elpa"))
-       (setq custom-file (concat emacs-init-dir "custom.el"))
-     #+end_src
-   - Ubiquitous Packages ::  which should be loaded on startup rather than
-        autoloaded on demand since they are likely to be used in every
-        session.
-     #+name: emacs-init-load-on-startup
-     #+begin_src emacs-lisp
-       (require 'saveplace)
-       (require 'ffap)
-       (require 'uniquify)
-       (require 'ansi-color)
-       (require 'recentf)
-     #+end_src
-   - ELPA archive repositories ::
-     #+begin_src emacs-lisp
-       (setq package-archives
-             '(("original"    . "http://tromey.com/elpa/")
-               ("gnu"         . "http://elpa.gnu.org/packages/")
-               ("org"         . "http://orgmode.org/elpa/")
-               ("marmalade"   . "http://marmalade-repo.org/packages/")
-               ("SC"   . "http://joseito.republika.pl/sunrise-commander/")))
-       (package-initialize)
-     #+end_src
-     - Packages to be installed by default. Put more packages here if
-       more default should be installed with elpa.
-       #+begin_src emacs-lisp
-         (defvar emacs-init-packages
-           (list 'yasnippet-bundle)
-           "Libraries that should be installed by default.")
-         (unless package-archive-contents
-           (package-refresh-contents))
-         (dolist (package emacs-init-packages)
-           (unless (package-installed-p package)
-             (package-install package)))
-       #+end_src
-   - El-get initialization ::
-     - Lazy Install :: # <<Lazy Install>>
-                       To setup el-get the simple way one needs only
-                       to evaluate the following emacs lisp block
-       #+begin_src emacs-lisp :tangle no
-         ;; So the idea is that you copy/paste this code into your *scratch* buffer,
-         ;; hit C-j, and you have a working el-get.
-         (url-retrieve
-          "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
-          (lambda (s)
-            (goto-char (point-max))
-            (eval-print-last-sexp)))
-       #+end_src
-     - Install :: # <<Install>>
-      #+begin_src emacs-lisp
-        (setq el-get-dir (expand-file-name "el-get" emacs-init-dir))
-        (add-to-list 'load-path (concat emacs-init-dir "el-get/el-get"))
+*** Load path etc
+    #+name: emacs-init-load-paths
+    #+begin_src emacs-lisp
+      (add-to-list 'load-path emacs-init-dir)
+      (setq autoload-file (concat emacs-init-dir "loaddefs.el"))
+      (setq custom-file (concat emacs-init-dir "custom.el"))
+    #+end_src
+*** Ubiquitous Packages
+    which should be loaded on startup rather than
+    autoloaded on demand since they are likely to be used in every
+    session.
+    #+name: emacs-init-load-on-startup
+    #+begin_src emacs-lisp
+      (require 'saveplace)
+      (require 'ffap)
+      (require 'uniquify)
+      (require 'ansi-color)
+      (require 'recentf)
+    #+end_src
+*** ELPA archive repositories
+    #+begin_src emacs-lisp :tangle yes
+      (el-get 'sync '(package))
+    #+end_src
+*** Functions for loading other parts of the emacs init
+    #+name: emacs-init-load
+    #+begin_src emacs-lisp
+      (defun emacs-init-load (file &optional header-or-tag)
+        "Load configuration from other emacs-init-*.org files.
+         If the optional argument is the id of a subtree then only
+         configuration from within that subtree will be loaded.  If it is
+         not an id then it will be interpreted as a tag, and only subtrees
+         marked with the given tag will be loaded.
 
-        (unless (require 'el-get nil 'noerror)
-          (with-current-buffer
-              (url-retrieve-synchronously
-               "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-            (let (el-get-master-branch)
-              (goto-char (point-max))
-              (eval-print-last-sexp))))
-
-        (add-to-list 'el-get-recipe-path (concat emacs-init-dir "recipes"))
-        (el-get 'sync)
-       #+end_src
-
-   - Functions for loading other parts of the emacs init ::
-     #+name: emacs-init-load
-     #+begin_src emacs-lisp
-       (defun emacs-init-load (file &optional header-or-tag)
-         "Load configuration from other emacs-init-*.org files.
-          If the optional argument is the id of a subtree then only
-          configuration from within that subtree will be loaded.  If it is
-          not an id then it will be interpreted as a tag, and only subtrees
-          marked with the given tag will be loaded.
-
-          ! STARTER-KIT Configurations:
-          For example, to load all of emacs-init-lisp.org simply
-          add (emacs-init-load \"lisp\") to your configuration.
-          To load only the 'window-system' config from
-          emacs-init-misc-recommended.org add
-       (emacs-init-load \"misc-recommended\" \"window-system\")
-       to your configuration."
-        (let ((file (expand-file-name (if (string-match "emacs-init-.+\.org" file)
-                          file
-                        (format "emacs-init-%s.org" file))
-                          emacs-init-dir)))
-          (org-babel-load-file
-           (if header-or-tag
-           (let* ((base (file-name-nondirectory file))
-                  (dir  (file-name-directory file))
-                  (partial-file (expand-file-name
-                         (concat "." (file-name-sans-extension base)
-                             ".part." header-or-tag ".org")
-                         dir)))
-             (unless (file-exists-p partial-file)
-               (with-temp-file partial-file
-                 (insert
-                  (with-temp-buffer
-                (insert-file-contents file)
-                (save-excursion
-                  (condition-case nil ;; collect as a header
-                      (progn
-                    (org-link-search (concat"#"header-or-tag))
-                    (org-narrow-to-subtree)
-                    (buffer-string))
-                    (error ;; collect all entries with as tags
-                     (let (body)
-                   (org-map-entries
-                    (lambda ()
-                      (save-restriction
-                        (org-narrow-to-subtree)
-                        (setq body (concat body "\n" (buffer-string)))))
-                    header-or-tag)
-                   body))))))))
-             partial-file)
-             file))))
-     #+end_src
+         ! STARTER-KIT Configurations:
+         For example, to load all of emacs-init-lisp.org simply
+         add (emacs-init-load \"lisp\") to your configuration.
+         To load only the 'window-system' config from
+         emacs-init-misc-recommended.org add
+      (emacs-init-load \"misc-recommended\" \"window-system\")
+      to your configuration."
+       (let ((file (expand-file-name (if (string-match "emacs-init-.+\.org" file)
+                         file
+                       (format "emacs-init-%s.org" file))
+                         emacs-init-dir)))
+         (org-babel-load-file
+          (if header-or-tag
+          (let* ((base (file-name-nondirectory file))
+                 (dir  (file-name-directory file))
+                 (partial-file (expand-file-name
+                        (concat "." (file-name-sans-extension base)
+                            ".part." header-or-tag ".org")
+                        dir)))
+            (unless (file-exists-p partial-file)
+              (with-temp-file partial-file
+                (insert
+                 (with-temp-buffer
+               (insert-file-contents file)
+               (save-excursion
+                 (condition-case nil ;; collect as a header
+                     (progn
+                   (org-link-search (concat"#"header-or-tag))
+                   (org-narrow-to-subtree)
+                   (buffer-string))
+                   (error ;; collect all entries with as tags
+                    (let (body)
+                  (org-map-entries
+                   (lambda ()
+                     (save-restriction
+                       (org-narrow-to-subtree)
+                       (setq body (concat body "\n" (buffer-string)))))
+                   header-or-tag)
+                  body))))))))
+            partial-file)
+            file))))
+    #+end_src
 
 ** Emacs init core
    :PROPERTIES:
@@ -686,8 +663,8 @@
      =requare org-install= but the version problem is still there.
      This is remedied atleast in part by the =(org-reload)= statement.
 
-     TODO: Fix error when org-reload is not precent
-     #+begin_src emacs-lisp
+     TODO: Fix error when org-reload is not precent. Moved to init.el
+     #+begin_src emacs-lisp :tangle no
        (el-get 'sync '(org-mode))
        (org-reload)
      #+end_src
@@ -901,7 +878,7 @@
 **** Org LaTeX export with(out) default packages
      Resetting the org default exported latex packages list. It messes
      with my latex. Storing an extra list for insertion if needed.
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp :tangle no
        (setq org-export-latex-default-packages-bkup-alist
              org-export-latex-default-packages-alist)
        (setq org-export-latex-default-packages-alist ())
@@ -1007,6 +984,19 @@
                ("papers" . "~/research/papers/%s.pdf")))
      #+end_src
 
+**** Org reveal
+     [[https://github.com/hakimel/reveal.js][reveal.js]] is a presentation creation package that creates HTML5
+     presentations. It can be integrated in org-mode export with [[https://github.com/yjwen/org-reveal][org-reveal]].
+
+     To setup and create presentations with org-mode see instructions [[http://blog.jr0cket.co.uk/2013/09/create-html5-presentations-emacs-revealjs.html][here]].
+
+     Set org-reveal-root path.
+     #+begin_src emacs-lisp
+       (if (el-get-package-exists-p "org-reveal")
+           (setq org-reveal-root
+                 (concat "file://" (expand-file-name "~/apps/reveal.js"))))
+     #+end_src
+
 **** MobileOrg
      :PROPERTIES:
      :END:
@@ -1066,8 +1056,7 @@
       (add-to-list 'load-path
                    (expand-file-name  "yasnippet"
                                       (expand-file-name "el-get"
-                                                        emacs-init-dir)))
-      (yas/initialize))
+                                                        emacs-init-dir))))
     #+end_src
 
     Load the snippets defined in the =./snippets/= directory
