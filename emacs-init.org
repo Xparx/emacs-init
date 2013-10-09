@@ -654,21 +654,8 @@
      :PROPERTIES:
      :tangle:   yes
      :END:
-     Providing org-mode this way will not update the version in emacs
-     when running =M-x org-version=. I don't know why but it is
-     annoying. This forces me to run =M-x org-reload= to update org.
-
-     It turns out that the el-get recipe is to blame. Removing the
-     =:autoloads= and =:features= gets rid of the warning about
-     =requare org-install= but the version problem is still there.
-     This is remedied atleast in part by the =(org-reload)= statement.
-
-     TODO: Fix error when org-reload is not precent. Moved to init.el
-     #+begin_src emacs-lisp :tangle no
-       (el-get 'sync '(org-mode))
-       (org-reload)
-     #+end_src
-
+     Install manually.  This file will not load untill a el-get
+     org-mode package is installed.
 **** Org-Mode File association
      Both .org and .txt files should be associated with org-mode
      #+begin_src emacs-lisp
@@ -1071,15 +1058,17 @@
     #+begin_src emacs-lisp
       (if (el-get-package-exists-p "yasnippet")
           (defun yas/org-very-safe-expand ()
-            (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+            (let ((yas/fallback-behavior 'return-nil)) (yas/expand))))
 
+      (if (el-get-package-exists-p "yasnippet")
         (defun yas/org-setup ()
           ;; yasnippet (using the new org-cycle hooks)
           (make-variable-buffer-local 'yas/trigger-key)
           (setq yas/trigger-key [tab])
           (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-          (define-key yas/keymap [tab] 'yas/next-field))
+          (define-key yas/keymap [tab] 'yas/next-field)))
 
+      (if (el-get-package-exists-p "yasnippet")
         (add-hook 'org-mode-hook #'yas/org-setup))
     #+end_src
 
