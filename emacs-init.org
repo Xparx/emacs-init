@@ -796,7 +796,9 @@
           (gnuplot . t)
           (python . t)
           (dot . t)
-         (latex . t)))
+          (latex . t)
+          (js . t)
+         ))
      #+end_src
 
      Adding unsecure evaluation of code-blocks
@@ -865,10 +867,10 @@
 **** Org LaTeX export with(out) default packages
      Resetting the org default exported latex packages list. It messes
      with my latex. Storing an extra list for insertion if needed.
-     #+begin_src emacs-lisp :tangle no
-       (setq org-export-latex-default-packages-bkup-alist
-             org-export-latex-default-packages-alist)
-       (setq org-export-latex-default-packages-alist ())
+     #+begin_src emacs-lisp :tangle yes
+       (setq org-latex-default-packages-bkup-alist
+             org-latex-default-packages-alist)
+       (setq org-latex-default-packages-alist ())
      #+end_src
 
 **** Org LaTeX export with extra packages
