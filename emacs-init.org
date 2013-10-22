@@ -841,16 +841,19 @@
          (let ((texcmd)))
          ;; default command: oldstyle latex via dvi
          (setq texcmd "latexmk -pdfdvi -quiet %f")
-         ;; bibtex -> pdf
+         ;; bibtex -> dvi -> pdf
          (if (string-match "LATEX_CMD: texbibtex" (buffer-string))
              (setq texcmd "latexmk -pdfdvi -bibtex -quiet %f"))
-         ;; longway tex -> pdf
+         ;; bibtex -> pdf
+         (if (string-match "LATEX_CMD: pdfbibtex" (buffer-string))
+             (setq texcmd "latexmk -pdf -bibtex -quiet %f"))
+         ;; tex -> dvi -> pdf
          (if (string-match "LATEX_CMD: dvipdfps" (buffer-string))
-             (setq texcmd "latexmk -pdf -quiet %f"))
-         ;; pdflatex -> .pdf
+             (setq texcmd "latexmk -pdfdvi -quiet %f"))
+         ;; pdflatex -> pdf
          (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
              (setq texcmd "latexmk -pdf -quiet %f"))
-         ;; xelatex -> .pdf
+         ;; xelatex -> pdf
          (if (string-match "LATEX_CMD: xelatex" (buffer-string))
              (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
          ;; LaTeX compilation command
