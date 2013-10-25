@@ -316,11 +316,27 @@
      #+end_src
 
 **** Magit key-bindings
-
      It's handy to have a shortcut to magit
      #+begin_src emacs-lisp
        (global-set-key (kbd "C-c g") 'magit-status)
      #+end_src
+
+*** Git-gutter
+    Git-gutter-fringe gives git diff info in the fringes.
+    Turn on git-gutter for all relevant buffers
+    #+begin_src emacs-lisp
+      (if (el-get-package-exists-p "git-gutter-fringe")
+          (global-git-gutter-mode 1))
+    #+end_src
+
+    Other configurations
+    #+begin_src emacs-lisp
+      (if (el-get-package-exists-p "git-gutter-fringe")
+          (setq git-gutter-fr:side 'right-fringe))
+      (if (el-get-package-exists-p "git-gutter-fringe")
+          (setq git-gutter:hide-gutter t))
+    #+end_src
+
 *** Misc
     :PROPERTIES:
     :CUSTOM_ID: misc
