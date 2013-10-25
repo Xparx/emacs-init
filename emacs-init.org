@@ -256,6 +256,7 @@
      #+begin_src emacs-lisp
        (global-set-key (kbd "C-x \\") 'align-regexp)
      #+end_src
+
 **** Completion that uses many different methods to find options
      #+begin_src emacs-lisp
        (global-set-key (kbd "M-/") 'hippie-expand)
@@ -314,6 +315,12 @@
        (el-get 'sync '(magit))
      #+end_src
 
+**** Magit key-bindings
+
+     It's handy to have a shortcut to magit
+     #+begin_src emacs-lisp
+       (global-set-key (kbd "C-c g") 'magit-status)
+     #+end_src
 *** Misc
     :PROPERTIES:
     :CUSTOM_ID: misc
