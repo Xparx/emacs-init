@@ -318,23 +318,18 @@
 **** Magit key-bindings
      It's handy to have a shortcut to magit
      #+begin_src emacs-lisp
-       (global-set-key (kbd "C-c g") 'magit-status)
+       (when (el-get-package-exists-p "magit")
+         (global-set-key (kbd "C-c g") 'magit-status))
      #+end_src
 
 *** Git-gutter
     Git-gutter-fringe gives git diff info in the fringes.
     Turn on git-gutter for all relevant buffers
     #+begin_src emacs-lisp
-      (if (el-get-package-exists-p "git-gutter-fringe")
-          (global-git-gutter-mode 1))
-    #+end_src
-
-    Other configurations
-    #+begin_src emacs-lisp
-      (if (el-get-package-exists-p "git-gutter-fringe")
-          (setq git-gutter-fr:side 'right-fringe))
-      (if (el-get-package-exists-p "git-gutter-fringe")
-          (setq git-gutter:hide-gutter t))
+      (when (el-get-package-exists-p "git-gutter-fringe")
+        (global-git-gutter-mode 1)
+        (setq git-gutter-fr:side 'right-fringe)
+        (setq git-gutter:hide-gutter t))
     #+end_src
 
 *** Misc
@@ -506,8 +501,8 @@
 
      Make emacs aware of auctex
      #+begin_src emacs-lisp
-       (if (el-get-package-exists-p "auctex")
-           (setq TeX-auto-save t)
+       (when (el-get-package-exists-p "auctex")
+         (setq TeX-auto-save t)
          (setq TeX-parse-self t)
          (setq-default TeX-master nil))
      #+end_src
@@ -523,14 +518,14 @@
 
      Set path to default bibfile.
      #+begin_src emacs-lisp
-       (if (el-get-package-exists-p "reftex")
-       (setq reftex-default-bibliography '("./refs.bib" "~/research/bibliography.bib")))
+       (when (el-get-package-exists-p "reftex")
+         (setq reftex-default-bibliography '("./refs.bib" "~/research/bibliography.bib")))
      #+end_src
 
      Turn on reftex-mode in Auctex mode.
      #+begin_src emacs-lisp
-       (if (el-get-package-exists-p "reftex")
-           (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
+       (when (el-get-package-exists-p "reftex")
+         (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
      #+end_src
 
 *** Python
@@ -579,8 +574,8 @@
      #+end_src
      Set cython-mode file associations
      #+begin_src emacs-lisp
-       (if (el-get-package-exists-p "cython-mode")
-           (add-to-list 'auto-mode-alist '("\\.pyx\\'" . cython-mode))
+       (when (el-get-package-exists-p "cython-mode")
+         (add-to-list 'auto-mode-alist '("\\.pyx\\'" . cython-mode))
          (add-to-list 'auto-mode-alist '("\\.pxd\\'" . cython-mode))
          (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode)))
      #+end_src
@@ -589,8 +584,8 @@
      behaviour. No popup occure even though latest popup.el is
      installed.
      #+begin_src emacs-lisp
-       (if (el-get-package-exists-p "ein")
-           (setq ein:use-auto-complete t))
+       (when (el-get-package-exists-p "ein")
+         (setq ein:use-auto-complete t))
      #+end_src
 
 *** Code-modes
@@ -636,8 +631,8 @@
 
      The indent function -1 or nil will couse functions to not indent
      #+begin_src emacs-lisp
-       (if (el-get-package-exists-p "matlab-mode")
-           (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
+       (when (el-get-package-exists-p "matlab-mode")
+         (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
          (setq matlab-indent-function nil)
          (setq matlab-shell-command "matlab"))
      #+end_src
@@ -645,8 +640,8 @@
      Make sure matlab does not auto wrap lines. It's really enoying and
      it does not work! Do manually with 'M-q'
      #+begin_src emacs-lisp
-       (if (el-get-package-exists-p "matlab-mode")
-       (add-hook 'matlab-mode-hook '(lambda () (auto-fill-mode -1))))
+       (when (el-get-package-exists-p "matlab-mode")
+         (add-hook 'matlab-mode-hook '(lambda () (auto-fill-mode -1))))
      #+end_src
 
 **** Maxima-mode
@@ -661,8 +656,8 @@
 
      Why is the load-path here so specific
      #+begin_src emacs-lisp
-       (if (el-get-package-exists-p "maxima-mode")
-           (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
+       (when (el-get-package-exists-p "maxima-mode")
+         (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
          (setq load-path (cons  "/usr/share/maxima/5.9.2/emacs" load-path))
          (autoload 'maxima "maxima" "Running Maxima interactively" t)
          (autoload 'maxima-mode "maxima" "Maxima editing mode" t))
@@ -959,36 +954,36 @@
      :END:
      source: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
      #+begin_src emacs-lisp
-       (if (el-get-package-exists-p "reftex")
-           (defun org-mode-reftex-setup ()
-             (load-library "reftex")
-             (and (buffer-file-name) (file-exists-p (buffer-file-name))
-                  (progn
-                    ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
-                    ;; (global-auto-revert-mode t)
-                    (setq TeX-master t)
-                    ;; (reftex-parse-all)
-                    ;; add a custom reftex cite format to insert links
-                    (reftex-set-cite-format
-                     '((?b . "[[bib:%l][%l-bib]]")
-                       (?n . "[[notes:%l][%l-notes]]")
-                       (?p . "[[papers:%l][%l-paper]]")
-                       (?t . "%t")
-                       (?c . "\\cite{%l}")
-                       (?h . "*** %2a %y %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
-             (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
-             (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search)))
+       (when (el-get-package-exists-p "reftex")
+         (defun org-mode-reftex-setup ()
+           (load-library "reftex")
+           (and (buffer-file-name) (file-exists-p (buffer-file-name))
+                (progn
+                  ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
+                  ;; (global-auto-revert-mode t)
+                  (setq TeX-master t)
+                  ;; (reftex-parse-all)
+                  ;; add a custom reftex cite format to insert links
+                  (reftex-set-cite-format
+                   '((?b . "[[bib:%l][%l-bib]]")
+                     (?n . "[[notes:%l][%l-notes]]")
+                     (?p . "[[papers:%l][%l-paper]]")
+                     (?t . "%t")
+                     (?c . "\\cite{%l}")
+                     (?h . "*** %2a %y %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
+           (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
+           (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
 
-       (if (el-get-package-exists-p "reftex") (add-hook 'org-mode-hook 'org-mode-reftex-setup))
+         (el-get-package-exists-p "reftex") (add-hook 'org-mode-hook 'org-mode-reftex-setup))
      #+end_src
 
      Jump to entry
      #+begin_src emacs-lisp
-       (if (el-get-package-exists-p "reftex")
-           (defun org-mode-reftex-search ()
-             ;;jump to the notes for the paper pointed to at from reftex search
-             (interactive)
-             (org-open-link-from-string (format "[[notes:%s]]" (substring (format "%s" (reftex-citation t)) 1 -1)))))
+       (when (el-get-package-exists-p "reftex")
+         (defun org-mode-reftex-search ()
+           ;;jump to the notes for the paper pointed to at from reftex search
+           (interactive)
+           (org-open-link-from-string (format "[[notes:%s]]" (substring (format "%s" (reftex-citation t)) 1 -1)))))
      #+end_src
 
      Paths to files. This might be more general than reftex.
@@ -1007,9 +1002,9 @@
 
      Set org-reveal-root path.
      #+begin_src emacs-lisp
-       (if (el-get-package-exists-p "org-reveal")
-           (setq org-reveal-root
-                 (concat "file://" (expand-file-name "~/apps/reveal.js"))))
+       (when (el-get-package-exists-p "org-reveal")
+         (setq org-reveal-root
+               (concat "file://" (expand-file-name "~/apps/reveal.js"))))
      #+end_src
 
 **** MobileOrg
@@ -1067,36 +1062,34 @@
 
     Add loadpath to yasnippet from el-get. Seems pointless
     #+begin_src emacs-lisp
-      (if (el-get-package-exists-p "yasnippet")
-      (add-to-list 'load-path
-                   (expand-file-name  "yasnippet"
-                                      (expand-file-name "el-get"
-                                                        emacs-init-dir))))
+      (when (el-get-package-exists-p "yasnippet")
+        (add-to-list 'load-path
+                     (expand-file-name  "yasnippet"
+                                        (expand-file-name "el-get"
+                                                          emacs-init-dir))))
     #+end_src
 
     Load the snippets defined in the =./snippets/= directory
     #+begin_src emacs-lisp
-      (if (el-get-package-exists-p "yasnippet")
-      (yas/load-directory (expand-file-name "snippets" emacs-init-dir)))
+      (when (el-get-package-exists-p "yasnippet")
+        (yas/load-directory (expand-file-name "snippets" emacs-init-dir)))
     #+end_src
 
     The latest version of yasnippets doesn't play well with Org-Mode, the
     following function allows these two to play nicely together.
     This [[http://stackoverflow.com/questions/9418148/conflicts-between-org-mode-and-yasnippet][stackoverflow post]] might be usefull as well.
     #+begin_src emacs-lisp
-      (if (el-get-package-exists-p "yasnippet")
-          (defun yas/org-very-safe-expand ()
-            (let ((yas/fallback-behavior 'return-nil)) (yas/expand))))
+      (when (el-get-package-exists-p "yasnippet")
+        (defun yas/org-very-safe-expand ()
+          (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
-      (if (el-get-package-exists-p "yasnippet")
         (defun yas/org-setup ()
           ;; yasnippet (using the new org-cycle hooks)
           (make-variable-buffer-local 'yas/trigger-key)
           (setq yas/trigger-key [tab])
           (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-          (define-key yas/keymap [tab] 'yas/next-field)))
+          (define-key yas/keymap [tab] 'yas/next-field))
 
-      (if (el-get-package-exists-p "yasnippet")
         (add-hook 'org-mode-hook #'yas/org-setup))
     #+end_src
 
