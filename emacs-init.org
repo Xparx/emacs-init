@@ -319,7 +319,7 @@
      It's handy to have a shortcut to magit
      #+begin_src emacs-lisp
        (when (el-get-package-exists-p "magit")
-         (global-set-key (kbd "C-c g") 'magit-status))
+         (global-set-key (kbd "C-c m") 'magit-status))
      #+end_src
 
 *** Git-gutter
