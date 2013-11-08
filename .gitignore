@@ -26,3 +26,4 @@ tramp
 .org-id-locations
 ac-comphist.dat
 session.*
+/gnus
