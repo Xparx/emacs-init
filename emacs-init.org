@@ -1032,6 +1032,15 @@
        (add-hook 'kill-emacs-hook 'org-mobile-push)
      #+end_src
 
+*** Edit with emacs Chrome(ium)
+    "Edit with emacs" in any text area in the browser. Requires
+    edit-server.el. Just needs to start emacs first
+    with edit-server installed.
+    #+begin_src emacs-lisp
+      (when (el-get-package-exists-p "edit-server")
+        (edit-sever-start))
+    #+end_src
+
 *** Publish emacs init
     Publishing require the htmlize package. Can be found in
     emacs-goodies or as a standalone elisp file. I use el-get in
