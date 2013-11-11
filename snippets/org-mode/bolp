@@ -1,0 +1,5 @@
+#name : BasicOrgLatexPackages
+#contributor : Andreas <andreas.tjarnberg@fripost.org>
+# --
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: \usepackage[colorlinks=true]{hyperref}
