@@ -481,6 +481,11 @@
        (add-hook 'LaTeX-mode-hook 'flyspell-mode)
      #+end_src
 
+     Make sure spelling is handled nicely in latex mode.
+     #+begin_src emacs-lisp
+       (add-hook 'LaTeX-mode-hook (lambda () (setq ispell-parser 'tex)))
+     #+end_src
+
 **** Auto fill for latex mode, wrap lines automatically
      #+begin_src emacs-lisp
        (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
