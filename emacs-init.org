@@ -393,13 +393,6 @@
        (setq ispell-dictionary "en")
      #+end_src
 
-     Set ispell personal dictionary, this has some weird consequences
-     (what consequences!!)
-     #+begin_src emacs-lisp
-       (setq ispell-personal-dictionary
-             (concat emacs-init-dir "ispell-personal-dict"))
-     #+end_src
-
 **** Open my specific bashrc files in the right mode
      #+begin_src emacs-lisp
        (add-to-list 'auto-mode-alist '("bashrc\\'" . shell-script-mode))
@@ -1105,8 +1098,8 @@
 
     TODO: move elpa install of bundle here
 
-    Add loadpath to yasnippet from el-get. Seems pointless
-    #+begin_src emacs-lisp
+    Add loadpath to yasnippet from el-get. Seems pointless (it sure does. Should not be needed)
+    #+begin_src emacs-lisp :tangle no
       (when (el-get-package-exists-p "yasnippet")
         (add-to-list 'load-path
                      (expand-file-name  "yasnippet"
