@@ -175,10 +175,14 @@
       (require 'recentf)
     #+end_src
 *** ELPA archive repositories
+
+    This is an important package that should be imported and synced.
     #+begin_src emacs-lisp :tangle yes
       (el-get 'sync '(package))
     #+end_src
+
 *** Functions for loading other parts of the emacs init
+
     #+name: emacs-init-load
     #+begin_src emacs-lisp
       (defun emacs-init-load (file &optional header-or-tag)
