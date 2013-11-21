@@ -291,6 +291,41 @@
        (global-set-key (kbd "C-x C-b") 'ibuffer)
      #+end_src
 
+     Ibuffer settings, source [[http://www.emacswiki.org/emacs/IbufferMode][here]]. Lots of interesting stuff in there.
+     #+begin_src emacs-lisp
+       (setq ibuffer-saved-filter-groups
+             (quote (("default"
+                      ("org-mode" (mode . org-mode))
+                      ("MATLAB" (mode . matlab-mode))
+                      ("LaTeX" (or
+                                (mode . latex-mode)
+                                (mode . bibtex-mode)))
+                      ("planner" (or
+                                  (name . "^\\*Calendar\\*$")
+                                  (name . "^diary$")))
+                      ("emacs" (or
+                                (name . "^\\*scratch\\*$")
+                                (name . "^\\*Messages\\*$")))
+                      ("Magit" (name . "^\\*magit.*\\*$"))
+                      ("dired" (mode . dired-mode))
+                      ("gnus" (or
+                               (mode . message-mode)
+                               (mode . bbdb-mode)
+                               (mode . mail-mode)
+                               (mode . gnus-group-mode)
+                               (mode . gnus-summary-mode)
+                               (mode . gnus-article-mode)
+                               (name . "^\\.bbdb$")
+                               (name . "^\\.newsrc-dribble")))))))
+     #+end_src
+
+     Ibuffer mode hook
+     #+begin_src emacs-lisp
+       (add-hook 'ibuffer-mode-hook
+                     (lambda ()
+                       (ibuffer-switch-to-saved-filter-groups "default")))
+     #+end_src
+
 **** Buffer cycling.
      #+begin_src emacs-lisp
        (global-set-key (kbd "C-<prior>") 'previous-buffer) ; Ctrl+PageDown
