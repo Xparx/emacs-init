@@ -525,11 +525,6 @@
        (add-hook 'LaTeX-mode-hook (lambda () (setq ispell-parser 'tex)))
      #+end_src
 
-**** Auto fill for latex mode, wrap lines automatically
-     #+begin_src emacs-lisp
-       (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
-     #+end_src
-
 **** Some auctex specific settings.
      Install and sync auctex repository with el-get manually.
      #+begin_src emacs-lisp :tangle no
@@ -786,7 +781,7 @@
      different files automaticly with a simple key command.
      #+begin_src emacs-lisp
        (add-hook 'remember-mode-hook 'org-remember-apply-template)
-       (define-key global-map [(meta ?r)] 'remember)
+       (global-set-key (kbd "M-r") 'remember)
      #+end_src
 
      Display org todo list at startup.
