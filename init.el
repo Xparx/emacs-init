@@ -12,7 +12,7 @@
 (setq inhibit-startap-message t)
 (setq inhibit-startup-screen t)
 (blink-cursor-mode t)
-(setq-default fill-column 70)                 ;; Make newline insertion in the right place
+(setq-default fill-column 60)                 ;; Make newline insertion in the right place
 (column-number-mode 1)                        ;; Show column-number in the mode line
 (scroll-bar-mode -1)                          ;; Removes the scroll bar
 (tool-bar-mode -1)                            ;; Hide toolbar in graphics mode
