@@ -511,6 +511,13 @@
        (put 'dired-find-alternate-file 'disabled nil)
      #+end_src
 
+**** Enable the package window-margin
+     Window-margin sets a soft wrap on lines at the fill-column width
+     #+begin_src emacs-lisp
+       (when (el-get-package-exists-p "window-margin")
+         (global-set-key [f9] 'window-margin-mode))
+     #+end_src
+
 *** LaTeX mode
     :PROPERTIES:
     :CUSTOM_ID: latex
