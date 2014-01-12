@@ -1,0 +1,4 @@
+(:name hidepw
+       :description "an Emacs minor mode for hiding passwords"
+       :type github
+       :pkgname "jekor/hidepw")

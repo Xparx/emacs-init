@@ -512,10 +512,19 @@
      #+end_src
 
 **** Enable the package window-margin
-     Window-margin sets a soft wrap on lines at the fill-column width
+     Window-margin sets a soft wrap on lines at the
+     fill-column width. This breaks truncate long line
+     behaviour for some reason after it is used. Heads up!
      #+begin_src emacs-lisp
        (when (el-get-package-exists-p "window-margin")
          (global-set-key [f9] 'window-margin-mode))
+     #+end_src
+
+**** Hidepw-mode hides passwords between specified delimiters
+
+     #+begin_src emacs-lisp
+       (when (el-get-package-exists-p "hidepw")
+         (setq hidepw-pattern "§\\(.*\\)§"))
      #+end_src
 
 *** LaTeX mode
