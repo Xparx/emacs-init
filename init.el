@@ -45,6 +45,6 @@
 (if (el-get-package-exists-p "org-mode")
     (org-babel-load-file (expand-file-name "emacs-init.org" emacs-init-dir)))
 
-(message "init.el has loaded in %ds" (destructuring-bind (hi lo ms) (current-time) (- (+ hi lo) (+ (first *emacs-load-start*) (second *emacs-load-start*)))))
+; (message "init.el has loaded in %ds" (destructuring-bind (hi lo ms) (current-time) (- (+ hi lo) (+ (first *emacs-load-start*) (second *emacs-load-start*)))))
 
 ;;; init.el ends here
