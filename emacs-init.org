@@ -15,6 +15,9 @@
   :CUSTOM_ID: introduction
   :END:
 ** My custom emacs-init
+   :PROPERTIES:
+   :CUSTOM_ID: my-emacs-init
+   :END:
    This is a personalized emacs initialisation file.
    To get it you can git it.
 
@@ -28,9 +31,12 @@
    #+end_src
 
    It should be self contained, meaning that all files it fetches,
-   creates and needs should be in this directory.
+   creates and need should be in this directory.
 
 ** emacs24-starter-kit?
+   :PROPERTIES:
+   :CUSTOM_ID: emacs24-starter-kit
+   :END:
    This file is inspired by and in part copied
    from emacs24-starter-kit. The latest version can be found at
    http://github.com/eschulte/emacs24-starter-kit/
