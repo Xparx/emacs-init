@@ -1,0 +1,9 @@
+* Emacs init setup
+emacs-init is my highly personalized emacs setup repository inspired
+and in part *kopied* from emacs24-starter-kit which can be fetched here:
+
+http://github.com/eschulte/emacs24-starter-kit/
+
+emacs-init should be self contained as much as possible.
+
+To try it out check out instructions [[file:emacs-init.org::#my-emacs-init][here]].
