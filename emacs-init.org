@@ -361,6 +361,33 @@
          (global-set-key (kbd "C-c m") 'magit-status))
      #+end_src
 
+**** Redefine magit-status behaviour
+     Source: [[http://whattheemacsd.com/setup-magit.el-01.html][here]]
+
+     This makes a fullscreen magit status buffer and when
+     quitting resets to previous setup.
+
+     Could not get this to work at first. Had to wrap the
+     last key definition in an eval-after-load.
+
+     #+begin_src emacs-lisp
+       (when (el-get-package-exists-p "magit")
+
+         (defadvice magit-status (around magit-fullscreen activate)
+           (window-configuration-to-register :magit-fullscreen)
+           ad-do-it
+           (delete-other-windows))
+
+         (defun magit-quit-session ()
+           "Restores the previous window configuration and kills the magit buffer"
+           (interactive)
+           (kill-buffer)
+           (jump-to-register :magit-fullscreen))
+
+         (eval-after-load 'magit
+           '(define-key magit-status-mode-map (kbd "q") 'magit-quit-session)))
+     #+end_src
+
 *** Git-gutter
     Git-gutter-fringe gives git diff info in the fringes.
     Turn on git-gutter for all relevant buffers
