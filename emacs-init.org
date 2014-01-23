@@ -449,7 +449,7 @@
      #+end_src
 
      Load my prefered theme if availible
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp :tangle no
        (condition-case nil
            (load-theme 'my-z t)
          (error "no theme loaded"))
