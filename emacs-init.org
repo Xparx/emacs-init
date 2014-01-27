@@ -401,7 +401,8 @@
       (when (el-get-package-exists-p "git-gutter-fringe")
         (global-git-gutter-mode 1)
         (setq git-gutter-fr:side 'right-fringe)
-        (setq git-gutter:hide-gutter t))
+        (setq git-gutter:hide-gutter t)
+        (setq git-gutter:verbosity 2))
     #+end_src
 
 *** Misc
@@ -1158,17 +1159,6 @@
               starttls-use-gnutls t))
     #+end_src
 
-*** Publish emacs init
-    Publishing require the htmlize package. Can be found in
-    emacs-goodies or as a standalone elisp file. I use el-get in
-    emacs-init-publish to make sure htmlize is installed and
-    initialized.
-
-    Evaluate this to publish this file to ./doc
-    #+begin_src emacs-lisp :tangle no
-      (emacs-init-load "emacs-init-publish.org")
-    #+end_src
-
 *** Yasnippet
     :PROPERTIES:
     :CUSTOM_ID: yasnippet
@@ -1217,6 +1207,17 @@
           (define-key yas/keymap [tab] 'yas/next-field))
 
         (add-hook 'org-mode-hook #'yas/org-setup))
+    #+end_src
+
+*** Publish emacs init
+    Publishing require the htmlize package. Can be found in
+    emacs-goodies or as a standalone elisp file. I use el-get in
+    emacs-init-publish to make sure htmlize is installed and
+    initialized.
+
+    Evaluate this to publish this file to ./doc
+    #+begin_src emacs-lisp :tangle no
+      (emacs-init-load "emacs-init-publish.org")
     #+end_src
 
 * Load User/System Specific Files
