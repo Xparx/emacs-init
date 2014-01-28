@@ -188,6 +188,7 @@
     #+end_src
 
 *** Functions for loading other parts of the emacs init
+    This can be used to load other files with org code.
 
     #+name: emacs-init-load
     #+begin_src emacs-lisp
@@ -445,7 +446,8 @@
 
      Add list to load-theme path. use [[elisp:load-theme][load-theme]] RET "theme" to choose a theme.
      #+begin_src emacs-lisp
-       (add-to-list 'custom-theme-load-path (concat emacs-init-dir "themes"))
+       (add-to-list 'custom-theme-load-path
+                    (concat emacs-init-dir "themes"))
      #+end_src
 
      Load my prefered theme if availible
@@ -1130,14 +1132,14 @@
     To get gnus working the correct credentials needs to be put
     in =~/.authinfo=
 
-    #+begin_src emacs-lisp :tangle ./gnus
+    #+begin_src emacs-lisp :tangle (expand-file-name "gnus" emacs-init-dir)
       ;; gnus is edited from within ~/.emacs.d/emacs-init.org if you have
       ;; el-get gnus package installed. Who knows what will happen if you
       ;; change something here...
     #+end_src
 
     Reading mail with gnus
-    #+begin_src emacs-lisp :tangle ./gnus
+    #+begin_src emacs-lisp :tangle (expand-file-name "gnus" emacs-init-dir)
       (when (el-get-package-exists-p "gnus")
         (setq gnus-select-method
               '(nnimap "Mail"
@@ -1147,7 +1149,7 @@
     #+end_src
 
     Sending mail with gnus
-    #+begin_src emacs-lisp :tangle ./gnus
+    #+begin_src emacs-lisp :tangle (expand-file-name "gnus" emacs-init-dir)
       (when (el-get-package-exists-p "gnus")
         (setq message-send-mail-function 'smtpmail-send-it
               smtpmail-starttls-credentials '(("smtp.fripost.org" 587 nil nil))
@@ -1156,17 +1158,6 @@
               smtpmail-smtp-server "smtp.fripost.org"
               smtpmail-smtp-service 587
               starttls-use-gnutls t))
-    #+end_src
-
-*** Publish emacs init
-    Publishing require the htmlize package. Can be found in
-    emacs-goodies or as a standalone elisp file. I use el-get in
-    emacs-init-publish to make sure htmlize is installed and
-    initialized.
-
-    Evaluate this to publish this file to ./doc
-    #+begin_src emacs-lisp :tangle no
-      (emacs-init-load "emacs-init-publish.org")
     #+end_src
 
 *** Yasnippet
@@ -1235,7 +1226,7 @@
   After we've loaded all the Emacs Init defaults, lets load the User's
   stuff.
   #+begin_src emacs-lisp
-    (flet ((sk-load (base)
+    (cl-flet ((sk-load (base)
                     (let* ((path          (expand-file-name base emacs-init-dir))
                            (literate      (concat path ".org"))
                            (encrypted-org (concat path ".org.gpg"))
