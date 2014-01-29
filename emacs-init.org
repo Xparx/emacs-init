@@ -1270,7 +1270,7 @@
      #+end_src
 
      Get rid of the indicators in the fringe:
-     #+begin_src emacs-lisp :tangle yes
+     #+begin_src emacs-lisp :tangle no
        (mapcar (lambda(fb) (set-fringe-bitmap-face fb 'org-hide))
                fringe-bitmaps)
      #+end_src
