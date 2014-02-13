@@ -1091,6 +1091,16 @@
                (concat "file://" (expand-file-name "~/apps/reveal.js"))))
      #+end_src
 
+**** Org in startup scratch
+     Make inital scratch buffer an org-mode buffer
+     #+begin_src emacs-lisp
+       (setq initial-major-mode 'org-mode)
+     #+end_src
+
+     Give it a little bit of emacs-lisp
+     #+begin_src emacs-lisp
+       (setq initial-scratch-message "\n#+begin_src emacs-lisp\n\n#+end_src")
+     #+end_src
 **** MobileOrg
      :PROPERTIES:
      :END:
