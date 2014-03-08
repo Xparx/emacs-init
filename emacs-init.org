@@ -836,11 +836,6 @@
        (global-set-key (kbd "M-r") 'remember)
      #+end_src
 
-     Display org todo list at startup.
-     #+begin_src emacs-lisp :tangle no
-       (add-hook 'after-init-hook 'org-todo-list)
-     #+end_src
-
      Remember capture file and command. NOTE: Could probably use some cleanup
      #+begin_src emacs-lisp
        (custom-set-variables
