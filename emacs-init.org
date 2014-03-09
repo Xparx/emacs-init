@@ -835,7 +835,7 @@
         (setq org-agenda-skip-scheduled-if-done t)
         (setq org-agenda-start-on-weekday nil)
         (setq org-reverse-note-order t)
-        (setq org-fast-tag-selection-single-key (quote expert)))
+        (setq org-fast-tag-selection-single-key (quote expert))
      #+end_src
 
      Custom commands for the agenda mode
