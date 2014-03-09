@@ -31,7 +31,7 @@
    #+end_src
 
    It should be self contained, meaning that all files it fetches,
-   creates and need should be in this directory.
+   creates and need should be in this directory. No guaranties though.
 
 ** emacs24-starter-kit?
    :PROPERTIES:
@@ -867,8 +867,8 @@
        (setq org-capture-templates
              '(("t" "Todo" entry (file+headline "~/notebook/todo.org" "Tasks")
                 "* TODO %?\n  %i\n  %a")
-               ("n" "Journal" entry (file+headline "~/notebook/notes.org")
-                "* %?\nEntered on %U\n  %i\n  %a")))
+               ("n" "Journal" entry (file+headline "~/notebook/notes.org" "Notes")
+                "* %U %?\n %i\n %a")))
      #+end_src
 
 **** Activate babel languages
