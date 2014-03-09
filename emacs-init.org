@@ -800,7 +800,7 @@
        (setq org-directory "~/notebook")
      #+end_src
 
-**** Org-Mode ToDo
+**** Org-Mode TODO
      Org mode todo states and agenda mode navigation.
      #+begin_src emacs-lisp
        (eval-after-load "org"
@@ -813,8 +813,6 @@
               #'(lambda nil (interactive) (org-todo "DONE")))
             (define-key org-todo-state-map "f"
               #'(lambda nil (interactive) (org-todo "DEFERRED")))
-            (define-key org-todo-state-map "l"
-              #'(lambda nil (interactive) (org-todo "DELEGATED")))
             (define-key org-todo-state-map "s"
               #'(lambda nil (interactive) (org-todo "STARTED")))
             (define-key org-todo-state-map "w"
@@ -828,51 +826,52 @@
                   (define-key org-agenda-keymap "\C-p" 'previous-line)))))
      #+end_src
 
-**** Remember-Mode
-     Remember mode makes it possible to store notes and todos in
-     different files automaticly with a simple key command.
+     Org agenda layout
      #+begin_src emacs-lisp
-       (add-hook 'remember-mode-hook 'org-remember-apply-template)
-       (global-set-key (kbd "M-r") 'remember)
+        (setq org-agenda-files (quote ("~/notebook/todo.org")))
+        (setq org-agenda-ndays 7)
+        (setq org-agenda-show-all-dates t)
+        (setq org-agenda-skip-deadline-if-done t)
+        (setq org-agenda-skip-scheduled-if-done t)
+        (setq org-agenda-start-on-weekday nil)
+        (setq org-reverse-note-order t)
+        (setq org-fast-tag-selection-single-key (quote expert)))
      #+end_src
 
-     Remember capture file and command. NOTE: Could probably use some cleanup
+     Custom commands for the agenda mode
      #+begin_src emacs-lisp
-       (custom-set-variables
-        '(org-agenda-files (quote ("~/notebook/todo.org")))
-        '(org-default-notes-file "~/notebook/notes.org")
-        '(org-agenda-ndays 7)
-        '(org-deadline-warning-days 14)
-        '(org-agenda-show-all-dates t)
-        '(org-agenda-skip-deadline-if-done t)
-        '(org-agenda-skip-scheduled-if-done t)
-        '(org-agenda-start-on-weekday nil)
-        '(org-reverse-note-order t)
-        '(org-fast-tag-selection-single-key (quote expert))
-        '(org-agenda-custom-commands
-          (quote (("d" todo "DELEGATED" nil)
-                  ("c" todo "DONE|DEFERRED|CANCELLED|STARTED" nil)
-                  ("w" todo "WAITING" nil)
-                  ("W" agenda "" ((org-agenda-ndays 21)))
-                  ("A" agenda ""
-                   ((org-agenda-skip-function
-                     (lambda nil
-                       (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]")))
-                    (org-agenda-ndays 1)
-                    (org-agenda-overriding-header "Today's Priority #A tasks: ")))
-                  ("u" alltodo ""
-                   ((org-agenda-skip-function
-                     (lambda nil
-                       (org-agenda-skip-entry-if (quote scheduled) (quote deadline)
-                                                 (quote regexp) "\n]+>")))
-                    (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
+       (setq org-agenda-custom-commands
+             (quote (("c" todo "DONE|DEFERRED|CANCELLED|STARTED" nil)
+                     ("w" todo "WAITING" nil)
+                     ("W" agenda "" ((org-agenda-ndays 21)))
+                     ("A" agenda ""
+                      ((org-agenda-skip-function
+                        (lambda nil
+                          (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]")))
+                       (org-agenda-ndays 1)
+                       (org-agenda-overriding-header "Today's Priority #A tasks: ")))
+                     ("u" alltodo ""
+                      ((org-agenda-skip-function
+                        (lambda nil
+                          (org-agenda-skip-entry-if (quote scheduled) (quote deadline)
+                                                    (quote regexp) "\n]+>")))
+                       (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
+     #+end_src
 
-        '(org-remember-store-without-prompt t)
-        '(org-remember-templates
-          (quote ((116 "* TODO %?\n  %u" "~/notebook/todo.org" "Tasks")
-                  (110 "* %u %?" "~/notebook/notes.org" "Notes"))))
-        '(remember-annotation-functions (quote (org-remember-annotation)))
-       '(remember-handler-functions (quote (org-remember-handler))))
+**** Org-Capture
+     Org-capture stores notes and todos with a simple key command.
+     #+begin_src emacs-lisp
+       (setq org-default-notes-file "~/notebook/notes.org")
+       (define-key global-map "\C-cc" 'org-capture)
+     #+end_src
+
+     Capture to specified files
+     #+begin_src emacs-lisp
+       (setq org-capture-templates
+             '(("t" "Todo" entry (file+headline "~/notebook/todo.org" "Tasks")
+                "* TODO %?\n  %i\n  %a")
+               ("n" "Journal" entry (file+headline "~/notebook/notes.org")
+                "* %?\nEntered on %U\n  %i\n  %a")))
      #+end_src
 
 **** Activate babel languages
