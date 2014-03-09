@@ -753,10 +753,7 @@
     :END:
     Install and sync org-mode repository with el-get
 **** El-getting org-mode
-     :PROPERTIES:
-     :tangle:   yes
-     :END:
-     Install manually.  This file will not load untill a el-get
+     Install manually. This file will not load untill an el-get
      org-mode package is installed.
 **** Org-Mode File association
      Both .org and .txt files should be associated with org-mode
@@ -881,7 +878,7 @@
      :END:
      This activates a number of widely used languages, you are
      encouraged to activate more languages.  The customize interface
-     of '=org-babel-load-languages=' contains an up to date list of
+     of =org-babel-load-languages= contains an up to date list of
      the currently supported languages.
      #+name:babel-lang
      #+begin_src emacs-lisp
@@ -890,6 +887,7 @@
         '((emacs-lisp . t)
           (sh . t)
           (matlab . t)
+          (octave . t)
           (gnuplot . t)
           (python . t)
           (dot . t)
