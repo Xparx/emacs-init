@@ -312,6 +312,8 @@
                                   (name . "^diary$")))
                       ("emacs" (or
                                 (name . "^\\*scratch\\*$")
+                                (name . "^\\*ielm\\*$")
+                                (name . "^\\*Completions\\*$")
                                 (name . "^\\*Messages\\*$")))
                       ("Magit" (name . "^\\*magit.*\\*$"))
                       ("dired" (mode . dired-mode))
@@ -1096,8 +1098,6 @@
        (setq initial-scratch-message "\n#+begin_src emacs-lisp\n\n#+end_src")
      #+end_src
 **** MobileOrg
-     :PROPERTIES:
-     :END:
      Mobile org push/pull directory
      #+begin_src emacs-lisp
        (setq org-mobile-directory "~/Ubuntu One/MobileOrg" )
