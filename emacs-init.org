@@ -1095,7 +1095,7 @@
 
      Give it a little bit of emacs-lisp
      #+begin_src emacs-lisp
-       (setq initial-scratch-message "\n#+begin_src emacs-lisp\n\n#+end_src")
+       (setq initial-scratch-message "\n#+begin_src emacs-lisp\n\n#+end_src\n\n")
      #+end_src
 **** MobileOrg
      Mobile org push/pull directory
