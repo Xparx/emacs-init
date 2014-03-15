@@ -1168,7 +1168,6 @@
 *** Yasnippet
     :PROPERTIES:
     :CUSTOM_ID: yasnippet
-    :tangle:   yes
     :END:
     - [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs. It is
       inspired by TextMate's templating syntax.
@@ -1180,39 +1179,18 @@
       (el-get 'sync '(yasnippet))
     #+end_src
 
-    TODO: move elpa install of bundle here
-
-    Add loadpath to yasnippet from el-get. Seems pointless (it sure does. Should not be needed)
-    #+begin_src emacs-lisp :tangle no
+    Activate yasnippet everywhere
+    #+begin_src emacs-lisp :tangle yes
       (when (el-get-package-exists-p "yasnippet")
-        (add-to-list 'load-path
-                     (expand-file-name  "yasnippet"
-                                        (expand-file-name "el-get"
-                                                          emacs-init-dir))))
+        (yas-global-mode 1))
     #+end_src
 
-    Load the snippets defined in the =./snippets/= directory
-    #+begin_src emacs-lisp
+    Above does not work for org-mode, therefore do it here.
+    #+begin_src emacs-lisp :tangle yes
       (when (el-get-package-exists-p "yasnippet")
-        (yas/load-directory (expand-file-name "snippets" emacs-init-dir)))
-    #+end_src
-
-    The latest version of yasnippets doesn't play well with Org-Mode, the
-    following function allows these two to play nicely together.
-    This [[http://stackoverflow.com/questions/9418148/conflicts-between-org-mode-and-yasnippet][stackoverflow post]] might be usefull as well.
-    #+begin_src emacs-lisp
-      (when (el-get-package-exists-p "yasnippet")
-        (defun yas/org-very-safe-expand ()
-          (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
-
-        (defun yas/org-setup ()
-          ;; yasnippet (using the new org-cycle hooks)
-          (make-variable-buffer-local 'yas/trigger-key)
-          (setq yas/trigger-key [tab])
-          (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-          (define-key yas/keymap [tab] 'yas/next-field))
-
-        (add-hook 'org-mode-hook #'yas/org-setup))
+        (add-hook 'org-mode-hook
+                  '(lambda ()
+                     (yas-minor-mode))))
     #+end_src
 
 *** Custom functions
