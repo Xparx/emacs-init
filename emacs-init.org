@@ -934,7 +934,7 @@
      4.20 or higher.
      #+begin_src emacs-lisp
        (defun my-auto-tex-cmd ()
-         "When exporting from .org with latex, automatically run latex,
+         "When exporting from .org with latex, automatically run latexmk, latex,
           pdflatex, or xelatex as appropriate, using latexmk."
          (let ((texcmd)))
          ;; default command: oldstyle latex via dvi
@@ -965,13 +965,23 @@
        (setq org-export-latex-hyperref-format "\\ref{%s}")
      #+end_src
 
-**** Org LaTeX export with(out) default packages
+**** Org LaTeX export with default packages
      Resetting the org default exported latex packages list. It messes
      with my latex. Storing an extra list for insertion if needed.
      #+begin_src emacs-lisp :tangle yes
        (setq org-latex-default-packages-bkup-alist
              org-latex-default-packages-alist)
        (setq org-latex-default-packages-alist ())
+     #+end_src
+
+     Minimal default export package list. This is all that should
+     be needed.
+     #+begin_src emacs-lisp
+       (setq org-latex-default-packages-alist
+             '(("AUTO" "inputenc" t)
+               ("colorlinks=true"     "hyperref"  nil)
+               (""     "amsmath"  nil)
+               (""     "amssymb"  nil)))
      #+end_src
 
 **** Org LaTeX export with extra packages
