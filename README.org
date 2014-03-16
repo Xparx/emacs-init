@@ -44,11 +44,9 @@
    :END:
    The =init.el= file is where everything begins. It is loaded
    automatically by Emacs on startup, its sole purpose is to load
-   the elisp code embedded in this file.  =emacs-init.org= then
-   loads some core configurations and packages which should be
-   generally useful, and goes on to load user-specific
-   configuration files from the following locations mentioned in
-   [[customization]] immediately below.
+   the elisp code embedded in =emacs-init.org=. The [[#customization][Customization]]
+   below is a bit overkill but a leftover from the starter-kit
+   that I don't feel needs to be removed.
 
 ** Customization
    :PROPERTIES:
@@ -82,7 +80,7 @@
 
    - Installing more elisp libraries :: The easiest way to install new
         libraries is through
-     - El-get :: (see [[#emacs-lisp-get][El-get]] below).
+     - El-get :: (see [[#el-get-package-manager][El-get]] below).
      - Emacs Lisp Package Archive :: (see [[#emacs-lisp-package-archive][Emacs Lisp Package Archive]]
           below).  When a library is not available through ELPA you
           can grab it's source and place it directly in the =src=
