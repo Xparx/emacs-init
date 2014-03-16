@@ -18,7 +18,7 @@
      emacs -q -l ~/src/emacs-init/init.el
    #+end_src
 
-   It should be mostrly self contained, meaning that all files it fetches,
+   It should be mostly self contained, meaning that all files it fetches,
    creates and need should be in this directory. No guaranties though.
 
 ** emacs24-starter-kit?
