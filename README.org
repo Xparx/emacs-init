@@ -90,7 +90,7 @@
 
 ** El-get
    :PROPERTIES:
-   :CUSTOM_ID: el-get-package-manager
+   :CUSTOM_ID: el-get
    :END:
    El-get is a /(foxy el-mexicano, Arriba! Arriba!:)/ package manager using
    custome recipes for installing and initializing emacs packages from
@@ -139,4 +139,3 @@
    configuration is required to download and install packages.  Packages
    installed through ELPA will be stored in the =elpa/= sub-directory of
    this directory.
-
