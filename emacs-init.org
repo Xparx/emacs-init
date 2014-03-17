@@ -896,7 +896,8 @@
           (dot . t)
           (latex . t)
           (js . t)
-         ))
+          (R . t)
+          ))
      #+end_src
 
      Adding unsecure evaluation of code-blocks
