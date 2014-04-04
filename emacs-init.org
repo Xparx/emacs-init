@@ -949,8 +949,7 @@
      Set org-reveal-root path.
      #+begin_src emacs-lisp
        (when (el-get-package-exists-p "org-reveal")
-         (setq org-reveal-root
-               (concat "file://" (expand-file-name "~/apps/reveal.js"))))
+         (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/2.5.0/"))
      #+end_src
 
 **** Org in startup scratch
