@@ -778,6 +778,10 @@
        (setq org-export-with-sub-superscripts nil)
      #+end_src
 
+     #+begin_src emacs-lisp
+       (setq org-export-copy-to-kill-ring nil)
+     #+end_src
+
 **** Org-mode hooks
      Make org understand latex syntax: [[http://stackoverflow.com/questions/11646880/flyspell-in-org-mode-recognize-latex-syntax-like-auctex][source]]
      #+begin_src emacs-lisp
