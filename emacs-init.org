@@ -383,14 +383,17 @@
 
 **** Set exec-path same as PATH in bash
      Source: [[http://stackoverflow.com/questions/9663396/how-do-i-make-emacs-recognize-bash-environment-variables-for-compilation][stackoverflow]]
+
+     Using package is perhaps better, Install manually
+     #+begin_src emacs-lisp :tangle no
+       (el-get 'sync '(exec-path-from-shell))
+     #+end_src
+
      #+begin_src emacs-lisp
-       (let ((path (shell-command-to-string ". ~/.bash_variables; echo -n $PATH")))
-         (setenv "PATH" path)
-         (setq exec-path
-               (append
-                (split-string-and-unquote path ":")
-                exec-path)))
-     #+end_src emacs-lisp
+       (when (el-get-package-exists-p "exec-path-from-shell")
+         (exec-path-from-shell-initialize))
+     #+end_src
+
 **** Default to unified diffs
      #+begin_src emacs-lisp
        (setq diff-switches "-u")
@@ -1163,6 +1166,7 @@
   :PROPERTIES:
   :CUSTOM_ID: user-system-configs
   :END:
+
   You can keep system- or user-specific customizations here in either
   raw emacs-lisp files or as embedded elisp in org-mode files (as done
   in this document).
