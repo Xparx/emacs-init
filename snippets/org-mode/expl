@@ -3,5 +3,5 @@
 # key: expl
 # --
 #+begin_src latex :exports results :results latex
-  $0
+$0
 #+end_src

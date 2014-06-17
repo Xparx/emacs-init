@@ -751,6 +751,7 @@
           (gnuplot . t)
           (python . t)
           (dot . t)
+          (ditaa . t)
           (latex . t)
           (js . t)
           (R . t)
