@@ -756,7 +756,6 @@
           (js . t)
           (R . t)
           (C . t)
-          (ditaa . t)
           ))
      #+end_src
 
