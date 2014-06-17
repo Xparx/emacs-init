@@ -1,0 +1,40 @@
+* Gnus
+  :PROPERTIES:
+  :tangle:   yes
+  :END:
+
+  Gnus is said to be hard to setup. It turns out it's not to bad.
+  Sources for setup: [[http://eschulte.github.io/emacs-starter-kit/starter-kit-gnus-imap.html][here]] and [[https://github.com/eschulte/emacs24-starter-kit/blob/master/starter-kit-gnus.org][here]]. Simple stuff on how to learn how
+  to use gnus can be found [[http://www.emacswiki.org/emacs/GnusGmail#toc13][here]] and [[http://www.emacswiki.org/emacs/CategoryGnus#toc2][here]].
+
+  To get gnus working the correct credentials needs to be put
+  in =~/.authinfo=
+
+  #+begin_src emacs-lisp :tangle (expand-file-name "gnus" emacs-init-dir)
+    ;; gnus is edited from within ~/.emacs.d/emacs-init.org if you have
+    ;; el-get gnus package installed. Who knows what will happen if you
+    ;; change something here...
+  #+end_src
+
+  Reading mail with gnus
+  #+begin_src emacs-lisp :tangle (expand-file-name "gnus" emacs-init-dir)
+    (when (el-get-package-exists-p "gnus")
+      (setq gnus-select-method
+            '(nnimap "Mail"
+                     (nnimap-address "imap.fripost.org")
+                     (nnimap-server-port 993)
+                     (nnimap-stream ssl))))
+  #+end_src
+
+  Sending mail with gnus
+  #+begin_src emacs-lisp :tangle (expand-file-name "gnus" emacs-init-dir)
+    (when (el-get-package-exists-p "gnus")
+      (setq message-send-mail-function 'smtpmail-send-it
+            smtpmail-starttls-credentials '(("smtp.fripost.org" 587 nil nil))
+            smtpmail-auth-credentials '(("smtp.fripost.org" 587 user-mail-address nil))
+            smtpmail-default-smtp-server "smtp.fripost.org"
+            smtpmail-smtp-server "smtp.fripost.org"
+            smtpmail-smtp-service 587
+            starttls-use-gnutls t))
+  #+end_src
+

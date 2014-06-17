@@ -15,6 +15,7 @@ request
 
 # Files
 *~
+*.elc
 emacs-init*.el
 ede-projects.el
 *gpg
