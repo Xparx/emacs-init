@@ -429,6 +429,7 @@
 **** Fly spell mode for latex mode
      #+begin_src emacs-lisp
        (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+       (add-hook 'latex-mode-hook 'flyspell-mode)
      #+end_src
 
      Make sure spelling is handled nicely in latex mode.
@@ -462,13 +463,14 @@
      Set path to default bibfile.
      #+begin_src emacs-lisp
        (when (el-get-package-exists-p "reftex")
-         (setq reftex-default-bibliography '("./refs.bib" "~/research/bibliography.bib")))
+         (setq reftex-default-bibliography '("./refs.bib" "./bibliography.bib" "~/research/bibliography.bib")))
      #+end_src
 
      Turn on reftex-mode in Auctex mode.
      #+begin_src emacs-lisp
        (when (el-get-package-exists-p "reftex")
-         (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
+         (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+         (add-hook 'latex-mode-hook 'turn-on-reftex))
      #+end_src
 
 *** Python
@@ -506,6 +508,7 @@
        (when (executable-find "ipython")
          (setq org-babel-python-mode 'python-mode))
      #+end_src
+
 **** Use Cython mode
      :PROPERTIES:
      :CUSTOM_ID: cython
@@ -522,6 +525,7 @@
          (add-to-list 'auto-mode-alist '("\\.pxd\\'" . cython-mode))
          (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode)))
      #+end_src
+
 **** Emacs ipython notebook
      Enables completion in ein buffer. This gives a bit of unexpected
      behaviour. No popup occure even though latest popup.el is
