@@ -438,6 +438,9 @@
      #+end_src
 
 **** Some auctex specific settings.
+     :PROPERTIES:
+     :CUSTOM_ID: auctex
+     :END:
      Install and sync auctex repository with el-get manually.
      #+begin_src emacs-lisp :tangle no
        (el-get 'sync '(auctex))
@@ -446,6 +449,7 @@
      Make emacs aware of auctex
      #+begin_src emacs-lisp
        (when (el-get-package-exists-p "auctex")
+         (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
          (setq TeX-auto-save t)
          (setq TeX-parse-self t)
          (setq-default TeX-master nil))
@@ -469,6 +473,7 @@
      Turn on reftex-mode in Auctex mode.
      #+begin_src emacs-lisp
        (when (el-get-package-exists-p "reftex")
+         (setq reftex-plug-into-AUCTeX t)
          (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
          (add-hook 'latex-mode-hook 'turn-on-reftex))
      #+end_src
