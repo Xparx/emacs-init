@@ -911,11 +911,11 @@
        (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
      #+end_src
 
-**** Org RefTeX integration
+**** Org RefTeX integration with org-ref
      :PROPERTIES:
-     :CUSTOM_ID: org-reftex
+     :CUSTOM_ID: org-ref
      :END:
-     source: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
+     Deprecated source: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
 
      Paths to files. This might be more general than reftex.
      #+begin_src emacs-lisp
@@ -925,42 +925,24 @@
                ("papers" . "~/research/papers/%s.pdf")))
      #+end_src
 
-     Define function to jump to entry
+     Org-ref variables
      #+begin_src emacs-lisp
-       (when (el-get-package-exists-p "reftex")
-         (defun org-mode-reftex-search ()
-           ;;jump to the notes for the paper pointed to at from reftex search
-           (interactive)
-           (org-open-link-from-string (format "[[notes:%s]]" (substring (format "%s" (reftex-citation t)) 1 -1)))))
+       (when (el-get-package-exists-p "org-ref")
+         (setq org-ref-bibliography-notes "~/research/notes.txt"
+               org-ref-default-bibliography '("~/research/bibliography.bib")
+               org-ref-pdf-directory "~/research/papers/"))
      #+end_src
 
+     Org-mode hook for tex-master
      #+begin_src emacs-lisp
-       (when (el-get-package-exists-p "reftex")
-         (defun org-mode-reftex-setup ()
-           (load-library "reftex")
-           (and (buffer-file-name) (file-exists-p (buffer-file-name))
-                (progn
-                  ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
-                  ;; (global-auto-revert-mode t)
-                  (setq TeX-master t)
-                  ;; (reftex-parse-all)
-                  ;; add a custom reftex cite format to insert links
-                  (reftex-set-cite-format
-                   '((?b . "[[bib:%l][%l-bib]]")
-                     (?n . "[[notes:%l][%l-notes]]")
-                     (?p . "[[papers:%l][%l-paper]]")
-                     (?t . "%t")
-                     (?c . "\\cite{%l}")
-                     (?h . "*** %2a %y %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
-           (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
-           (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
-
-         (add-hook 'org-mode-hook 'org-mode-reftex-setup))
+       (add-hook 'org-mode-hook (setq TeX-master t))
      #+end_src
+
 
 **** Org reveal
-     [[https://github.com/hakimel/reveal.js][reveal.js]] is a presentation creation package that creates HTML5
-     presentations. It can be integrated in org-mode export with [[https://github.com/yjwen/org-reveal][org-reveal]].
+     [[https://github.com/hakimel/reveal.js][reveal.js]] is a presentation creation package that creates
+     HTML5 presentations from org-mode. It can be integrated in
+     org-mode export with [[https://github.com/yjwen/org-reveal][org-reveal]].
 
      To setup and create presentations with org-mode see instructions [[http://blog.jr0cket.co.uk/2013/09/create-html5-presentations-emacs-revealjs.html][here]].
 
