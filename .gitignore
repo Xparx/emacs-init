@@ -28,3 +28,4 @@ tramp
 ac-comphist.dat
 session.*
 /gnus
+/custom.el
