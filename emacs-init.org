@@ -546,9 +546,8 @@
     :END:
 **** cedet
      I am not sure what this does except enabling cedet when coding,
-     whatever that means. =org-edit-src-code: Symbol's function
-     definition is void: user-error= error if this sentence is
-     removed, odd but true.
+     whatever that means.
+
      #+begin_src emacs-lisp
        (require 'semantic/sb)
        (global-ede-mode 1)
@@ -792,6 +791,7 @@
        (setq org-export-with-sub-superscripts nil)
      #+end_src
 
+     So that the export does not end up in the kill ring.
      #+begin_src emacs-lisp
        (setq org-export-copy-to-kill-ring nil)
      #+end_src
