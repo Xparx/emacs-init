@@ -803,34 +803,35 @@
      #+end_src
 
 **** Org LaTeX export types
-     Originally taken from Bruno Tavernier: [[http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432][here]], but adapted to use latexmk
-     4.20 or higher.
+     Originally taken from Bruno Tavernier: [[http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432][here]], but adapted to
+     use latexmk 4.20 or higher.
      #+begin_src emacs-lisp
-       (defun my-auto-tex-cmd ()
+       (defun my-auto-tex-cmd (must-be-here-for-hook-to-work)
          "When exporting from .org with latex, automatically run latexmk, latex,
-          pdflatex, or xelatex as appropriate, using latexmk."
-         (let ((texcmd)))
-         ;; default command: oldstyle latex via dvi
-         (setq texcmd "latexmk -pdfdvi -quiet %f")
-         ;; bibtex -> dvi -> pdf
-         (if (string-match "LATEX_CMD: texbibtex" (buffer-string))
-             (setq texcmd "latexmk -pdfdvi -bibtex -quiet %f"))
-         ;; bibtex -> pdf
-         (if (string-match "LATEX_CMD: pdfbibtex" (buffer-string))
-             (setq texcmd "latexmk -pdf -bibtex -quiet %f"))
-         ;; tex -> dvi -> pdf
-         (if (string-match "LATEX_CMD: dvipdfps" (buffer-string))
-             (setq texcmd "latexmk -pdfdvi -quiet %f"))
-         ;; pdflatex -> pdf
-         (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
-             (setq texcmd "latexmk -pdf -quiet %f"))
-         ;; xelatex -> pdf
-         (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-             (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
-         ;; LaTeX compilation command
-         (setq org-latex-to-pdf-process (list texcmd)))
+                                             pdflatex, or xelatex as appropriate, using latexmk."
+         (let (texcmd))
+         (cond
+          ( ;; tex -> dvi -> pdf
+           (string-match "LATEX_CMD: mkpdfdvi" (buffer-string))
+           (setq texcmd "latexmk -pdfdvi -quiet %f"))
+          ( ;; pdflatex -> pdf
+           (string-match "LATEX_CMD: pdflatex" (buffer-string))
+           (setq texcmd "latexmk -pdf -quiet %f"))
+          ( ;; bibtex -> dvi -> pdf
+           (string-match "LATEX_CMD: mkbibtex" (buffer-string))
+           (setq texcmd "latexmk -pdfdvi -bibtex -quiet %f"))
+          ( ;; bibtex -> pdf
+           (string-match "LATEX_CMD: mkpdfbibtex" (buffer-string))
+           (setq texcmd "latexmk -pdf -bibtex -quiet %f"))
+          ( ;; xelatex -> pdf
+           (string-match "LATEX_CMD: xelatex" (buffer-string))
+           (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
+          ( ;; default
+           (string-match "" (buffer-string))
+           (setq texcmd "latexmk -pdfdvi -quiet %f")))
+         (setq org-latex-pdf-process (list texcmd)))
 
-         (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
+       (add-hook 'org-export-before-parsing-hook 'my-auto-tex-cmd)
      #+end_src
 
      Make links work as labels in exports to latex
@@ -937,7 +938,6 @@
      #+begin_src emacs-lisp
        (add-hook 'org-mode-hook (setq TeX-master t))
      #+end_src
-
 
 **** Org reveal
      [[https://github.com/hakimel/reveal.js][reveal.js]] is a presentation creation package that creates
