@@ -122,6 +122,11 @@
        (global-set-key (kbd "C-x \\") 'align-regexp)
      #+end_src
 
+**** Whitespace cleanup
+     #+begin_src emacs-lisp
+       (global-set-key (kbd "C-c w") 'whitespace-cleanup)
+     #+end_src
+
 **** Completion that uses many different methods to find options
      #+begin_src emacs-lisp
        (global-set-key (kbd "M-/") 'hippie-expand)
@@ -916,7 +921,11 @@
      :PROPERTIES:
      :CUSTOM_ID: org-ref
      :END:
-     Deprecated source: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
+     Deprecated source from previous setup: [[http://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/][here]]
+
+     I went for using [[https://github.com/jkitchin/jmax/blob/master/org-ref.org][org-ref]] to manage references and citations
+     in org-mode. Both a [[http://kitchingroup.cheme.cmu.edu/blog/][blog]] from the creator and a [[https://www.youtube.com/watch?v=JyvpSVl4_dg][video]] relates
+     to org-ref and can be usefull.
 
      Paths to files. This might be more general than reftex.
      #+begin_src emacs-lisp
