@@ -94,7 +94,7 @@
    `(default ((,class (:foreground ,my-z-fg :background ,my-z-bg))))
    `(cursor ((,class (:foreground ,my-z-fg))))
    `(escape-glyph-face ((,class (:foreground ,my-z-red))))
-   `(fringe ((,class (:foreground ,my-z-fg :background ,my-z-bg+1))))
+   `(fringe ((,class (:foreground ,my-z-fg :background ,my-z-bg))))
    `(header-line ((,class (:foreground ,my-z-yellow
                                        :background ,my-z-bg-1
                                        :box (:line-width -1 :style released-button)))))

@@ -775,6 +775,7 @@
           (js . t)
           (R . t)
           (C . t)
+          (perl . t)
           ))
      #+end_src
 
@@ -1102,7 +1103,7 @@
      #+end_src
 
      Set background colour for fringes.
-     #+begin_src emacs-lisp :tangle yes
+     #+begin_src emacs-lisp :tangle no
        (custom-set-faces
         '(fringe ((t (:background "white")))))
      #+end_src
