@@ -457,7 +457,13 @@
          (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
          (setq TeX-auto-save t)
          (setq TeX-parse-self t)
-         (setq-default TeX-master nil))
+         (setq-default TeX-master nil)
+         (add-hook 'LaTeX-mode-hook
+                   (lambda ()
+                     (push
+                      '("latexmk" "latexmk -pdfdvi %s" TeX-run-TeX nil t
+                        :help "Run Latexmk on file")
+                      TeX-command-list))))
      #+end_src
 
 **** RefTeX
@@ -826,7 +832,7 @@
            (string-match "LATEX_CMD: mkbibtex" (buffer-string))
            (setq texcmd "latexmk -pdfdvi -bibtex -quiet %f"))
           ( ;; bibtex -> pdf
-           (string-match "LATEX_CMD: mkpdfbibtex" (buffer-string))
+           (string-match "LATEX_CMD: pdfbibtex" (buffer-string))
            (setq texcmd "latexmk -pdf -bibtex -quiet %f"))
           ( ;; xelatex -> pdf
            (string-match "LATEX_CMD: xelatex" (buffer-string))
