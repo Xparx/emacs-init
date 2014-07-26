@@ -1,8 +1,34 @@
+# -*- mode: gitignore; -*-
 # git ls-files --others --exclude-from=.git/info/exclude
 # Lines that start with '#' are comments.
-# For a project mostly in C, the following would be a good set of
-# exclude patterns (uncomment them if you want to use them):
-# *.[oa]
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Org-mode
+.org-id-locations
+*_archive
+
+# flymake-mode
+*_flymake.*
+
+# eshell files
+/eshell/history
+/eshell/lastdir
+
+# elpa packages
+/elpa/
+
+# reftex files
+*.rel
+
+# AUCTeX auto folder
+/auto/
 
 # Dirs
 el-get
@@ -14,8 +40,6 @@ semanticdb
 request
 
 # Files
-*~
-*.elc
 emacs-init*.el
 ede-projects.el
 *gpg
@@ -24,8 +48,8 @@ backups
 url
 oauth2.plstore
 tramp
-.org-id-locations
 ac-comphist.dat
 session.*
 /gnus
 /custom.el
+
