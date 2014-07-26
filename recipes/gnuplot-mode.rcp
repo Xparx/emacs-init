@@ -2,9 +2,9 @@
        :description "Drive gnuplot from within emacs"
        :type github
        :pkgname "bruceravel/gnuplot-mode"
-       :build `(("aclocal && autoconf")
+       :build `(("aclocal")
+                ("autoconf")
                 ("./configure")
-                ("automake --add-missing")
                 ("make" ,(concat "EMACS=" el-get-emacs)
                  "gnuplot.elc" "gnuplot-gui.elc"))
        :info "gnuplot.info")
