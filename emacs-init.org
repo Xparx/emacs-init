@@ -502,13 +502,6 @@
      #+begin_src emacs-lisp :tangle no
        (el-get 'sync '(python-mode))
      #+end_src
-     Replace the Python mode that comes with Emacs by the Python mode
-     supplied by the Python distribution itself.
-
-     #+begin_src emacs-lisp
-       (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-       (add-to-list 'interpreter-mode-alist '("python" . python-mode))
-     #+end_src
 
 **** Use IPython if =ipython= command is present
      :PROPERTIES:
