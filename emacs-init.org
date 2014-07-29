@@ -288,6 +288,12 @@
     :PROPERTIES:
     :CUSTOM_ID: misc
     :END:
+**** TAB completion in emacs-lisp buffers
+     #+begin_src emacs-lisp
+       (setq tab-always-indent 'complete)
+       (add-to-list 'completion-styles 'initials t)
+     #+end_src
+
 **** Don't clutter up directories with files~ or #files#
      Rather than saving backup files scattered all over the file system,
      let them live in the =backups/= directory inside of the emacs init.
@@ -537,19 +543,32 @@
        (el-get 'sync '(python-mode))
      #+end_src
 
-**** Use IPython if =ipython= command is present
-     :PROPERTIES:
-     :CUSTOM_ID: ipython
-     :END:
-     Install and sync ipython repository with el-get manually.
-     #+begin_src emacs-lisp :tangle no
-       (el-get 'sync '(ipython))
-     #+end_src
      If an =ipython= executable is on the path, then assume that
      IPython is the preferred method for python evaluation.
+
+     [[http://www.emacswiki.org/emacs/PythonProgrammingInEmacs#toc5][variable source]]
      #+begin_src emacs-lisp
        (when (executable-find "ipython")
-         (setq org-babel-python-mode 'python-mode))
+         (setq
+          org-babel-python-mode 'python-mode
+          python-shell-interpreter "ipython"
+          python-shell-interpreter-args ""
+          python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+          python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+          python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
+          python-shell-completion-module-string-code "';'.join(module_completion('''%s'''))\n"
+          python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"
+          py-shell-name "ipython"
+          ;; py-shell-prompt-regexp "In \\[[0-9]+\\]: "
+          ;; py-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+          ;; py-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
+          ;; python-shell-module-completion-string-code "';'.join(module_completion('''%s'''))\n"
+          ))
+     #+end_src
+
+     Set default tabs width = 4 for python-mode
+     #+begin_src emacs-lisp
+       (setq python-indent-offset 4)
      #+end_src
 
 **** Use Cython mode
@@ -1081,6 +1100,16 @@
                   '(lambda ()
                      (yas-minor-mode))))
     #+end_src
+
+     Remap =yas-expand= for relevant modes as it over shadows the
+     otherwise very nice autocompletion. [[https://capitaomorte.github.io/yasnippet/snippet-expansion.html#sec-1-1][source]]
+     #+begin_src emacs-lisp
+       (when (el-get-package-exists-p "yasnippet")
+         (define-key yas-minor-mode-map (kbd "<tab>") nil)
+         (define-key yas-minor-mode-map (kbd "TAB") nil)
+         (define-key yas-minor-mode-map (kbd "C-TAB") 'yas-expand)
+         (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand))
+     #+end_src
 
 *** Custom functions
     Self defined functionality
