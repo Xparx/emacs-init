@@ -572,10 +572,27 @@
 **** Emacs ipython notebook
      Enables completion in ein buffer. This gives a bit of unexpected
      behaviour. No popup occure even though latest popup.el is
-     installed.
+     installed. [[https://github.com/jhamrick/emacs/blob/master/.emacs.d/settings/python-settings.el][source]]
      #+begin_src emacs-lisp
        (when (el-get-package-exists-p "ein")
-         (setq ein:use-auto-complete t))
+         (setq ein:use-auto-complete t
+               ein:complete-on-dot nil
+               ein:query-timeout 1000))
+     #+end_src
+
+     Python console arguments
+     #+begin_src emacs-lisp
+       (setq ein:console-args
+             (if (system-is-linux)
+                 '("--gui=wx" "--matplotlib=wx" "--colors=Linux")))
+     #+end_src
+
+     Shortcut function to load notebook
+     #+begin_src emacs-lisp
+       (defun load-ein ()
+         (ein:notebooklist-load)
+         (interactive)
+         (ein:notebooklist-open))
      #+end_src
 
 *** Code-modes
