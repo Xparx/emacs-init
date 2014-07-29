@@ -341,6 +341,11 @@
        (setq-default ispell-program-name "aspell")
      #+end_src
 
+     To fix [[http://www.emacswiki.org/emacs/FlySpell#toc8][this]] bug
+     #+begin_src emacs-lisp
+       (setq ispell-list-command "--list")
+     #+end_src
+
      Set default ispell dict
      #+begin_src emacs-lisp
        (setq ispell-dictionary "en")
@@ -348,9 +353,9 @@
 
 **** Open my specific bashrc files in the right mode
      #+begin_src emacs-lisp
-       (add-to-list 'auto-mode-alist '("bashrc\\'" . shell-script-mode))
-       (add-to-list 'auto-mode-alist '("bash_variables\\'" . shell-script-mode))
-       (add-to-list 'auto-mode-alist '("bash_aliases\\'" . shell-script-mode))
+       (add-to-list 'auto-mode-alist '(".bashrc\\'" . shell-script-mode))
+       (add-to-list 'auto-mode-alist '(".bash_variables\\'" . shell-script-mode))
+       (add-to-list 'auto-mode-alist '(".bash_aliases\\'" . shell-script-mode))
      #+end_src
 
 **** Transparently open compressed files
@@ -442,7 +447,18 @@
 
      #+begin_src emacs-lisp
        (when (el-get-package-exists-p "hidepw")
-         (setq hidepw-pattern "§\\(.*\\)§"))
+         (setq hidepw-pattern " -\\(.*\\)- "))
+     #+end_src
+
+**** kill client buffer with C-x k
+     [[http://www.emacswiki.org/emacs/EmacsClient#toc36][source]]
+     #+begin_src emacs-lisp
+       (add-hook 'server-switch-hook
+                 (lambda ()
+                   (when (current-local-map)
+                     (use-local-map (copy-keymap (current-local-map))))
+                   (when server-buffer-clients
+                     (local-set-key (kbd "C-x k") 'server-edit))))
      #+end_src
 
 *** LaTeX mode
