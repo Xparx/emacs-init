@@ -254,6 +254,25 @@
            '(define-key magit-status-mode-map (kbd "q") 'magit-quit-session)))
      #+end_src
 
+**** Delete trailing whitespaces from magit buffer
+     [[https://gist.github.com/vermiculus/8177389][source]] and [[https://stackoverflow.com/questions/20127377/how-can-i-remove-trailing-whitespace-from-a-hunk-in-magit][stackoverflow]] question
+
+     #+begin_src emacs-lisp
+       (when (el-get-package-exists-p "magit")
+         (defun *magit-delete-trailing-whitespace-from-file ()
+           "Removes whitespace from the current item."
+           (interactive)
+           (save-excursion
+             (magit-visit-item)
+             (delete-trailing-whitespace)
+             (save-buffer)
+             (kill-buffer))
+           (magit-refresh))
+
+         (eval-after-load 'magit
+           '(define-key magit-status-mode-map (kbd "w") '*magit-delete-trailing-whitespace-from-file)))
+     #+end_src
+
 *** Git-gutter
     Git-gutter-fringe gives git diff info in the fringes.
     Turn on git-gutter for all relevant buffers
