@@ -601,9 +601,7 @@
 
      Python console arguments
      #+begin_src emacs-lisp
-       (setq ein:console-args
-             (if (system-is-linux)
-                 '("--gui=wx" "--matplotlib=wx" "--colors=Linux")))
+       (setq ein:console-args '("--gui=wx" "--matplotlib=wx" "--colors=Linux"))
      #+end_src
 
      Shortcut function to load notebook
