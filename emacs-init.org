@@ -104,8 +104,9 @@
 *** Personal information
 
     #+begin_src emacs-lisp
-      (setq user-full-name "Andreas Tjärnberg"
-            user-mail-address "andreas.tjarnberg@fripost.org")
+      (if (file-exists-p (concat emacs-init-dir "user.el"))
+          (load-file (concat emacs-init-dir "user.el"))
+        (message (concat "user info can be placed in: " emacs-init-dir "user.el")))
     #+end_src
 
 *** Emacs bindings
