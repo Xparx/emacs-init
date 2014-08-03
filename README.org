@@ -21,6 +21,8 @@
    It should be mostly self contained, meaning that all files it fetches,
    creates and need should be in this directory. No guaranties though.
 
+*** Dependencies
+
 ** emacs24-starter-kit?
    :PROPERTIES:
    :CUSTOM_ID: emacs24-starter-kit
