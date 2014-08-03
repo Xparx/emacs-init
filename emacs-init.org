@@ -508,11 +508,16 @@
          (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
          (setq TeX-auto-save t)
          (setq TeX-parse-self t)
-         (setq-default TeX-master nil)
+         (setq-default TeX-master nil))
+     #+end_src
+
+     Hook for latex compilation with latexmk ([[https://stackoverflow.com/questions/2199678/how-to-call-latexmk-in-emacs-and-jump-to-next-error][source]])
+     #+begin_src emacs-lisp
+       (when (el-get-package-exists-p "auctex")
          (add-hook 'LaTeX-mode-hook
                    (lambda ()
                      (push
-                      '("latexmk" "latexmk -pdfdvi %s" TeX-run-TeX nil t
+                      '("latexmk" "latexmk -pdfdvi %s" TeX-run-TeX t t
                         :help "Run Latexmk on file")
                       TeX-command-list))))
      #+end_src
