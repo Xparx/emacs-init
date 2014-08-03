@@ -355,7 +355,17 @@
 
      Set default ispell dict
      #+begin_src emacs-lisp
-       (setq ispell-dictionary "en")
+       (setq ispell-dictionary "english")
+     #+end_src
+
+     Extra arguments for aspell: [[https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/init-ispell.el][source]]
+     #+begin_src emacs-lisp
+       (setq-default ispell-extra-args '("--reverse"))
+     #+end_src
+
+     Save to personal dictionary quietly
+     #+begin_src emacs-lisp
+       (setq ispell-silently-savep t)
      #+end_src
 
 **** Open my specific bashrc files in the right mode
