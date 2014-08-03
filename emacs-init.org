@@ -804,11 +804,11 @@
      #+begin_src emacs-lisp
        (setq org-capture-templates
              '(("t" "Todo" entry (file+headline "~/notebook/todo.org" "Tasks")
-                "* TODO %?\n  %i\n   %a" :kill-buffer t)
+                "* TODO %?\n  %i\n  %a" :kill-buffer t)
                ("n" "Journal" entry (file+headline "~/notebook/notes.org" "Unsorted")
-                "* %U %?\n %a\n %i" :prepend t :kill-buffer t)
+                "* %U %?\n  %a\n  %i" :prepend t :kill-buffer t)
                ("r" "Research note" entry (file+headline "~/research/notes.txt" "Tasks")
-                "* TODO %?\n %i\n  %a" :kill-buffer t)))
+                "* TODO %?\n  %i\n  %a" :kill-buffer t)))
      #+end_src
 
 **** Activate babel languages
