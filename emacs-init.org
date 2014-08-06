@@ -289,11 +289,17 @@
     :PROPERTIES:
     :CUSTOM_ID: misc
     :END:
-**** TAB completion in emacs-lisp buffers
+**** Activate TAB completion
      #+begin_src emacs-lisp
-       (setq tab-always-indent 'complete)
        (add-to-list 'completion-styles 'initials t)
      #+end_src
+
+     specific modes
+     #+begin_src emacs-lisp
+       (add-hook 'emacs-lisp-mode-hook (lambda () (setq tab-always-indent 'complete)))
+       (add-hook 'sh-mode-hook (lambda () (setq tab-always-indent 'complete)))
+     #+end_src
+
 
 **** Don't clutter up directories with files~ or #files#
      Rather than saving backup files scattered all over the file system,
