@@ -865,6 +865,13 @@
        (setq org-confirm-babel-evaluate nil)
      #+end_src
 
+**** Org library of babel
+
+     Add the standard file to the library
+     #+begin_src emacs-lisp
+       (org-babel-lob-ingest (expand-file-name "org-mode/doc/library-of-babel.org" el-get-dir))
+     #+end_src
+
 **** Code block fontification
      :PROPERTIES:
      :CUSTOM_ID: code-block-fontification
