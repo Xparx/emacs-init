@@ -156,6 +156,7 @@
        (global-set-key (kbd "C-x C-b") 'ibuffer)
      #+end_src
 
+**** Ibuffer settings
      Ibuffer settings, source [[http://www.emacswiki.org/emacs/IbufferMode][here]]. Lots of interesting stuff in there.
      #+begin_src emacs-lisp
        (setq ibuffer-saved-filter-groups
