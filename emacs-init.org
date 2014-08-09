@@ -509,13 +509,15 @@
        (el-get 'sync '(auctex))
      #+end_src
 
-     Make emacs aware of auctex
+     Make emacs aware of auctex.
+     Do not query for master file. This can be done with =C-c_=.
+     More information can be found [[https://www.gnu.org/software/auctex/manual/auctex/Multifile.html][here]].
      #+begin_src emacs-lisp
        (when (el-get-package-exists-p "auctex")
          (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
          (setq TeX-auto-save t)
          (setq TeX-parse-self t)
-         (setq-default TeX-master nil))
+         (setq-default TeX-master t))
      #+end_src
 
      Hook for latex compilation with latexmk ([[https://stackoverflow.com/questions/2199678/how-to-call-latexmk-in-emacs-and-jump-to-next-error][source]])
