@@ -323,6 +323,24 @@ reason
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 #+end_src
 
+**** Make C-c l clear M-x shell buffers
+[[https://stackoverflow.com/questions/7733668/command-to-clear-shell-while-using-emacs-shell][source]]
+This approach is not perfect. It destroys the history in the shell buffer.
+#+begin_src emacs-lisp
+  (defun my-clear ()
+    (interactive)
+    (let ((comint-buffer-maximum-size 0))
+      (comint-truncate-buffer)))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun my-shell-hook ()
+    (local-set-key "\C-cl" 'my-clear))
+
+  (add-hook 'shell-mode-hook 'my-shell-hook)
+#+end_src
+
+
 **** Color Themes
 :PROPERTIES:
 :CUSTOM_ID: color-theme
