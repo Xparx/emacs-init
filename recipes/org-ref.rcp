@@ -1,7 +1,7 @@
 (:name org-ref
        :description "Org-ref - The best reference handling for org-mode"
        :type http
-       :url "https://raw.githubusercontent.com/jkitchin/jmax/master/org-ref.org"
+       :url "https://raw.githubusercontent.com/jkitchin/jmax/master/org/org-ref.org"
        :depends (reftex dash)
        :features "org-ref"
        :prepare (let ((source-file (expand-file-name "org-ref.org" (el-get-package-directory "org-ref")))
