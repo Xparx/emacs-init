@@ -1,143 +1,142 @@
 * Emacs init
-  :PROPERTIES:
-  :CUSTOM_ID: introduction
-  :END:
+:PROPERTIES:
+:CUSTOM_ID: introduction
+:END:
 ** My custom emacs-init
-   :PROPERTIES:
-   :CUSTOM_ID: my-emacs-init
-   :END:
-   This is a personalized emacs initialisation file.
-   To get it you can git it;
+:PROPERTIES:
+:CUSTOM_ID: my-emacs-init
+:END:
+This is a personalized emacs initialisation file.
+To get it you can git it;
 
-   #+begin_src sh
-     git clone https://github.com/xparx/emacs-init.git ~/src/emacs-init
-   #+end_src
+#+begin_src sh
+  git clone https://github.com/xparx/emacs-init.git ~/src/emacs-init
+#+end_src
 
-   To try it out use
-   #+begin_src sh
-     emacs -q -l ~/src/emacs-init/init.el
-   #+end_src
+To try it out use
+#+begin_src sh
+  emacs -q -l ~/src/emacs-init/init.el
+#+end_src
 
-   It should be mostly self contained, meaning that all files it fetches,
-   creates and need should be in this directory. No guaranties though.
+It should be mostly self contained, meaning that all files it fetches,
+creates and need should be in this directory. No guaranties though.
 
 *** Dependencies
 
 ** emacs24-starter-kit?
-   :PROPERTIES:
-   :CUSTOM_ID: emacs24-starter-kit
-   :END:
-   This emacs setup is inspired by and in part copied
-   from emacs24-starter-kit. The latest version can be found at
-   http://github.com/eschulte/emacs24-starter-kit/
-   #+begin_src sh
-     git clone https://github.com/eschulte/emacs24-starter-kit.git ~/src/emacs24-starter-kit
-   #+end_src
+:PROPERTIES:
+:CUSTOM_ID: emacs24-starter-kit
+:END:
+This emacs setup is inspired by and in part copied
+from emacs24-starter-kit. The latest version can be found at [[http://github.com/eschulte/emacs24-starter-kit/][github]]
+#+begin_src sh
+  git clone https://github.com/eschulte/emacs24-starter-kit.git ~/src/emacs24-starter-kit
+#+end_src
 
-   If you want to keep your regular =~/.emacs.d= in place and just launch
-   a single instance, using the starter kit, try the following invocation:
-   #+begin_src sh
-     emacs -q -l ~/src/emacs24-starter-kit/init.el
-   #+end_src
+If you want to keep your regular =~/.emacs.d= in place and just launch
+a single instance, using the starter kit, try the following invocation:
+#+begin_src sh
+  emacs -q -l ~/src/emacs24-starter-kit/init.el
+#+end_src
 
 ** Structure
-   :PROPERTIES:
-   :CUSTOM_ID: structure
-   :END:
-   The =init.el= file is where everything begins. It is loaded
-   automatically by Emacs on startup, its sole purpose is to load
-   the elisp code embedded in =emacs-init.org=. The [[#customization][Customization]]
-   below is a bit overkill but a leftover from the starter-kit
-   that I don't feel needs to be removed.
+:PROPERTIES:
+:CUSTOM_ID: structure
+:END:
+The =init.el= file is where everything begins. It is loaded
+automatically by Emacs on startup, its sole purpose is to load
+the elisp code embedded in =emacs-init.org=. The [[#customization][Customization]]
+below is a bit overkill but a leftover from the starter-kit
+that I don't feel needs to be removed.
 
 ** Customization
-   :PROPERTIES:
-   :CUSTOM_ID: customization
-   :END:
-   - User specific config :: Your personal configuration information can
-        be stored in a user-specific-config file.  This is the file named
-        after your user with the extensions =.el= or =.org= [2].  If
-        you're unsure of your user name evaluate the following code block
-        to find out.
-        #+begin_src sh
-          echo $USER
-        #+end_src
-        If your configuration starts to feel cramped in a single file
-        (although with the nested headlines of an Org-mode file, that
-        could take a while) and you want to stretch your config's legs,
-        you can also create a directory named after your system user
-        name.  If a such a directory exists, it will be added to the
-        load-path, and any elisp or org-mode w/embedded elisp files in it
-        will be loaded.
+:PROPERTIES:
+:CUSTOM_ID: customization
+:END:
+- User specific config :: Your personal configuration information can
+     be stored in a user-specific-config file.  This is the file named
+     after your user with the extensions =.el= or =.org= [2].  If
+     you're unsure of your user name evaluate the following code block
+     to find out.
+     #+begin_src sh
+       echo $USER
+     #+end_src
+     If your configuration starts to feel cramped in a single file
+     (although with the nested headlines of an Org-mode file, that
+     could take a while) and you want to stretch your config's legs,
+     you can also create a directory named after your system user
+     name.  If a such a directory exists, it will be added to the
+     load-path, and any elisp or org-mode w/embedded elisp files in it
+     will be loaded.
 
-   - System specific config :: Finally, you may want to configure
-        different settings for different machines.  The Emacs Init will
-        look for a file named after the current hostname ending in =.el=
-        or =.org= which will allow host-specific configuration. If
-        you're unsure of your hostname the following can be executed to
-        find out.
-        #+begin_src sh
-          hostname
-        #+end_src
+- System specific config :: Finally, you may want to configure
+     different settings for different machines.  The Emacs Init will
+     look for a file named after the current hostname ending in =.el=
+     or =.org= which will allow host-specific configuration. If
+     you're unsure of your hostname the following can be executed to
+     find out.
+     #+begin_src sh
+       hostname
+     #+end_src
 
-   - Installing more elisp libraries :: The easiest way to install new
-        libraries is through
-     - El-get :: (see [[#el-get-package-manager][El-get]] below).
-     - Emacs Lisp Package Archive :: (see [[#emacs-lisp-package-archive][Emacs Lisp Package Archive]]
-          below).  When a library is not available through ELPA you
-          can grab it's source and place it directly in the =src=
-          directory. Any packages found there will automatically be
-          added to your load-path when Emacs starts up. I also install
-          packages through el-get.
+- Installing more elisp libraries :: The easiest way to install new
+     libraries is through
+  - El-get :: (see [[#el-get-package-manager][El-get]] below).
+  - Emacs Lisp Package Archive :: (see [[#emacs-lisp-package-archive][Emacs Lisp Package Archive]]
+       below).  When a library is not available through ELPA you
+       can grab it's source and place it directly in the =src=
+       directory. Any packages found there will automatically be
+       added to your load-path when Emacs starts up. I also install
+       packages through el-get.
 
 ** El-get
-   :PROPERTIES:
-   :CUSTOM_ID: el-get
-   :END:
-   El-get is a /(foxy el-mexicano, Arriba! Arriba!:)/ package manager using
-   custome recipes for installing and initializing emacs packages from
-   a wide range of different repositories. The source can be fetched
-   [[https://github.com/dimitri/el-get][here]], by doing:
-   #+begin_src sh
-     git clone https://github.com/dimitri/el-get.git
-   #+end_src
-   This can be automated with a [[Lazy%20install][Lazy install]] or regular [[Regular%20Install][Regular Install]], which
-   is the default in this emacs-init. This is done in init.el for conveniance
+:PROPERTIES:
+:CUSTOM_ID: el-get
+:END:
+El-get is a /(foxy el-mexicano, Arriba! Arriba!:)/ package manager using
+custome recipes for installing and initializing emacs packages from
+a wide range of different repositories. The source can be fetched
+[[https://github.com/dimitri/el-get][here]] by doing:
+#+begin_src sh
+  git clone https://github.com/dimitri/el-get.git
+#+end_src
+This can be automated with a [[Lazy%20install][Lazy install]] or regular [[Regular%20Install][Regular Install]], which
+is the default in this emacs-init. This is done in init.el for conveniance
 *** El-get initialization
 **** Lazy Install
-     To setup el-get the simple way one needs only
-     to evaluate the following emacs lisp block
-     #+begin_src emacs-lisp :tangle no
-       ;; So the idea is that you copy/paste this code into your *scratch* buffer,
-       ;; hit C-j, and you have a working el-get.
-       (url-retrieve
-        "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
-        (lambda (s)
-          (goto-char (point-max))
-          (eval-print-last-sexp)))
-     #+end_src
+To setup el-get the simple way one needs only
+to evaluate the following emacs lisp block
+#+begin_src emacs-lisp :tangle no
+  ;; So the idea is that you copy/paste this code into your *scratch* buffer,
+  ;; hit C-j, and you have a working el-get.
+  (url-retrieve
+   "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
+   (lambda (s)
+     (goto-char (point-max))
+     (eval-print-last-sexp)))
+#+end_src
 **** Regular Install master branch
-     #+begin_src emacs-lisp :tangle no
-       (setq el-get-dir (expand-file-name "el-get" emacs-init-dir))
-       (add-to-list 'load-path (concat emacs-init-dir "el-get/el-get"))
+#+begin_src emacs-lisp :tangle no
+  (setq el-get-dir (expand-file-name "el-get" emacs-init-dir))
+  (add-to-list 'load-path (concat emacs-init-dir "el-get/el-get"))
 
-       (unless (require 'el-get nil 'noerror)
-         (with-current-buffer
-             (url-retrieve-synchronously
-              "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-           (let (el-get-master-branch)
-             (goto-char (point-max))
-             (eval-print-last-sexp))))
+  (unless (require 'el-get nil 'noerror)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+      (let (el-get-master-branch)
+        (goto-char (point-max))
+        (eval-print-last-sexp))))
 
-       (add-to-list 'el-get-recipe-path (concat emacs-init-dir "recipes"))
-       (el-get 'sync)
-      #+end_src
+  (add-to-list 'el-get-recipe-path (concat emacs-init-dir "recipes"))
+  (el-get 'sync)
+ #+end_src
 
 ** Emacs Lisp Package Archive
-   :PROPERTIES:
-   :CUSTOM_ID: emacs-lisp-package-archive
-   :END:
-   ELPA is now an official part of Emacs so no special
-   configuration is required to download and install packages.  Packages
-   installed through ELPA will be stored in the =elpa/= sub-directory of
-   this directory.
+:PROPERTIES:
+:CUSTOM_ID: emacs-lisp-package-archive
+:END:
+ELPA is now an official part of Emacs so no special
+configuration is required to download and install packages.  Packages
+installed through ELPA will be stored in the =elpa/= sub-directory of
+this directory.
