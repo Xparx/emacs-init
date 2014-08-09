@@ -761,6 +761,12 @@
        (define-key global-map "\C-cl" 'org-store-link)
      #+end_src
 
+**** Indent org-mode correctly
+     [[https://stackoverflow.com/questions/1771981/how-to-keep-indentation-with-emacs-org-mode-visual-line-mode][source]]
+     #+begin_src emacs-lisp
+       (setq org-startup-indented t)
+     #+end_src
+
 **** Local Org files
      Set to the location of your Org files on your local system
      #+begin_src emacs-lisp
