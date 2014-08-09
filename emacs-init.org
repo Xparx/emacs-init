@@ -458,6 +458,18 @@
        (put 'dired-find-alternate-file 'disabled nil)
      #+end_src
 
+     Activating dired-x and a [[http://www.masteringemacs.org/articles/2014/04/10/dired-shell-commands-find-xargs-replacement/][source]] with some more information
+     #+begin_src emacs-lisp
+       (add-hook 'dired-load-hook
+                 (lambda ()
+                   (load "dired-x")))
+     #+end_src
+
+     Remap my keys so C-x C-f finds file at point
+     #+begin_src emacs-lisp
+       (setq dired-x-hands-off-my-keys nil)
+     #+end_src
+
 **** Enable the package window-margin
      Window-margin sets a soft wrap on lines at the
      fill-column width. This breaks truncate long line
