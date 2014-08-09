@@ -787,7 +787,7 @@
 
      Org agenda layout
      #+begin_src emacs-lisp
-        (setq org-agenda-files (quote ("~/notebook/todo.org")))
+        (setq org-agenda-files (list (expand-file-name "todo.org" org-directory)))
         (setq org-agenda-ndays 7)
         (setq org-agenda-show-all-dates t)
         (setq org-agenda-skip-deadline-if-done t)
@@ -820,19 +820,19 @@
 **** Org-Capture
      Org-capture stores notes and todos with a simple key command.
      #+begin_src emacs-lisp
-       (setq org-default-notes-file "~/notebook/notes.org")
+       (setq org-default-notes-file (list (expand-file-name "notes.org" org-directory)))
        (define-key global-map "\C-cc" 'org-capture)
      #+end_src
 
      Capture to specified files
      #+begin_src emacs-lisp
        (setq org-capture-templates
-             '(("t" "Todo" entry (file+headline "~/notebook/todo.org" "Tasks")
-                "* TODO %?\n  %i\n  %a" :kill-buffer t)
-               ("n" "Journal" entry (file+headline "~/notebook/notes.org" "Unsorted")
-                "* %U %?\n  %a\n  %i" :prepend t :kill-buffer t)
+             '(("t" "Todo" entry (file+headline (car org-agenda-files) "Tasks")
+                "* TODO %?\n%i\n%a" :kill-buffer t)
+               ("n" "Journal" entry (file+headline (car org-default-notes-file) "Unsorted")
+                "* %U %?\n%a\n%i" :prepend t :kill-buffer t)
                ("r" "Research note" entry (file+headline "~/research/notes.txt" "Tasks")
-                "* TODO %?\n  %i\n  %a" :kill-buffer t)))
+                "* TODO %?\n%i\n%a" :kill-buffer t)))
      #+end_src
 
 **** Activate babel languages
