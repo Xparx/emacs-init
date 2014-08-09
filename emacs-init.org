@@ -460,14 +460,10 @@
 
      Activating dired-x and a [[http://www.masteringemacs.org/articles/2014/04/10/dired-shell-commands-find-xargs-replacement/][source]] with some more information
      #+begin_src emacs-lisp
-       (add-hook 'dired-load-hook
+       (add-hook 'dired-mode-hook
                  (lambda ()
+                   (setq dired-x-hands-off-my-keys nil) ;; Remap my keys so C-x C-f finds file at point
                    (load "dired-x")))
-     #+end_src
-
-     Remap my keys so C-x C-f finds file at point
-     #+begin_src emacs-lisp
-       (setq dired-x-hands-off-my-keys nil)
      #+end_src
 
 **** Enable the package window-margin
