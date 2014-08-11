@@ -1108,13 +1108,14 @@ Give it a little bit of emacs-lisp
 Mobile org push/pull directory
 #+begin_src emacs-lisp
   (setq org-mobile-directory "~/Dropbox/org" )
-  (setq org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org" )
+  (setq org-mobile-inbox-for-pull (expand-file-name "from-mobile.org" org-directory))
 #+end_src
 
 #+begin_src emacs-lisp
   (setq org-mobile-files (list
                           (expand-file-name "notes.org" org-directory)
-                          (expand-file-name "todo.org" org-directory)))
+                          (expand-file-name "todo.org" org-directory)
+                          (expand-file-name org-ref-bibliography-notes)))
 #+end_src
 
 Pull at startup
