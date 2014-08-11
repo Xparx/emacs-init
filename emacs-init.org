@@ -340,7 +340,6 @@ This approach is not perfect. It destroys the history in the shell buffer.
   (add-hook 'shell-mode-hook 'my-shell-hook)
 #+end_src
 
-
 **** Color Themes
 :PROPERTIES:
 :CUSTOM_ID: color-theme
@@ -1108,14 +1107,14 @@ Give it a little bit of emacs-lisp
 **** MobileOrg
 Mobile org push/pull directory
 #+begin_src emacs-lisp
-  (setq org-mobile-directory "~/Ubuntu One/MobileOrg" )
-  (setq org-mobile-inbox-for-pull "~/Ubuntu One/MobileOrg/from-mobile.org" )
+  (setq org-mobile-directory "~/Dropbox/org" )
+  (setq org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org" )
 #+end_src
 
 #+begin_src emacs-lisp
-  (setq org-mobile-files '(
-                           "~/notebook/notes.org"
-                           "~/notebook/todo.org"))
+  (setq org-mobile-files (list
+                          (expand-file-name "notes.org" org-directory)
+                          (expand-file-name "todo.org" org-directory)))
 #+end_src
 
 Pull at startup
