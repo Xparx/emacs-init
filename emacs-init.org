@@ -287,9 +287,9 @@ Turn on git-gutter for all relevant buffers
 #+end_src
 
 *** Misc
-    :PROPERTIES:
-    :CUSTOM_ID: misc
-    :END:
+:PROPERTIES:
+:CUSTOM_ID: misc
+:END:
 **** Activate TAB completion
 #+begin_src emacs-lisp
   (add-to-list 'completion-styles 'initials t)
@@ -782,6 +782,11 @@ globally for later insertion into an Org-mode buffer.  See
 [[https://stackoverflow.com/questions/1771981/how-to-keep-indentation-with-emacs-org-mode-visual-line-mode][source]]
 #+begin_src emacs-lisp
   (setq org-startup-indented t)
+#+end_src
+
+and with correct levels
+#+begin_src emacs-lisp
+  (setq org-indent-indentation-per-level 1)
 #+end_src
 
 **** Local Org files
