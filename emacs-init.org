@@ -390,9 +390,17 @@ behaviour for some reason after it is used. Heads up!
 
 **** Hidepw-mode hides passwords between specified delimiters
 
+Set delimiters
 #+begin_src emacs-lisp
   (when (el-get-package-exists-p "hidepw")
     (setq hidepw-pattern " -\\(.*\\)- "))
+#+end_src
+
+associate with relevant files
+#+begin_src emacs-lisp
+  (when (el-get-package-exists-p "hidepw")
+    (add-to-list 'auto-mode-alist
+                 '("\\.gpg\\'" . (lambda () (hidepw-mode)))))
 #+end_src
 
 **** kill client buffer with C-x k
