@@ -109,109 +109,6 @@ This can be used to load other files with org code.
     (message (concat "user info can be placed in: " emacs-init-dir "user.el")))
 #+end_src
 
-*** Emacs bindings
-:PROPERTIES:
-:CUSTOM_ID: emacs-bindings
-:END:
-Custom keybindings
-**** Global visual line mode
-Implemented in init.el
-**** Align your code in a pretty way.
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-x \\") 'align-regexp)
-#+end_src
-
-**** Whitespace cleanup
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c w") 'whitespace-cleanup)
-#+end_src
-
-**** Completion that uses many different methods to find options
-#+begin_src emacs-lisp
-  (global-set-key (kbd "M-/") 'hippie-expand)
-#+end_src
-
-**** Font size
-#+begin_src emacs-lisp
-  (define-key global-map (kbd "C-+") 'text-scale-increase)
-  (define-key global-map (kbd "C--") 'text-scale-decrease)
-#+end_src
-
-**** Use regexp searches by default
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
-  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-  (global-set-key (kbd "C-M-s") 'isearch-forward)
-  (global-set-key (kbd "C-M-r") 'isearch-backward)
-#+end_src
-
-**** File finding
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
-  (global-set-key (kbd "C-x C-M-f") 'find-file-in-project)
-  (global-set-key (kbd "C-x C-p") 'find-file-at-point)
-  (global-set-key (kbd "C-c y") 'bury-buffer)
-  (global-set-key (kbd "C-c r") 'revert-buffer)
-  (global-set-key (kbd "M-`") 'file-cache-minibuffer-complete)
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-#+end_src
-
-**** Ibuffer settings
-Ibuffer settings, source [[http://www.emacswiki.org/emacs/IbufferMode][here]]. Lots of interesting stuff in there.
-#+begin_src emacs-lisp
-  (setq ibuffer-saved-filter-groups
-        (quote (("default"
-                 ("org-mode" (mode . org-mode))
-                 ("MATLAB" (mode . matlab-mode))
-                 ("LaTeX" (or
-                           (mode . latex-mode)
-                           (mode . bibtex-mode)))
-                 ("planner" (or
-                             (name . "^\\*Calendar\\*$")
-                             (name . "^diary$")))
-                 ("emacs" (or
-                           (name . "^\\*scratch\\*$")
-                           (name . "^\\*ielm\\*$")
-                           (name . "^\\*Completions\\*$")
-                           (name . "^\\*Messages\\*$")))
-                 ("Magit" (name . "^\\*magit.*\\*$"))
-                 ("dired" (mode . dired-mode))
-                 ("gnus" (or
-                          (mode . message-mode)
-                          (mode . bbdb-mode)
-                          (mode . mail-mode)
-                          (mode . gnus-group-mode)
-                          (mode . gnus-summary-mode)
-                          (mode . gnus-article-mode)
-                          (name . "^\\.bbdb$")
-                          (name . "^\\.newsrc-dribble")))))))
-#+end_src
-
-Ibuffer mode hook
-#+begin_src emacs-lisp
-  (add-hook 'ibuffer-mode-hook
-                (lambda ()
-                  (ibuffer-switch-to-saved-filter-groups "default")))
-#+end_src
-
-**** Buffer cycling.
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-<prior>") 'previous-buffer) ; Ctrl+PageDown
-  (global-set-key (kbd "C-<next>") 'next-buffer) ; Ctrl+PageUp
-#+end_src
-
-**** Help should search more than just commands
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-h a") 'apropos)
-#+end_src
-
-**** Rgrep
-Rgrep is infinitely useful in multi-file projects.
-(see [[elisp:(describe-function 'rgrep)]])
-#+begin_src emacs-lisp
-  (define-key global-map "\C-x\C-r" 'rgrep)
-#+end_src
-
 *** Magit
 :PROPERTIES:
 :CUSTOM_ID: magit
@@ -507,6 +404,44 @@ behaviour for some reason after it is used. Heads up!
                 (use-local-map (copy-keymap (current-local-map))))
               (when server-buffer-clients
                 (local-set-key (kbd "C-x k") 'server-edit))))
+#+end_src
+
+**** Ibuffer settings
+Ibuffer settings, source [[http://www.emacswiki.org/emacs/IbufferMode][here]]. Lots of interesting stuff in there.
+#+begin_src emacs-lisp
+  (setq ibuffer-saved-filter-groups
+        (quote (("default"
+                 ("org-mode" (mode . org-mode))
+                 ("MATLAB" (mode . matlab-mode))
+                 ("LaTeX" (or
+                           (mode . latex-mode)
+                           (mode . bibtex-mode)))
+                 ("planner" (or
+                             (name . "^\\*Calendar\\*$")
+                             (name . "^diary$")))
+                 ("emacs" (or
+                           (name . "^\\*scratch\\*$")
+                           (name . "^\\*ielm\\*$")
+                           (name . "^\\*Completions\\*$")
+                           (name . "^\\*Messages\\*$")))
+                 ("Magit" (name . "^\\*magit.*\\*$"))
+                 ("dired" (mode . dired-mode))
+                 ("gnus" (or
+                          (mode . message-mode)
+                          (mode . bbdb-mode)
+                          (mode . mail-mode)
+                          (mode . gnus-group-mode)
+                          (mode . gnus-summary-mode)
+                          (mode . gnus-article-mode)
+                          (name . "^\\.bbdb$")
+                          (name . "^\\.newsrc-dribble")))))))
+#+end_src
+
+Ibuffer mode hook
+#+begin_src emacs-lisp
+  (add-hook 'ibuffer-mode-hook
+                (lambda ()
+                  (ibuffer-switch-to-saved-filter-groups "default")))
 #+end_src
 
 *** LaTeX mode
@@ -1174,6 +1109,71 @@ Above does not work for org-mode, therefore do it here.
      (define-key yas-minor-mode-map (kbd "C-TAB") 'yas-expand)
      (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand))
  #+end_src
+
+*** Emacs bindings
+:PROPERTIES:
+:CUSTOM_ID: emacs-bindings
+:END:
+Custom keybindings
+**** Global visual line mode
+Implemented in init.el
+**** Align your code in a pretty way.
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x \\") 'align-regexp)
+#+end_src
+
+**** Whitespace cleanup
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c w") 'whitespace-cleanup)
+#+end_src
+
+**** Completion that uses many different methods to find options
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-/") 'hippie-expand)
+#+end_src
+
+**** Font size
+#+begin_src emacs-lisp
+  (define-key global-map (kbd "C-+") 'text-scale-increase)
+  (define-key global-map (kbd "C--") 'text-scale-decrease)
+#+end_src
+
+**** Use regexp searches by default
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+  (global-set-key (kbd "C-M-s") 'isearch-forward)
+  (global-set-key (kbd "C-M-r") 'isearch-backward)
+#+end_src
+
+**** File finding
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
+  (global-set-key (kbd "C-x C-M-f") 'find-file-in-project)
+  (global-set-key (kbd "C-x C-p") 'find-file-at-point)
+  (global-set-key (kbd "C-c y") 'bury-buffer)
+  (global-set-key (kbd "C-c r") 'revert-buffer)
+  (global-set-key (kbd "M-`") 'file-cache-minibuffer-complete)
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+#+end_src
+
+**** Buffer cycling.
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-<prior>") 'previous-buffer) ; Ctrl+PageDown
+  (global-set-key (kbd "C-<next>") 'next-buffer) ; Ctrl+PageUp
+#+end_src
+
+**** Help should search more than just commands
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-h a") 'apropos)
+#+end_src
+
+**** Rgrep
+Rgrep is infinitely useful in multi-file projects.
+(see [[elisp:(describe-function 'rgrep)]])
+#+begin_src emacs-lisp
+  (define-key global-map "\C-x\C-r" 'rgrep)
+#+end_src
 
 *** Custom functions
 Self defined functionality
