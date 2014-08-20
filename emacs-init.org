@@ -808,7 +808,7 @@ Capture to specified files
         '(("t" "Todo" entry (file+headline (car org-agenda-files) "Tasks")
            "* TODO %?\n%i\n%a" :kill-buffer t)
           ("n" "Journal" entry (file+headline (car org-default-notes-file) "Unsorted")
-           "* %U %?\n%a\n%i" :prepend t :kill-buffer t)
+           "* %?\n%U\n%a\n%i" :prepend t :kill-buffer t)
           ("r" "Research note" entry (file+headline "~/research/notes.txt" "Tasks")
            "* TODO %?\n%i\n%a" :kill-buffer t)))
 #+end_src
