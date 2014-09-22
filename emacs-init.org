@@ -1111,15 +1111,15 @@ Above does not work for org-mode, therefore do it here.
                  (yas-minor-mode))))
 #+end_src
 
- Remap =yas-expand= for relevant modes as it over shadows the
- otherwise very nice autocompletion. [[https://capitaomorte.github.io/yasnippet/snippet-expansion.html#sec-1-1][source]]
- #+begin_src emacs-lisp
-   (when (el-get-package-exists-p "yasnippet")
-     (define-key yas-minor-mode-map (kbd "<tab>") nil)
-     (define-key yas-minor-mode-map (kbd "TAB") nil)
-     (define-key yas-minor-mode-map (kbd "C-TAB") 'yas-expand)
-     (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand))
- #+end_src
+Remap =yas-expand= for relevant modes as it over shadows the
+otherwise very nice autocompletion. [[https://capitaomorte.github.io/yasnippet/snippet-expansion.html#sec-1-1][source]]
+#+begin_src emacs-lisp
+  (when (el-get-package-exists-p "yasnippet")
+    (define-key yas-minor-mode-map (kbd "<tab>") nil)
+    (define-key yas-minor-mode-map (kbd "TAB") nil)
+    (define-key yas-minor-mode-map (kbd "C-TAB") 'yas-expand)
+    (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand))
+#+end_src
 
 *** Emacs bindings
 :PROPERTIES:
@@ -1300,19 +1300,19 @@ After we've loaded all the Emacs Init defaults, lets load the User's
 stuff.
 #+begin_src emacs-lisp
   (cl-flet ((sk-load (base)
-                  (let* ((path          (expand-file-name base emacs-init-dir))
-                         (literate      (concat path ".org"))
-                         (encrypted-org (concat path ".org.gpg"))
-                         (plain         (concat path ".el"))
-                         (encrypted-el  (concat path ".el.gpg")))
-                    (cond
-                     ((file-exists-p encrypted-org) (org-babel-load-file encrypted-org))
-                     ((file-exists-p encrypted-el)  (load encrypted-el))
-                     ((file-exists-p literate)      (org-babel-load-file literate))
-                     ((file-exists-p plain)         (load plain)))))
-         (remove-extension (name)
-                           (string-match "\\(.*?\\)\.\\(org\\(\\.el\\)?\\|el\\)\\(\\.gpg\\)?$" name)
-                           (match-string 1 name)))
+                     (let* ((path          (expand-file-name base emacs-init-dir))
+                            (literate      (concat path ".org"))
+                            (encrypted-org (concat path ".org.gpg"))
+                            (plain         (concat path ".el"))
+                            (encrypted-el  (concat path ".el.gpg")))
+                       (cond
+                        ((file-exists-p encrypted-org) (org-babel-load-file encrypted-org))
+                        ((file-exists-p encrypted-el)  (load encrypted-el))
+                        ((file-exists-p literate)      (org-babel-load-file literate))
+                        ((file-exists-p plain)         (load plain)))))
+            (remove-extension (name)
+                              (string-match "\\(.*?\\)\.\\(org\\(\\.el\\)?\\|el\\)\\(\\.gpg\\)?$" name)
+                              (match-string 1 name)))
     (let ((elisp-dir (expand-file-name "src" emacs-init-dir))
           (user-dir (expand-file-name user-login-name emacs-init-dir)))
       ;; add the src directory to the load path
@@ -1332,7 +1332,7 @@ stuff.
               (remove-duplicates
                (mapcar #'remove-extension
                        (directory-files user-dir t ".*\.\\(org\\|el\\)\\(\\.gpg\\)?$"))
-        :test #'string=)))))
+               :test #'string=)))))
 #+end_src
 
 ** Settings from M-x customize
