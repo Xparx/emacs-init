@@ -896,19 +896,19 @@ use latexmk 4.20 or higher.
     (let (texcmd))
     (cond
      ( ;; tex -> dvi -> pdf
-      (string-match "LATEX_CMD: mkpdfdvi" (buffer-string))
+      (string-match "^#\\+LATEX_CMD: +mkpdfdvi" (buffer-string))
       (setq texcmd "latexmk -pdfdvi -quiet %f"))
      ( ;; pdflatex -> pdf
-      (string-match "LATEX_CMD: pdflatex" (buffer-string))
+      (string-match "^#\\+LATEX_CMD: +pdflatex" (buffer-string))
       (setq texcmd "latexmk -pdf -quiet %f"))
      ( ;; bibtex -> dvi -> pdf
-      (string-match "LATEX_CMD: mkbibtex" (buffer-string))
+      (string-match "^#\\+LATEX_CMD: +mkbibtex" (buffer-string))
       (setq texcmd "latexmk -pdfdvi -bibtex -quiet %f"))
      ( ;; bibtex -> pdf
-      (string-match "LATEX_CMD: pdfbibtex" (buffer-string))
+      (string-match "^#\\+LATEX_CMD: +pdfbibtex" (buffer-string))
       (setq texcmd "latexmk -pdf -bibtex -quiet %f"))
      ( ;; xelatex -> pdf
-      (string-match "LATEX_CMD: xelatex" (buffer-string))
+      (string-match "^#\\+LATEX_CMD: +xelatex" (buffer-string))
       (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
      ( ;; default
       (string-match "" (buffer-string))
