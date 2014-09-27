@@ -380,6 +380,12 @@ Activating dired-x and a [[http://www.masteringemacs.org/articles/2014/04/10/dir
               (load "dired-x")))
 #+end_src
 
+Default [[http://ergoemacs.org/emacs/dired_sort.html][format]] of dired
+#+begin_src emacs-lisp
+  (setq dired-listing-switches "-al -h --group-directories-first --time-style long-iso")
+#+end_src
+
+
 **** Enable the package window-margin
 Window-margin sets a soft wrap on lines at the
 fill-column width. This breaks truncate long line
