@@ -816,10 +816,12 @@ Capture to specified files
            "* TODO %?\n%i\n%a" :kill-buffer t)
           ("n" "Journal" entry (file+headline (car org-default-notes-file) "Unsorted")
            "* %?\n%U\n%a\n%i" :prepend t :kill-buffer t)
-          ("r" "Research note" entry (file+headline "~/research/notes.txt" "Tasks")
+          ("r" "Research task" entry (file+headline "~/research/notes.txt" "Tasks")
            "* TODO %?\n%i\n%a" :kill-buffer t)
+          ("R" "Research note" entry (file+headline "~/research/notes.txt" "Notes")
+           "* %?\n%U\n%a\n%i" :prepend t :kill-buffer t)
           ("c" "Contacts" entry (file (expand-file-name "contacts.org" org-directory))
-                 "* %(org-contacts-template-name)\n:PROPERTIES:\n:EMAIL: %(org-contacts-template-email)\n:END:")))
+           "* %(org-contacts-template-name)\n:PROPERTIES:\n:EMAIL: %(org-contacts-template-email)\n:END:")))
 #+end_src
 
 **** Activate babel languages
