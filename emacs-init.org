@@ -380,9 +380,56 @@ Activating dired-x and a [[http://www.masteringemacs.org/articles/2014/04/10/dir
               (load "dired-x")))
 #+end_src
 
-Default [[http://ergoemacs.org/emacs/dired_sort.html][format]] of dired
+Default [[http://ergoemacs.org/emacs/dired_sort.html][format]] of dired (=s= sorts the list based on date)
 #+begin_src emacs-lisp
   (setq dired-listing-switches "-al -h --group-directories-first --time-style long-iso")
+#+end_src
+
+[[http://oremacs.com/2015/01/04/dired-nohup/][Guess]] program by file extension
+#+begin_src emacs-lisp
+  (setq dired-guess-shell-alist-user
+        '(("\\.pdf\\'" "evince" "okular")
+          ("\\.cbr\\'" "evince")
+          ("\\.\\(?:djvu\\|eps\\)\\'" "evince")
+          ("\\.\\(?:jpg\\|jpeg\\|png\\|gif\\|xpm\\)\\'" "eog")
+          ("\\.\\(?:xcf\\)\\'" "gimp")
+          ("\\.csv\\'" "libreoffice")
+          ("\\.tex\\'" "pdflatex" "latex")
+          ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\)\\(?:\\.part\\)?\\'"
+           "vlc")
+          ("\\.\\(?:mp3\\|flac\\)\\'" "rhythmbox")
+          ("\\.html?\\'" "chromium-browser" "firefox")
+          ("\\.cue?\\'" "audacious")))
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'dired-aux)
+
+  (defun dired-start-process (cmd &optional file-list)
+    (interactive
+     (let ((files (dired-get-marked-files
+                   t current-prefix-arg)))
+       (list
+        (dired-read-shell-command "& on %s: "
+                                  current-prefix-arg files)
+        files)))
+    (let (list-switch)
+      (start-process
+       cmd nil shell-file-name
+       shell-command-switch
+       (format
+        "nohup 1>/dev/null 2>/dev/null %s \"%s\""
+        (if (and (> (length file-list) 1)
+                 (setq list-switch
+                       (cadr (assoc cmd dired-filelist-cmd))))
+            (format "%s %s" cmd list-switch)
+          cmd)
+        (mapconcat #'expand-file-name file-list "\" \"")))))
+#+end_src
+
+Define a key-map for =dired-start-process=.
+#+begin_src emacs-lisp
+  (define-key dired-mode-map "r" 'dired-start-process)
 #+end_src
 
 
@@ -1057,6 +1104,10 @@ Give it a little bit of emacs-lisp
 #+begin_src emacs-lisp
   (setq initial-scratch-message "\n#+begin_src emacs-lisp\n\n#+end_src\n\n")
 #+end_src
+
+**** Org protocal
+http://oremacs.com/2015/01/07/org-protocol-1/
+http://oremacs.com/2015/01/08/org-protocol-2/
 **** MobileOrg
 Mobile org push/pull directory
 #+begin_src emacs-lisp

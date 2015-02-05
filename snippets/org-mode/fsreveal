@@ -1,0 +1,6 @@
+#name : font-size reveal.js
+#contributor : Andreas Tjarnberg <andreas.tjarnberg@fripost.org>
+# --
+#+reveal_html: <div style="font-size: ${1:scale}%;">
+$0
+#+reveal_html: </div>
