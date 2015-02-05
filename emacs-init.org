@@ -899,8 +899,7 @@ Originally taken from Bruno Tavernier: [[http://thread.gmane.org/gmane.emacs.org
 use latexmk 4.20 or higher.
 #+begin_src emacs-lisp
   (defun my-auto-tex-cmd (must-be-here-for-hook-to-work)
-    "When exporting from .org with latex, automatically run latexmk, latex,
-                                        pdflatex, or xelatex as appropriate, using latexmk."
+    "When exporting from .org with latex, automatically run latexmk, latex, pdflatex, or xelatex as appropriate, using latexmk."
     (let (texcmd))
     (cond
      ( ;; tex -> dvi -> pdf
