@@ -331,6 +331,10 @@ Save to personal dictionary quietly
   (setq tramp-default-method "ssh")
 #+end_src
 
+#+begin_src emacs-lisp
+  (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+#+end_src
+
 **** Remove trailing whitespaces
 :PROPERTIES:
 :tangle:   no
@@ -893,6 +897,8 @@ the currently supported languages.
      (js . t)
      (R . t)
      (C . t)
+     (css . t)
+     (calc . t)
      (perl . t)
      ))
 #+end_src
