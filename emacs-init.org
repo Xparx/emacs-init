@@ -945,6 +945,10 @@ Make org understand latex syntax: [[http://stackoverflow.com/questions/11646880/
   (add-hook 'org-mode-hook (lambda () (setq ispell-parser 'tex)))
 #+end_src
 
+#+begin_src emacs-lisp
+  (add-to-list 'ispell-skip-region-alist '("^#\\+begin_src/i" . "^#\\+end_src/i"))
+#+end_src
+
 **** Org LaTeX export types
 Originally taken from Bruno Tavernier: [[http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432][here]], but adapted to
 use latexmk 4.20 or higher.
