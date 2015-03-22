@@ -1,0 +1,6 @@
+(:name helm-bibtex
+       :description "Manage bibliographies in Emacs"
+       :wepage "https://github.com/tmalsburg/helm-bibtex"
+       :type github
+       :pkgname "tmalsburg/helm-bibtex"
+       :depends (helm))
