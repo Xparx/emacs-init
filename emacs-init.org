@@ -621,6 +621,12 @@ Set default tabs width = 4 for python-mode
   (setq python-indent-offset 4)
 #+end_src
 
+**** Enable jedi in python mode
+#+begin_src emacs-lisp
+  (when (el-get-package-exists-p "jedi")
+    (add-hook 'python-mode-hook 'jedi:setup))
+#+end_src
+
 **** Use Cython mode
 :PROPERTIES:
 :CUSTOM_ID: cython
