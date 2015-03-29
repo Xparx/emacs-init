@@ -4,6 +4,6 @@
        :type github
        :pkgname "jkitchin/org-ref"
        :depends (dash s f ebib helm-bibtex hydra key-chord)
-       ;; :features "org-ref"
-       ;; :prepare '(("make"))
-       :build `(("make" ,(format "EMACS=%s" el-get-emacs))))
+       :features "org-ref"
+       ;; :build `(("make" ,(format "EMACS=%s" el-get-emacs)))
+       )

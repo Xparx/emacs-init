@@ -38,8 +38,11 @@
       (eval-print-last-sexp))))
 
 (add-to-list 'el-get-recipe-path (concat emacs-init-dir "recipes"))
-(el-get 'sync)
 
+;; The latest version of org-mode should be loaded to make sure every other package depending on it works
+(when (el-get-package-exists-p "org-mode")
+  (el-get 'sync (list "org-mode")))
+(el-get 'sync)
 ;; load up emacs init
 (message "Loading emacs-init")
 
@@ -47,7 +50,5 @@
     (org-babel-load-file (expand-file-name "emacs-init.org" emacs-init-dir)))
 
 (org-babel-load-file (expand-file-name "gnus.org" emacs-init-dir))
-
-; (message "init.el has loaded in %ds" (destructuring-bind (hi lo ms) (current-time) (- (+ hi lo) (+ (first *emacs-load-start*) (second *emacs-load-start*)))))
 
 ;;; init.el ends here
