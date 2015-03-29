@@ -399,7 +399,7 @@ Default [[http://ergoemacs.org/emacs/dired_sort.html][format]] of dired (=s= sor
           ("\\.\\(?:xcf\\)\\'" "gimp")
           ("\\.csv\\'" "libreoffice")
           ("\\.tex\\'" "pdflatex" "latex")
-          ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\)\\(?:\\.part\\)?\\'"
+          ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\|rar\\)\\(?:\\.part\\)?\\'"
            "vlc")
           ("\\.\\(?:mp3\\|flac\\)\\'" "rhythmbox")
           ("\\.html?\\'" "chromium-browser" "firefox")
@@ -1067,7 +1067,7 @@ Deprecated source from previous setup: [[http://tincman.wordpress.com/2011/01/04
 
 I went for using [[https://github.com/jkitchin/jmax/blob/master/org-ref.org][org-ref]] to manage references and citations
 in org-mode. Both a [[http://kitchingroup.cheme.cmu.edu/blog/][blog]] from the creator and a [[https://www.youtube.com/watch?v=JyvpSVl4_dg][video]] relates
-to org-ref and can be usefull.
+to org-ref and can be useful.
 
 Paths to files. This might be more general than reftex.
 #+begin_src emacs-lisp
