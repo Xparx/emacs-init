@@ -3,7 +3,7 @@
        :website "https://github.com/jkitchin/org-ref"
        :type github
        :pkgname "jkitchin/org-ref"
-       :depends (dash s f ebib helm-bibtex hydra key-chord)
+       :depends (reftex dash s f ebib helm-bibtex hydra key-chord)
        :features "org-ref"
        ;; :build `(("make" ,(format "EMACS=%s" el-get-emacs)))
        )
