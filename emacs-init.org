@@ -867,9 +867,9 @@ Capture to specified files
            "* TODO %?\n%i\n%a" :kill-buffer t)
           ("n" "Journal" entry (file+headline (car org-default-notes-file) "Unsorted")
            "* %?\n%U\n%a\n%i" :prepend t :kill-buffer t)
-          ("r" "Research task" entry (file+headline "~/research/notes.txt" "Tasks")
+          ("r" "Research task" entry (file+headline "~/research/notes.org" "Tasks")
            "* TODO %?\n%i\n%a" :kill-buffer t)
-          ("R" "Research note" entry (file+headline "~/research/notes.txt" "Notes")
+          ("R" "Research note" entry (file+headline "~/research/notes.org" "Notes")
            "* %?\n%U\n%a\n%i" :prepend t :kill-buffer t)
           ("c" "Contacts" entry (file (expand-file-name "contacts.org" org-directory))
            "* %(org-contacts-template-name)\n:PROPERTIES:\n:EMAIL: %(org-contacts-template-email)\n:END:")))
@@ -1060,7 +1060,7 @@ Define packages for each latex command. Using latexmk...
   (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
 #+end_src
 
-**** Org RefTeX integration with org-ref
+**** org-ref configuration
 :PROPERTIES:
 :CUSTOM_ID: org-ref
 :END:
@@ -1074,14 +1074,14 @@ Paths to files. This might be more general than reftex.
 #+begin_src emacs-lisp
   (setq org-link-abbrev-alist
         '(("bib" . "~/research/bibliography.bib::%s")
-          ("notes" . "~/research/notes.txt::#%s")
+          ("notes" . "~/research/notes.org::#%s")
           ("papers" . "~/research/papers/%s.pdf")))
 #+end_src
 
 Org-ref variables
 #+begin_src emacs-lisp
   (when (el-get-package-exists-p "org-ref")
-    (setq org-ref-bibliography-notes "~/research/notes.txt"
+    (setq org-ref-bibliography-notes "~/research/notes.org"
           org-ref-default-bibliography '("~/research/bibliography.bib")
           org-ref-pdf-directory "~/research/papers/"))
 #+end_src
