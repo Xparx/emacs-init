@@ -5,5 +5,5 @@
        :pkgname "jkitchin/org-ref"
        :depends (reftex dash s f ebib helm-bibtex hydra key-chord)
        :features "org-ref"
-       ;; :build `(("make" ,(format "EMACS=%s" el-get-emacs)))
+       :build `(("make" ,(format "EMACS=%s" el-get-emacs)))
        )
