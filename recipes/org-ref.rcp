@@ -1,6 +1,6 @@
 (:name org-ref
        :description "Org-ref - The best reference handling for org-mode"
-       :website "https://github.com/jkitchin/org-ref"
+       :website "https://github.com/Xparx/org-ref"
        :type github
        :pkgname "jkitchin/org-ref"
        :depends (reftex dash s f ebib helm-bibtex hydra key-chord)
