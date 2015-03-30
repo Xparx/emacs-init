@@ -115,6 +115,7 @@ to evaluate the following emacs lisp block
      (goto-char (point-max))
      (eval-print-last-sexp)))
 #+end_src
+
 **** Regular Install master branch
 #+begin_src emacs-lisp :tangle no
   (setq el-get-dir (expand-file-name "el-get" emacs-init-dir))

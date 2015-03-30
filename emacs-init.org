@@ -402,9 +402,18 @@ Default [[http://ergoemacs.org/emacs/dired_sort.html][format]] of dired (=s= sor
           ("\\.cue?\\'" "audacious")))
 #+end_src
 
+This is necessary here
 #+begin_src emacs-lisp
   (require 'dired-aux)
+#+end_src
 
+Define command for list of files
+#+begin_src emacs-lisp
+  (defvar dired-filelist-cmd
+    '(("vlc" "-L")))
+#+end_src
+
+#+begin_src emacs-lisp
   (defun dired-start-process (cmd &optional file-list)
     (interactive
      (let ((files (dired-get-marked-files
@@ -683,7 +692,13 @@ Install and sync gnuplot-mode repository with el-get manually.
 Associate .gp files with gnuplot.
 #+begin_src emacs-lisp
   (setq auto-mode-alist
-        (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
+        (append '(("\\.gp$" . gnuplot-mode))
+                '(("\\.gnuplot$" . gnuplot-mode))
+                '(("\\.plt$" . gnuplot-mode))
+                '(("\\.gnup$" . gnuplot-mode))
+                '(("\\.pal$" . gnuplot-mode))
+                '(("\\.plt$" . gnuplot-mode))
+                auto-mode-alist))
 #+end_src
 
 **** MATLAB-mode
@@ -728,6 +743,13 @@ Assosicate files with maxima mode.
 #+begin_src emacs-lisp
   (when (el-get-package-exists-p "init-maxima")
     (add-to-list 'auto-mode-alist '("\\.ma[cx]" . maxima-mode)))
+#+end_src
+
+**** R
+Associate R scripts with the right mode
+#+begin_src emacs-lisp
+  (when (el-get-package-exists-p "ess")
+    (add-to-list 'auto-mode-alist '("\\.R" . R-mode)))
 #+end_src
 
 *** Org Mode <3
