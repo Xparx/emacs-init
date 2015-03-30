@@ -1140,9 +1140,16 @@ Mobile org push/pull directory
 #+begin_src emacs-lisp
   (setq org-mobile-files (list
                           (expand-file-name "notes.org" org-directory)
-                          (expand-file-name "todo.org" org-directory)
-                          (expand-file-name org-ref-bibliography-notes)))
+                          (expand-file-name "todo.org" org-directory)))
 #+end_src
+
+This should only be added if =org-ref= exist
+#+begin_src emacs-lisp
+  (when (el-get-package-exists-p "org-ref")
+    (add-to-list 'org-mobile-files
+                 (expand-file-name org-ref-bibliography-notes)))
+#+end_src
+
 
 Pull at startup
 #+begin_src emacs-lisp :tangle no
