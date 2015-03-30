@@ -1,12 +1,9 @@
 (:name org-ref
        :description "Org-ref - The best reference handling for org-mode"
-       :type http
-       :url "https://raw.githubusercontent.com/jkitchin/jmax/master/org/org-ref.org"
-       :depends (reftex dash)
+       :website "https://github.com/Xparx/org-ref"
+       :type github
+       :pkgname "jkitchin/org-ref"
+       :depends (reftex dash s f ebib helm-bibtex hydra key-chord)
        :features "org-ref"
-       :prepare (let ((source-file (expand-file-name "org-ref.org" (el-get-package-directory "org-ref")))
-                        (target-file (expand-file-name "org-ref.el" (el-get-package-directory "org-ref"))))
-                    (when (not (file-exists-p target-file))
-                      (require 'ob-tangle)
-                      (org-babel-tangle-file source-file target-file "emacs-lisp"))))
-
+       :build `(("make" ,(format "EMACS=%s" el-get-emacs)))
+       )

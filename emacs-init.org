@@ -331,6 +331,10 @@ Save to personal dictionary quietly
   (setq tramp-default-method "ssh")
 #+end_src
 
+#+begin_src emacs-lisp
+  (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+#+end_src
+
 **** Remove trailing whitespaces
 :PROPERTIES:
 :tangle:   no
@@ -395,7 +399,7 @@ Default [[http://ergoemacs.org/emacs/dired_sort.html][format]] of dired (=s= sor
           ("\\.\\(?:xcf\\)\\'" "gimp")
           ("\\.csv\\'" "libreoffice")
           ("\\.tex\\'" "pdflatex" "latex")
-          ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\)\\(?:\\.part\\)?\\'"
+          ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\|rar\\)\\(?:\\.part\\)?\\'"
            "vlc")
           ("\\.\\(?:mp3\\|flac\\)\\'" "rhythmbox")
           ("\\.html?\\'" "chromium-browser" "firefox")
@@ -624,6 +628,12 @@ IPython is the preferred method for python evaluation.
 Set default tabs width = 4 for python-mode
 #+begin_src emacs-lisp
   (setq python-indent-offset 4)
+#+end_src
+
+**** Enable jedi in python mode
+#+begin_src emacs-lisp
+  (when (el-get-package-exists-p "jedi")
+    (add-hook 'python-mode-hook 'jedi:setup))
 #+end_src
 
 **** Use Cython mode
@@ -885,9 +895,9 @@ Capture to specified files
            "* TODO %?\n%i\n%a" :kill-buffer t)
           ("n" "Journal" entry (file+headline (car org-default-notes-file) "Unsorted")
            "* %?\n%U\n%a\n%i" :prepend t :kill-buffer t)
-          ("r" "Research task" entry (file+headline "~/research/notes.txt" "Tasks")
+          ("r" "Research task" entry (file+headline "~/research/notes.org" "Tasks")
            "* TODO %?\n%i\n%a" :kill-buffer t)
-          ("R" "Research note" entry (file+headline "~/research/notes.txt" "Notes")
+          ("R" "Research note" entry (file+headline "~/research/notes.org" "Notes")
            "* %?\n%U\n%a\n%i" :prepend t :kill-buffer t)
           ("c" "Contacts" entry (file (expand-file-name "contacts.org" org-directory))
            "* %(org-contacts-template-name)\n:PROPERTIES:\n:EMAIL: %(org-contacts-template-email)\n:END:")))
@@ -917,6 +927,8 @@ the currently supported languages.
      (js . t)
      (R . t)
      (C . t)
+     (css . t)
+     (calc . t)
      (perl . t)
      ))
 #+end_src
@@ -961,6 +973,10 @@ So that the export does not end up in the kill ring.
 Make org understand latex syntax: [[http://stackoverflow.com/questions/11646880/flyspell-in-org-mode-recognize-latex-syntax-like-auctex][source]]
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook (lambda () (setq ispell-parser 'tex)))
+#+end_src
+
+#+begin_src emacs-lisp
+  (add-to-list 'ispell-skip-region-alist '("^#\\+begin_src/i" . "^#\\+end_src/i"))
 #+end_src
 
 **** Org LaTeX export types
@@ -1072,7 +1088,7 @@ Define packages for each latex command. Using latexmk...
   (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
 #+end_src
 
-**** Org RefTeX integration with org-ref
+**** org-ref configuration
 :PROPERTIES:
 :CUSTOM_ID: org-ref
 :END:
@@ -1080,20 +1096,20 @@ Deprecated source from previous setup: [[http://tincman.wordpress.com/2011/01/04
 
 I went for using [[https://github.com/jkitchin/jmax/blob/master/org-ref.org][org-ref]] to manage references and citations
 in org-mode. Both a [[http://kitchingroup.cheme.cmu.edu/blog/][blog]] from the creator and a [[https://www.youtube.com/watch?v=JyvpSVl4_dg][video]] relates
-to org-ref and can be usefull.
+to org-ref and can be useful.
 
 Paths to files. This might be more general than reftex.
 #+begin_src emacs-lisp
   (setq org-link-abbrev-alist
         '(("bib" . "~/research/bibliography.bib::%s")
-          ("notes" . "~/research/notes.txt::#%s")
+          ("notes" . "~/research/notes.org::#%s")
           ("papers" . "~/research/papers/%s.pdf")))
 #+end_src
 
 Org-ref variables
 #+begin_src emacs-lisp
   (when (el-get-package-exists-p "org-ref")
-    (setq org-ref-bibliography-notes "~/research/notes.txt"
+    (setq org-ref-bibliography-notes "~/research/notes.org"
           org-ref-default-bibliography '("~/research/bibliography.bib")
           org-ref-pdf-directory "~/research/papers/"))
 #+end_src
