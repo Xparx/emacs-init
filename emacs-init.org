@@ -1260,6 +1260,15 @@ Implemented in init.el
   (global-set-key (kbd "C-M-r") 'isearch-backward)
 #+end_src
 
+If =visual-regexp= or =visual-regexp-steroids= is installed, use those
+#+begin_src emacs-lisp
+  (when (el-get-package-exists-p "visual-regexp")
+    (global-set-key (kbd "C-c r") 'vr/replace)
+    (global-set-key (kbd "M-%") 'vr/query-replace)
+    (global-set-key (kbd "C-s") 'vr/isearch-forward)
+    (global-set-key (kbd "C-r") 'vr/isearch-backward))
+#+end_src
+
 **** File finding
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
