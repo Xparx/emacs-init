@@ -380,6 +380,7 @@ Activating dired-x and a [[http://www.masteringemacs.org/articles/2014/04/10/dir
 #+begin_src emacs-lisp
   (add-hook 'dired-mode-hook
             (lambda ()
+              (setq truncate-lines t)
               (setq dired-x-hands-off-my-keys nil) ;; Remap my keys so C-x C-f finds file at point
               (load "dired-x")))
 #+end_src
