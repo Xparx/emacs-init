@@ -18,7 +18,7 @@
 *** Load path etc
 #+name: emacs-init-load-paths
 #+begin_src emacs-lisp
-  (add-to-list 'load-path emacs-init-dir)
+  (add-to-list 'load-path (concat emacs-init-dir "lisp"))
   (setq autoload-file (concat emacs-init-dir "loaddefs.el"))
   (setq custom-file (concat emacs-init-dir "custom.el"))
 #+end_src
