@@ -394,7 +394,7 @@ Default [[http://ergoemacs.org/emacs/dired_sort.html][format]] of dired (=s= sor
 #+begin_src emacs-lisp
   (setq dired-guess-shell-alist-user
         '(("\\.pdf\\'" "evince" "okular")
-          ("\\.cbr\\'" "evince")
+          ("\\.\\(?:cbr\\|cbz\\)\\'" "evince")
           ("\\.\\(?:djvu\\|eps\\)\\'" "evince")
           ("\\.\\(?:jpg\\|jpeg\\|png\\|gif\\|xpm\\)\\'" "eog")
           ("\\.\\(?:xcf\\)\\'" "gimp")
