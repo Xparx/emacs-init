@@ -550,6 +550,7 @@ More information can be found [[https://www.gnu.org/software/auctex/manual/aucte
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "auctex")
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+  (add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode))
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master t))
@@ -767,7 +768,7 @@ Associate R scripts with the right mode
 :PROPERTIES:
 :tangle:   yes
 :END:
-Install and sync org-mode repository with el-get
+Install and sync org-mode repository with el-get in =init.el=
 **** El-getting org-mode
 Install manually. This file will not load untill an el-get
 org-mode package is installed.
