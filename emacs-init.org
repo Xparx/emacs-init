@@ -638,6 +638,15 @@ Set default tabs width = 4 for python-mode
   (add-hook 'python-mode-hook 'jedi:setup))
 #+end_src
 
+**** eval-in-repl for python mode
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "eval-in-repl")
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (require 'eval-in-repl-python)
+              (define-key python-mode-map (kbd "<C-return>") 'eir-eval-in-python))))
+#+end_src
+
 **** Use Cython mode
 :PROPERTIES:
 :CUSTOM_ID: cython

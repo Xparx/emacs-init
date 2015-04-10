@@ -1,0 +1,7 @@
+(:name eval-in-repl
+       :description "Consistent ESS-like eval interface for various REPLs"
+       :website "https://github.com/kaz-yos/eval-in-repl"
+       :type github
+       :pkgname "kaz-yos/eval-in-repl"
+       :depends (dash paredit)
+       :features "eval-in-repl")
