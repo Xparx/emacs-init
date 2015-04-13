@@ -224,7 +224,7 @@ reason
 [[https://stackoverflow.com/questions/7733668/command-to-clear-shell-while-using-emacs-shell][source]]
 This approach is not perfect. It destroys the history in the shell buffer.
 #+begin_src emacs-lisp
-(defun my-clear ()
+(defun shell-clear ()
   (interactive)
   (let ((comint-buffer-maximum-size 0))
     (comint-truncate-buffer)))
@@ -232,9 +232,29 @@ This approach is not perfect. It destroys the history in the shell buffer.
 
 #+begin_src emacs-lisp
 (defun my-shell-hook ()
-  (local-set-key "\C-cl" 'my-clear))
+  (local-set-key "\C-cl" 'shell-clear))
 
 (add-hook 'shell-mode-hook 'my-shell-hook)
+#+end_src
+
+**** Make C-c l clear M-x eshell buffers
+[[https://www.linuxquestions.org/questions/programming-9/emacs-eshell-how-to-clear-screen-770328/][source]] and [[http://www.northbound-train.com/emacs/em-joc.el][code source]]
+#+begin_src emacs-lisp
+(defun eshell/clear ()
+  "Clears the shell buffer ala Unix's clear or DOS' cls"
+  (interactive)
+  ;; the shell prompts are read-only, so clear that for the duration
+  (let ((inhibit-read-only t))
+    ;; simply delete the region
+    (delete-region (point-min) (point-max)))
+  (eshell-send-input))
+#+end_src
+
+#+begin_src emacs-lisp
+(defun my-eshell-hook ()
+  (local-set-key "\C-cl" 'eshell/clear))
+
+(add-hook 'eshell-mode-hook 'my-eshell-hook)
 #+end_src
 
 **** Color Themes
