@@ -387,7 +387,7 @@ Activating dired-x and a [[http://www.masteringemacs.org/articles/2014/04/10/dir
 
 Default [[http://ergoemacs.org/emacs/dired_sort.html][format]] of dired (=s= sorts the list based on date)
 #+begin_src emacs-lisp
-(setq dired-listing-switches "-al -h --group-directories-first --time-style long-iso")
+(setq dired-listing-switches "-ao -h --group-directories-first --time-style long-iso")
 #+end_src
 
 [[http://oremacs.com/2015/01/04/dired-nohup/][Guess]] program by file extension
