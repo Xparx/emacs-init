@@ -1,0 +1,8 @@
+(:name engine-mode
+       :description "Minor mode for defining and querying search engines through Emacs."
+       :website "https://github.com/hrs/engine-mode"
+       :type github
+       :pkgname "hrs/engine-mode"
+       :post-init (progn (engine-mode t))
+       :features "engine-mode"
+       )
