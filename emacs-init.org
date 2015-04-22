@@ -1249,12 +1249,13 @@ Remap =yas-expand= for relevant modes as it over shadows the
 otherwise very nice autocompletion. [[https://capitaomorte.github.io/yasnippet/snippet-expansion.html#sec-1-1][source]]
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "yasnippet")
-  (define-key yas-minor-mode-map (kbd "<tab>") nil)
   (define-key yas-minor-mode-map (kbd "TAB") nil)
+  (define-key yas-minor-mode-map (kbd "<tab>") nil)
   (define-key yas-minor-mode-map (kbd "C-TAB") 'yas-expand)
-  (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand))
+  (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand)
+  (define-key yas-minor-mode-map (kbd "C-1") 'yas-expand)
+  (define-key yas-minor-mode-map (kbd "<C-1>") 'yas-expand))
 #+end_src
-
 
 *** Engine-mode
 
