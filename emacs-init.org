@@ -210,6 +210,11 @@ let them live in the =backups/= directory inside of the emacs init.
 #+begin_src emacs-lisp
 (setq backup-directory-alist `(("." . ,(expand-file-name
                                         (concat emacs-init-dir "backups")))))
+
+(setq version-control t        ;; Use version numbers for backups.
+      kept-new-versions 2      ;; Number of newest versions to keep (default)
+      kept-old-versions 1      ;; Number of oldest versions to keep.
+      delete-old-versions t)   ;; Don't ask to delete excess backup versions.
 #+end_src
 
 Autosave to specific directory: [[http://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/][source]]. This does not work... as
