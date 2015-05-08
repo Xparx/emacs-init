@@ -51,4 +51,5 @@
 
 (org-babel-load-file (expand-file-name "gnus.org" emacs-init-dir))
 
+(message "init.el has loaded in %d s" (destructuring-bind (hi lo ms ps) (current-time) (- (+ hi lo) (+ (first *emacs-load-start*) (second *emacs-load-start*)))))
 ;;; init.el ends here
