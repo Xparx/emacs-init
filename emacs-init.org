@@ -340,10 +340,9 @@ Save to personal dictionary quietly
 (set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
 #+end_src
 
-**** Alias for yes-no to y-n choice, init random seed.
+**** Init random seed.
+Seed the random-number generator
 #+begin_src emacs-lisp
-(defalias 'yes-or-no-p 'y-or-n-p)
-;; Seed the random-number generator
 (random t)
 #+end_src
 **** Tramp mode defaults
@@ -1386,6 +1385,16 @@ Rgrep is infinitely useful in multi-file projects.
 (see [[elisp:(describe-function 'rgrep)]])
 #+begin_src emacs-lisp
 (define-key global-map "\C-x\C-r" 'rgrep)
+#+end_src
+
+*** Emacs aliases
+**** for yes-no to y-n choice.
+#+begin_src emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+**** for replace-string to rs
+#+begin_src emacs-lisp
+(defalias 'rs 'replace-string)
 #+end_src
 
 *** Custom functions
