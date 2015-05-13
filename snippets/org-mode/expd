@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ditaa export
+# key: expd
+# --
+#+begin_src ditaa :file ${1:outfile.png} :cmdline ${2:-T}
+${0}
+#+end_src

@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: python plot
+# key: pyf
+# --
+#+begin_src python :results file
+$0
+return '${1:output.png}'
+#+end_src
+
+

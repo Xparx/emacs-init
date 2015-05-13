@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: python export
+# key: expp
+# --
+#+begin_src python :results output
+$0
+print ${1:result}
+#+end_src
