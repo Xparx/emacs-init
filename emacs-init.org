@@ -537,6 +537,12 @@ Ibuffer mode hook
             (ibuffer-switch-to-saved-filter-groups "default")))
 #+end_src
 
+**** Don't set unsafe variables
+This is mostly for el-get when looking for recpies but might affect other stuff (like themes?)
+#+begin_src emacs-lisp
+(setq enable-local-variables :safe)
+#+end_src
+
 *** LaTeX mode
 :PROPERTIES:
 :CUSTOM_ID: latex
@@ -743,8 +749,6 @@ Associate .gp files with gnuplot.
 :PROPERTIES:
 :CUSTOM_ID: matlab
 :END:
-DONE: Matlab-mode fails to install because of cedet for some
-reason. Need to modify el-get recipe.
 
 Install and sync matlab-mode repository with el-get manually
 #+begin_src emacs-lisp :tangle no
@@ -768,7 +772,7 @@ it does not work! Do manually with 'M-q'
 
 **** Maxima-mode
 :PROPERTIES:
-:tangle:   no
+:tangle:   yes
 :CUSTOM_ID: maxima
 :END:
 Install and sync init-maxima repository with el-get
