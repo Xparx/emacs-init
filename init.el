@@ -1,3 +1,5 @@
+; (package-initialize)
+
 ;; This is the first thing to get loaded.
 ;;
 (require 'cl) ; a rare necessary use of REQUIRE, this is for common lisp!
