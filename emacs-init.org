@@ -220,7 +220,7 @@ reason
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 #+end_src
 
-**** Make C-c l clear M-x shell buffers
+**** Make C-l clear M-x shell buffers
 [[https://stackoverflow.com/questions/7733668/command-to-clear-shell-while-using-emacs-shell][source]]
 This approach is not perfect. It destroys the history in the shell buffer.
 #+begin_src emacs-lisp
@@ -232,12 +232,12 @@ This approach is not perfect. It destroys the history in the shell buffer.
 
 #+begin_src emacs-lisp
 (defun my-shell-hook ()
-  (local-set-key "\C-cl" 'shell-clear))
+  (local-set-key "\C-l" 'shell-clear))
 
 (add-hook 'shell-mode-hook 'my-shell-hook)
 #+end_src
 
-**** Make C-c l clear M-x eshell buffers
+**** Make C-l clear M-x eshell buffers
 [[https://www.linuxquestions.org/questions/programming-9/emacs-eshell-how-to-clear-screen-770328/][source]] and [[http://www.northbound-train.com/emacs/em-joc.el][code source]]
 #+begin_src emacs-lisp
 (defun eshell/clear ()
@@ -252,7 +252,7 @@ This approach is not perfect. It destroys the history in the shell buffer.
 
 #+begin_src emacs-lisp
 (defun my-eshell-hook ()
-  (local-set-key "\C-cl" 'eshell/clear))
+  (local-set-key "\C-l" 'eshell/clear))
 
 (add-hook 'eshell-mode-hook 'my-eshell-hook)
 #+end_src
