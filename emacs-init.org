@@ -1262,9 +1262,15 @@ otherwise very nice autocompletion. [[https://capitaomorte.github.io/yasnippet/s
 *** Engine-mode
 
 Configure engine-mode
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "engine-mode")
+  (setq engine/keymap-prefix (kbd "C-c s")))
+#+end_src
+
+Pick what browser should be used
 #+begin_src emacs-lisp :tangle no
-(setq engine/keymap-prefix (kbd "C-c s"))
-(setq browse-url-browser-function 'eww-browse-url)
+(when (el-get-package-exists-p "engine-mode")
+  (setq browse-url-browser-function 'eww-browse-url))
 #+end_src
 
 
