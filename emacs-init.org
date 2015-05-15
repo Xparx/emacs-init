@@ -354,22 +354,6 @@ Seed the random-number generator
 (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
 #+end_src
 
-**** Remove trailing whitespaces
-:PROPERTIES:
-:tangle:   no
-:END:
-This is utterly broken especially with python. Disabled for now
-
-#+begin_src emacs-lisp
-(add-hook 'before-save-hook 'whitespace-cleanup)
-#+end_src
-
-The below changes the behaviour of whitespace-cleanup to not
-remove whitespaces on empty lines. Source [[http://stackoverflow.com/questions/1412913/show-trailing-whitespace-on-emacs-only-on-non-empty-lines][here]]
-#+begin_src emacs-lisp
-(setq whitespace-trailing-regexp "\\b.*?\\(\\(\t\\| \\|\xA0\\|\x8A0\\|\x920\\|\xE20\\|\xF20\\)+\\)$")
-#+end_src
-
 **** Set exec-path same as PATH in bash
 Source: [[http://stackoverflow.com/questions/9663396/how-do-i-make-emacs-recognize-bash-environment-variables-for-compilation][stackoverflow]]
 
