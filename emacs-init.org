@@ -1400,6 +1400,11 @@ Rgrep is infinitely useful in multi-file projects.
 (define-key global-map "\C-x\C-r" 'rgrep)
 #+end_src
 
+**** cycle through amounts of spacing
+[[http://pragmaticemacs.com/emacs/cycle-spacing/][source]]
+#+begin_src emacs-lisp
+(global-set-key (kbd "M-SPC") 'cycle-spacing)
+#+end_src
 *** Emacs aliases
 **** for yes-no to y-n choice.
 #+begin_src emacs-lisp
