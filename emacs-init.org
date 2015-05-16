@@ -109,6 +109,12 @@ to your configuration."
   (message (concat "user info can be placed in: " emacs-init-dir "user.el")))
 #+end_src
 
+How I want the calendar to be displayed
+#+begin_src emacs-lisp
+(calendar-set-date-style 'iso)
+(setq calendar-week-start-day 1)
+#+end_src
+
 *** Magit
 :PROPERTIES:
 :CUSTOM_ID: magit
@@ -204,6 +210,11 @@ let them live in the =backups/= directory inside of the emacs init.
 #+begin_src emacs-lisp
 (setq backup-directory-alist `(("." . ,(expand-file-name
                                         (concat emacs-init-dir "backups")))))
+
+(setq version-control t        ;; Use version numbers for backups.
+      kept-new-versions 2      ;; Number of newest versions to keep (default)
+      kept-old-versions 1      ;; Number of oldest versions to keep.
+      delete-old-versions t)   ;; Don't ask to delete excess backup versions.
 #+end_src
 
 Autosave to specific directory: [[http://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/][source]]. This does not work... as
@@ -1186,7 +1197,10 @@ Org-ref variables
 (when (el-get-package-exists-p "org-ref")
   (setq org-ref-bibliography-notes "~/research/notes.org"
         org-ref-default-bibliography '("~/research/bibliography.bib")
-        org-ref-pdf-directory "~/research/papers/"))
+        org-ref-pdf-directory "~/research/papers/")
+
+  (add-to-list 'org-agenda-files
+               (expand-file-name org-ref-bibliography-notes)))
 #+end_src
 
 Org-mode hook for tex-master
