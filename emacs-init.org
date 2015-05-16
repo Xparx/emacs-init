@@ -827,6 +827,14 @@ Associate R scripts with the right mode
   (add-to-list 'auto-mode-alist '("\\.R" . R-mode)))
 #+end_src
 
+**** julia
+Associate julia scripts with the right mode
+#+begin_src emacs-lisp
+(when (and (el-get-package-exists-p "ess") (executable-find "julia"))
+  (setq inferior-julia-program-name "julia") ;; need to be set before ob-julia is run
+  (add-to-list 'auto-mode-alist '("\\.jl" . julia-mode)))
+#+end_src
+
 *** Org Mode <3
 :PROPERTIES:
 :tangle:   yes
@@ -995,6 +1003,7 @@ the currently supported languages.
    (css . t)
    (calc . t)
    (perl . t)
+   (julia . t)
    ))
 #+end_src
 
