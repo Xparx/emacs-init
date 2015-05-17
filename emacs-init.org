@@ -472,6 +472,13 @@ associate with relevant files
               (local-set-key (kbd "C-x k") 'server-edit))))
 #+end_src
 
+**** Make sure copying from desktop works better
+Warning: This might get memory intensive
+
+Make sure the desktop copy gets saved in kill-ring even though something else is cut before.
+#+begin_src emacs-lisp :tangle yes
+(setq save-interprogram-paste-before-kill t)
+#+end_src
 **** Ibuffer settings
 Ibuffer settings, source [[http://www.emacswiki.org/emacs/IbufferMode][here]]. Lots of interesting stuff in there.
 #+begin_src emacs-lisp
