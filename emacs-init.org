@@ -820,8 +820,7 @@ Associate R scripts with the right mode
 Associate julia scripts with the right mode
 #+begin_src emacs-lisp
 (when (and (el-get-package-exists-p "ess") (executable-find "julia"))
-  (setq inferior-julia-program-name "julia") ;; need to be set before ob-julia is run
-  (add-to-list 'auto-mode-alist '("\\.jl" . julia-mode)))
+  (require 'ess-site))
 #+end_src
 
 *** Org Mode <3
