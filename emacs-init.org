@@ -827,7 +827,8 @@ Associate R scripts with the right mode
 Associate julia scripts with the right mode
 #+begin_src emacs-lisp
 (when (and (el-get-package-exists-p "ess") (executable-find "julia"))
-  (require 'ess-site))
+  (require 'ess-site)
+  (setq inferior-julia-program-name "julia"))
 #+end_src
 
 *** Org Mode <3
@@ -979,27 +980,31 @@ This activates a number of widely used languages, you are
 encouraged to activate more languages.  The customize interface
 of =org-babel-load-languages= contains an up to date list of
 the currently supported languages.
+
+#+begin_src emacs-lisp :tangle yes
+(setq org-babel-load-languages '((emacs-lisp . t)
+                                 (sh . t)
+                                 (matlab . t)
+                                 (octave . t)
+                                 (gnuplot . t)
+                                 (python . t)
+                                 (dot . t)
+                                 (ditaa . t)
+                                 (latex . t)
+                                 (js . t)
+                                 (R . t)
+                                 (C . t)
+                                 (css . t)
+                                 (calc . t)
+                                 (perl . t)))
+
+(when (and (el-get-package-exists-p "ess") (executable-find "julia"))
+  (add-to-list 'org-babel-load-languages '(julia . t)))
+#+end_src
+
 #+name:babel-lang
 #+begin_src emacs-lisp
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (sh . t)
-   (matlab . t)
-   (octave . t)
-   (gnuplot . t)
-   (python . t)
-   (dot . t)
-   (ditaa . t)
-   (latex . t)
-   (js . t)
-   (R . t)
-   (C . t)
-   (css . t)
-   (calc . t)
-   (perl . t)
-   (julia . t)
-   ))
+(org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
 #+end_src
 
 Adding unsecure evaluation of code-blocks
