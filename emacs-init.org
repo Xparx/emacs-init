@@ -134,7 +134,8 @@ It's handy to have a shortcut to magit
 
 **** Don't split buffer
 #+begin_src emacs-lisp :tangle yes
-(setq magit-status-buffer-switch-function 'switch-to-buffer)
+(when (el-get-package-exists-p "magit")
+  (setq magit-status-buffer-switch-function 'switch-to-buffer))
 #+end_src
 
 **** Delete trailing whitespaces from magit buffer
