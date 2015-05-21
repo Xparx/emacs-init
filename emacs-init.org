@@ -832,6 +832,15 @@ Associate julia scripts with the right mode
   (setq inferior-julia-program-name "julia"))
 #+end_src
 
+Make C-l clear the julia buffer
+#+begin_src emacs-lisp
+(when (and (el-get-package-exists-p "ess") (executable-find "julia"))
+(defun my-julia-hook ()
+  (local-set-key "\C-l" 'inferior-clear))
+
+(add-hook 'julia-post-run-hook 'my-julia-hook))
+#+end_src
+
 *** Org Mode <3
 :PROPERTIES:
 :tangle:   yes
