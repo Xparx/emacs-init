@@ -212,9 +212,9 @@ reason
 
 **** Make C-l clear M-x shell buffers
 [[https://stackoverflow.com/questions/7733668/command-to-clear-shell-while-using-emacs-shell][source]]
-This approach is not perfect. It destroys the history in the shell buffer.
+This approach is not perfect. It destroys the (scroll) history in the shell buffer.
 #+begin_src emacs-lisp
-(defun shell-clear ()
+(defun inferior-clear ()
   (interactive)
   (let ((comint-buffer-maximum-size 0))
     (comint-truncate-buffer)))
@@ -222,7 +222,7 @@ This approach is not perfect. It destroys the history in the shell buffer.
 
 #+begin_src emacs-lisp
 (defun my-shell-hook ()
-  (local-set-key "\C-l" 'shell-clear))
+  (local-set-key "\C-l" 'inferior-clear))
 
 (add-hook 'shell-mode-hook 'my-shell-hook)
 #+end_src
@@ -842,6 +842,15 @@ Associate julia scripts with the right mode
 (when (and (el-get-package-exists-p "ess") (executable-find "julia"))
   (require 'ess-site)
   (setq inferior-julia-program-name "julia"))
+#+end_src
+
+Make C-l clear the julia buffer
+#+begin_src emacs-lisp
+(when (and (el-get-package-exists-p "ess") (executable-find "julia"))
+(defun my-julia-hook ()
+  (local-set-key "\C-l" 'inferior-clear))
+
+(add-hook 'julia-post-run-hook 'my-julia-hook))
 #+end_src
 
 *** Org Mode <3
