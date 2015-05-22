@@ -1234,6 +1234,11 @@ Give it a little bit of emacs-lisp
 (setq initial-scratch-message "\n#+begin_src emacs-lisp\n\n#+end_src\n\n")
 #+end_src
 
+**** Org eww integration
+#+begin_src emacs-lisp
+(add-hook 'eww-mode-hook (require 'org-eww))
+#+end_src
+
 **** Org protocal
 http://oremacs.com/2015/01/07/org-protocol-1/
 http://oremacs.com/2015/01/08/org-protocol-2/
@@ -1326,7 +1331,7 @@ Configure engine-mode
 #+end_src
 
 Pick what browser should be used
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle yes
 (when (el-get-package-exists-p "engine-mode")
   (setq browse-url-browser-function 'eww-browse-url))
 #+end_src
