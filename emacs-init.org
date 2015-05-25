@@ -827,21 +827,43 @@ Assosicate files with maxima mode.
 #+end_src
 
 **** R
+Install manually
+#+begin_src emacs-lisp :tangle no
+(el-get 'sync '(ess))
+#+end_src
+
 Associate R scripts with the right mode
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "ess")
   (add-to-list 'auto-mode-alist '("\\.R" . R-mode)))
 #+end_src
 
+A memory trigger for auto-completion activation
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "ess")
+  (add-hook 'R-mode-hook (lambda () (message "Associate with an R process with C-c C-s"))))
+#+end_src
+
+Automatically connect to R process
+#+begin_src emacs-lisp :tangle no
+(when (el-get-package-exists-p "ess")
+  (add-hook 'R-mode-hook (lambda () (ess-force-buffer-current))))
+#+end_src
+
 **** julia
-Associate julia scripts with the right mode
+Either install [[*R][ess]] or the julialang:
+#+begin_src emacs-lisp :tangle no
+(el-get 'sync '(julia-mode))
+#+end_src
+
+Associate ess julia scripts with the right mode
 #+begin_src emacs-lisp
 (when (and (el-get-package-exists-p "ess") (executable-find "julia"))
   (require 'ess-site)
   (setq inferior-julia-program-name "julia"))
 #+end_src
 
-Make C-l clear the julia buffer
+Make C-l clear the ess julia buffer
 #+begin_src emacs-lisp
 (when (and (el-get-package-exists-p "ess") (executable-find "julia"))
 (defun my-julia-hook ()
