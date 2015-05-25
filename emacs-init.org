@@ -1263,7 +1263,7 @@ Give it a little bit of emacs-lisp
 
 **** Org eww integration
 #+begin_src emacs-lisp
-(add-hook 'eww-mode-hook (require 'org-eww))
+(with-eval-after-load "eww" (require 'org-eww))
 #+end_src
 
 **** Org protocal
