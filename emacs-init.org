@@ -637,6 +637,7 @@ Install manually
 (el-get 'sync '(elpy))
 #+end_src
 
+Enable elpy
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "elpy")
   (elpy-enable)
@@ -663,6 +664,26 @@ Install manually
 
 (add-hook 'inferior-python-mode-hook 'my-python-hook)
 #+end_src
+
+**** When using Python's python-mode.el instead of Emacs' python.el
+:PROPERTIES:
+:CUSTOM_ID: python-mode
+:END:
+Install and sync python-mode repository with el-get manually
+Should only be installed if elpy is not installed, I think, because
+it has its own auto-complete that I felt didn't play well with
+elpy and its setup.  Some bugs with tab and indenting as well.
+#+begin_src emacs-lisp :tangle no
+(el-get 'sync '(python-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+(when  (el-get-package-exists-p "python-mode")
+  (setq
+   org-babel-python-mode 'python-mode
+   py-which-bufname "IPython"
+   py-shell-name "ipython"))
+#+end_src
 **** Send current line to python repl
 #+begin_src emacs-lisp :tangle yes
 (defun my-python-send-statement ()
@@ -675,30 +696,6 @@ Install manually
 
 #+begin_src emacs-lisp :tangle yes
 (add-hook 'python-mode-hook  (lambda () (local-set-key (kbd "<C-return>") 'my-python-send-statement)))
-#+end_src
-
-**** When using Python's python-mode.el instead of Emacs' python.el
-:PROPERTIES:
-:CUSTOM_ID: python-mode
-:END:
-Install and sync python-mode repository with el-get manually
-#+begin_src emacs-lisp :tangle no
-(el-get 'sync '(python-mode))
-#+end_src
-
-#+begin_src emacs-lisp
-(when  (el-get-package-exists-p "python-mode")
-  (setq
-   org-babel-python-mode 'python-mode
-   py-which-bufname "IPython"
-   py-shell-name "ipython"))
-#+end_src
-
-**** Enable jedi in python mode
-Unnessessary with doing =(elpy-enable)=
-#+begin_src emacs-lisp :tangle no
-(when (el-get-package-exists-p "jedi")
-  (add-hook 'python-mode-hook 'jedi:setup))
 #+end_src
 
 **** eval-in-repl for python mode
