@@ -884,7 +884,6 @@ org-mode package is installed.
 Both .org and .txt files should be associated with org-mode
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
 #+end_src
 
 Make it so that org-mode opens external pdf files in evince: [[http://stackoverflow.com/questions/8834633/how-do-i-make-org-mode-open-pdf-files-in-evince][source]].
