@@ -375,7 +375,8 @@ Activating dired-x and a [[http://www.masteringemacs.org/articles/2014/04/10/dir
           (lambda ()
             (setq truncate-lines t)
             (setq dired-x-hands-off-my-keys nil) ;; Remap my keys so C-x C-f finds file at point
-            (load "dired-x")))
+            (load "dired-x")
+            (dired-hide-details-mode)))
 #+end_src
 
 Default [[http://ergoemacs.org/emacs/dired_sort.html][format]] of dired (=s= sorts the list based on date)
