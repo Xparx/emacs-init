@@ -616,21 +616,25 @@ Turn on reftex-mode in Auctex mode.
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (add-hook 'latex-mode-hook 'turn-on-reftex))
 #+end_src
+*** Code-modes
+:PROPERTIES:
+:CUSTOM_ID: coding
+:END:
 
-*** Python
+**** Python
 :PROPERTIES:
 :CUSTOM_ID: python
 :tangle:   yes
 :END:
 Support for the Python programming language.
 
-**** python indent offset
+***** python indent offset
 Set default tabs width = 4 for python-mode
 #+begin_src emacs-lisp
 (setq python-indent-offset 4)
 #+end_src
 
-**** ipython support
+***** ipython support
 If an =ipython= executable is on the path, then assume that
 IPython is the preferred method for python evaluation.
 If unsure what variables to set, look in to the function [[elisp:(describe-function 'elpy-use-ipython)]]
@@ -651,7 +655,7 @@ If unsure what variables to set, look in to the function [[elisp:(describe-funct
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
 #+end_src
 
-**** elpy initialization
+***** elpy initialization
 Install manually
 #+begin_src emacs-lisp :tangle no
 (el-get 'sync '(elpy))
@@ -665,7 +669,7 @@ Enable elpy
   )
 #+end_src
 
-**** Make C-l clear inferior *Python* shell buffers
+***** Make C-l clear inferior *Python* shell buffers
 
 #+begin_src emacs-lisp
 (defun python-clear ()
@@ -685,7 +689,7 @@ Enable elpy
 (add-hook 'inferior-python-mode-hook 'my-python-hook)
 #+end_src
 
-**** When using Python's python-mode.el instead of Emacs' python.el
+***** When using Python's python-mode.el instead of Emacs' python.el
 :PROPERTIES:
 :CUSTOM_ID: python-mode
 :END:
@@ -704,7 +708,7 @@ elpy and its setup.  Some bugs with tab and indenting as well.
    py-which-bufname "IPython"
    py-shell-name "ipython"))
 #+end_src
-**** Send current line to python repl
+***** Send current line to python repl
 #+begin_src emacs-lisp :tangle yes
 (defun my-python-send-statement ()
   (interactive)
@@ -718,7 +722,7 @@ elpy and its setup.  Some bugs with tab and indenting as well.
 (add-hook 'python-mode-hook  (lambda () (local-set-key (kbd "<C-return>") 'my-python-send-statement)))
 #+end_src
 
-**** eval-in-repl for python mode
+***** eval-in-repl for python mode
 
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "eval-in-repl")
@@ -728,7 +732,7 @@ elpy and its setup.  Some bugs with tab and indenting as well.
               (define-key python-mode-map (kbd "<C-return>") 'eir-eval-in-python))))
 #+end_src
 
-**** Use Cython mode
+***** Use Cython mode
 :PROPERTIES:
 :CUSTOM_ID: cython
 :tangle:   no
@@ -745,7 +749,7 @@ Set cython-mode file associations
   (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode)))
 #+end_src
 
-**** Emacs ipython notebook
+***** Emacs ipython notebook
 Enables completion in ein buffer. This gives a bit of unexpected
 behaviour. No popup occure even though latest popup.el is
 installed. [[https://github.com/jhamrick/emacs/blob/master/.emacs.d/settings/python-settings.el][source]]
@@ -770,10 +774,6 @@ Shortcut function to load notebook
     (interactive)
     (ein:notebooklist-open)))
 #+end_src
-*** Code-modes
-:PROPERTIES:
-:CUSTOM_ID: coding
-:END:
 **** cedet
 I am not sure what this does except enabling cedet when coding,
 whatever that means.
