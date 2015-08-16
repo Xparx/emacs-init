@@ -115,8 +115,8 @@ How I want the calendar to be displayed
 (setq calendar-week-start-day 1)
 #+end_src
 
-*** git
-**** Magit
+*** git                                                                 :git:
+**** Magit                                                            :magit:
 :PROPERTIES:
 :CUSTOM_ID: magit
 :END:
@@ -179,6 +179,12 @@ Turn on git-gutter for all relevant buffers
 :PROPERTIES:
 :CUSTOM_ID: misc
 :END:
+**** Default launch window with full height
+Nice [[https://emacs.stackexchange.com/questions/2999/how-to-maximize-my-emacs-frame-on-start-up/][source]] on http://emacs.stackexchange.com
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(fullscreen . fullheight))
+#+end_src
+
 **** Activate TAB completion
 #+begin_src emacs-lisp
 (add-to-list 'completion-styles 'initials t)
