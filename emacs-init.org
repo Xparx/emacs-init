@@ -237,7 +237,7 @@ This approach is not perfect. It destroys the (scroll) history in the shell buff
 **** Make C-l clear M-x eshell buffers
 [[https://www.linuxquestions.org/questions/programming-9/emacs-eshell-how-to-clear-screen-770328/][source]] and [[http://www.northbound-train.com/emacs/em-joc.el][code source]]
 #+begin_src emacs-lisp
-(defun eshell/clear ()
+(defun eshell-clear ()
   "Clears the shell buffer ala Unix's clear or DOS' cls"
   (interactive)
   ;; the shell prompts are read-only, so clear that for the duration
@@ -249,7 +249,7 @@ This approach is not perfect. It destroys the (scroll) history in the shell buff
 
 #+begin_src emacs-lisp
 (defun my-eshell-hook ()
-  (local-set-key "\C-l" 'eshell/clear))
+  (local-set-key "\C-l" 'eshell-clear))
 
 (add-hook 'eshell-mode-hook 'my-eshell-hook)
 #+end_src
@@ -1318,14 +1318,12 @@ Push at exit
 #+begin_src emacs-lisp :tangle no
 (add-hook 'kill-emacs-hook 'org-mobile-push)
 #+end_src
+*** Eshell
+good [[https://www.masteringemacs.org/article/complete-guide-mastering-eshell][source]]
 
-*** Edit with emacs Chrome(ium)
-"Edit with emacs" in any text area in the browser. Requires
-edit-server.el. Just needs to start emacs first
-with edit-server installed.
+Set the alias file location
 #+begin_src emacs-lisp
-(when (el-get-package-exists-p "edit-server")
-  (edit-server-start))
+(setq eshell-directory-name (concat emacs-init-dir "eshell"))
 #+end_src
 
 *** Yasnippet
