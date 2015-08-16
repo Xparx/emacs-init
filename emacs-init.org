@@ -1606,6 +1606,40 @@ Command to toggle the display of the mode-line as a header:
 (global-set-key (kbd "C-s-SPC") 'mode-line-in-header)
 #+end_src
 
+**** convert DOuble CApitals to Single Capitals
+source [[https://emacs.stackexchange.com/questions/13970/fixing-double-capitals-as-i-type/13975#13975][here]] and [[http://endlessparentheses.com/fixing-double-capitals-as-you-type.html][here]]
+
+#+begin_src emacs-lisp
+(defun dcaps-to-scaps ()
+  "Convert word in DOuble CApitals to Single Capitals."
+  (interactive)
+  (and (= ?w (char-syntax (char-before)))
+       (save-excursion
+         (and (if (called-interactively-p)
+                  (skip-syntax-backward "w")
+                (= -3 (skip-syntax-backward "w")))
+              (let (case-fold-search)
+                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+              (capitalize-word 1)))))
+
+(add-hook 'post-self-insert-hook #'dcaps-to-scaps nil 'local)
+#+end_src
+
+#+begin_src emacs-lisp
+(define-minor-mode dubcaps-mode
+  "Toggle `dubcaps-mode'.  Converts words in DOuble CApitals to Single Capitals as you type."
+  :init-value nil
+  :lighter (" DC")
+  (if dubcaps-mode
+      (add-hook 'post-self-insert-hook #'dcaps-to-scaps nil 'local)
+    (remove-hook 'post-self-insert-hook #'dcaps-to-scaps 'local)))
+#+end_src
+
+initialize it for text modes.
+#+begin_src emacs-lisp
+(add-hook 'text-mode-hook #'dubcaps-mode)
+#+end_src
+
 *** Publish emacs init
 Publishing require the htmlize package. Can be found in
 emacs-goodies or as a standalone elisp file. I use el-get in
