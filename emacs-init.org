@@ -1332,6 +1332,19 @@ Set the alias file location
 (setq eshell-directory-name (concat emacs-init-dir "eshell"))
 #+end_src
 
+Make sure =pcomplete/rm= does the right thing
+#+begin_src emacs-lisp
+(defun pcomplete/rm ()
+  "Completion for `rm'."
+  (let* (
+      (pcomplete-file-ignore nil)
+      (pcomplete-dir-ignore "^../$\\|^./$")
+      (pcomplete-help "(fileutils)rm invocation"))
+    (pcomplete-opt "dfirRv")
+    (while (pcomplete-here (pcomplete-entries) nil 'expand-file-name))))
+#+end_src
+
+
 *** Yasnippet
 :PROPERTIES:
 :CUSTOM_ID: yasnippet
