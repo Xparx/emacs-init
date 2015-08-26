@@ -116,6 +116,10 @@ How I want the calendar to be displayed
 #+end_src
 
 *** git                                                                 :git:
+:PROPERTIES:
+:custom_id: git
+:END:
+
 **** Magit                                                            :magit:
 :PROPERTIES:
 :CUSTOM_ID: magit
@@ -376,6 +380,10 @@ Using package is perhaps better, Install manually
 #+end_src
 
 **** Dired mode
+:PROPERTIES:
+:custom_id: dired
+:END:
+
 When in dired mode 'a' will find alternative file/dir in the same
 buffer.  source [[http://emacsblog.org/2007/02/25/quick-tip-reuse-dired-buffers/][here]]
 #+begin_src emacs-lisp
@@ -396,6 +404,13 @@ Default [[http://ergoemacs.org/emacs/dired_sort.html][format]] of dired (=s= sor
 #+begin_src emacs-lisp
 (setq dired-listing-switches "-ao -h --group-directories-first --time-style long-iso")
 #+end_src
+
+Bind keys for dired to be more consistent with open file
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-x C-d") 'dired)
+(global-set-key (kbd "C-x d") 'list-directory)
+#+end_src
+
 
 [[http://oremacs.com/2015/01/04/dired-nohup/][Guess]] program by file extension
 #+begin_src emacs-lisp
@@ -1116,8 +1131,17 @@ Make org understand latex syntax: [[http://stackoverflow.com/questions/11646880/
 (add-hook 'org-mode-hook (lambda () (setq ispell-parser 'tex)))
 #+end_src
 
+make ispell treat src blocks ok. [[http://endlessparentheses.com/ispell-and-org-mode.html][Source]]
 #+begin_src emacs-lisp
-(add-to-list 'ispell-skip-region-alist '("^#\\+begin_src/i" . "^#\\+end_src/i"))
+(defun endless/org-ispell ()
+  "Configure `ispell-skip-region-alist' for `org-mode'."
+  (make-local-variable 'ispell-skip-region-alist)
+  (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+  (add-to-list 'ispell-skip-region-alist '("~" "~"))
+  (add-to-list 'ispell-skip-region-alist '("=" "="))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+begin_src" . "^#\\+end_src")))
+(add-hook 'org-mode-hook #'endless/org-ispell)
 #+end_src
 
 **** Org LaTeX export types
@@ -1332,18 +1356,18 @@ Set the alias file location
 (setq eshell-directory-name (concat emacs-init-dir "eshell"))
 #+end_src
 
-Make sure =pcomplete/rm= does the right thing
-#+begin_src emacs-lisp
+[[https://emacs.stackexchange.com/questions/14522/how-do-i-change-behaviour-of-eshell-rm-rm-in-eshell-tab-completion][How do I change behaviour of eshell/rm (rm in eshell) tab completion? - Emacs Stack Exchange]]
+#+begin_src emacs-lisp :tangle yes
+(require 'pcmpl-unix)
 (defun pcomplete/rm ()
   "Completion for `rm'."
   (let* (
-      (pcomplete-file-ignore nil)
-      (pcomplete-dir-ignore "^../$\\|^./$")
-      (pcomplete-help "(fileutils)rm invocation"))
+         (pcomplete-file-ignore nil)
+         (pcomplete-dir-ignore "^../$\\|^./$")
+         (pcomplete-help "(fileutils)rm invocation"))
     (pcomplete-opt "dfirRv")
     (while (pcomplete-here (pcomplete-entries) nil 'expand-file-name))))
 #+end_src
-
 
 *** Yasnippet
 :PROPERTIES:
