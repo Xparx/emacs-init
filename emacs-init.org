@@ -257,12 +257,13 @@ This approach is not perfect. It destroys the (scroll) history in the shell buff
   (eshell-send-input))
 #+end_src
 
-#+begin_src emacs-lisp
+enable another clear function that seems to work well
+#+begin_src emacs-lisp :tangle yes
 (defun my-eshell-hook ()
-  (local-set-key "\C-l" 'eshell-clear))
+  (local-set-key "\C-l" 'eshell/clear))
 
 (add-hook 'eshell-mode-hook 'my-eshell-hook)
-#+end_src
+ #+end_src
 
 **** Color Themes
 :PROPERTIES:
@@ -556,16 +557,85 @@ This is mostly for el-get when looking for recpies but might affect other stuff 
 (setq enable-local-variables :safe)
 #+end_src
 
+**** Abbrev mode
+[[http://pragmaticemacs.com/emacs/use-abbreviations-to-expand-text/][source]]
+
+Activate as default
+#+begin_src emacs-lisp
+(setq-default abbrev-mode t)
+#+end_src
+
+make sure the abbrev file is in the right location
+#+begin_src emacs-lisp
+(setq abbrev-file-name (concat emacs-init-dir "abbrev_defs"))
+#+end_src
+
+read on startup
+#+begin_src emacs-lisp
+(if (file-exists-p abbrev-file-name)
+    (quietly-read-abbrev-file))
+#+end_src
+
 **** Undo-tree
 Make use of the undo-tree package if available, [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][(source)]]
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "undo-tree")
-(global-undo-tree-mode 1)
-;; make ctrl-z undo
-(global-set-key (kbd "C-z") 'undo)
-;; make ctrl-Z redo
-(defalias 'redo 'undo-tree-redo)
-(global-set-key (kbd "C-S-z") 'redo))
+  (global-undo-tree-mode 1)
+  ;; make ctrl-z undo
+  (global-set-key (kbd "C-z") 'undo)
+  ;; make ctrl-Z redo
+  (defalias 'redo 'undo-tree-redo)
+  (global-set-key (kbd "C-S-z") 'redo)
+  (add-hook 'eshell-mode-hook (lambda () (undo-tree-mode 0))))
+#+end_src
+
+**** Reload and open init file
+Usage: M-x reload-init-file
+#+begin_src emacs-lisp
+(defun reload-init-file ()
+  "Reload init.el file"
+  (interactive)
+  (load user-init-file)
+  (message "Reloaded init.el OK.")
+  )
+#+end_src
+
+
+Usage: M-x open-init-file
+#+begin_src emacs-lisp
+(defun open-init-file ()
+  (interactive)
+  (find-file user-init-file)
+  )
+#+end_src
+
+**** Edit with emacs Chrome(ium)
+"Edit with emacs" in any text area in the browser. Requires
+edit-server.el. Just needs to start emacs first
+with edit-server installed.
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "edit-server")
+  (edit-server-start))
+#+end_src
+
+**** Diminish
+used to reduce space on the mode line
+#+begin_src emacs-lisp :tangle no
+(el-get 'sync '(diminish))
+#+end_src
+
+This generates alot of errors, disabled for now.
+#+begin_src emacs-lisp :tangle no
+(when (el-get-package-exists-p "diminish")
+  (diminish 'whitespace-mode "ᗣ")
+  (diminish 'global-whitespace-mode "ᗣ")
+  (diminish 'undo-tree-mode "")
+  (diminish 'git-gutter-mode "")
+  (diminish 'yas-minor-mode "")
+  (diminish 'eldoc-mode "ED")
+  (diminish 'elpy-mode "☕")
+  (diminish 'org-indent-mode)
+  (diminish 'flyspell-mode "✓"))
 #+end_src
 
 *** LaTeX mode
@@ -1516,6 +1586,14 @@ If =visual-regexp= or =visual-regexp-steroids= is installed, use those
   (global-set-key (kbd "M-%") 'vr/query-replace)
   (global-set-key (kbd "C-s") 'vr/isearch-forward)
   (global-set-key (kbd "C-r") 'vr/isearch-backward))
+#+end_src
+and make sure it works the same way as native isearch when searching
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "visual-regexp")
+  (defadvice vr--isearch (around add-case-insensitive (forward string &optional bound noerror count) activate)
+    (when (and (eq vr/engine 'python) case-fold-search)
+      (setq string (concat "(?i)" string)))
+    ad-do-it))
 #+end_src
 
 **** File finding
