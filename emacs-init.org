@@ -1276,7 +1276,8 @@ Org-ref variables
 (when (el-get-package-exists-p "org-ref")
   (setq org-ref-bibliography-notes "~/research/notes.org"
         org-ref-default-bibliography '("~/research/bibliography.bib")
-        org-ref-pdf-directory "~/research/papers/")
+        org-ref-pdf-directory "~/research/papers/"
+        org-ref-note-title-format "** TODO %2a %y - %t")
 
   (setq org-agenda-files (reverse (add-to-ordered-list 'org-agenda-files (expand-file-name org-ref-bibliography-notes)))))
 #+end_src
