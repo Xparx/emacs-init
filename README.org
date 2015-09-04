@@ -81,7 +81,7 @@ that I don't feel needs to be removed.
 
 - Installing more elisp libraries :: The easiest way to install new
      libraries is through
-  - El-get :: (see [[#el-get-package-manager][El-get]] below).
+  - El-get :: (see [[#el-get][El-get]] below).
   - Emacs Lisp Package Archive :: (see [[#emacs-lisp-package-archive][Emacs Lisp Package Archive]]
        below).  When a library is not available through ELPA you
        can grab it's source and place it directly in the =src=
@@ -89,7 +89,7 @@ that I don't feel needs to be removed.
        added to your load-path when Emacs starts up. I also install
        packages through el-get.
 
-** El-get
+** El-get package manager
 :PROPERTIES:
 :CUSTOM_ID: el-get
 :END:
