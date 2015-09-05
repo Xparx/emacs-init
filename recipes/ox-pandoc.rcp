@@ -1,0 +1,4 @@
+(:name ox-pandoc
+       :description "Another org-mode exporter via pandoc. "
+       :type github
+       :pkgname "kawabata/ox-pandoc")
