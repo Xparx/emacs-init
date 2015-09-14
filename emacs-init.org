@@ -638,6 +638,13 @@ This generates alot of errors, disabled for now.
   (diminish 'flyspell-mode "✓"))
 #+end_src
 
+**** Time stamp files
+Use a keyword like =Time-stamp: <>= in the first lines of a file
+to update time stamp at save. [[http://www.emacswiki.org/emacs/TimeStamp][source]]
+#+begin_src emacs-lisp
+(add-hook 'before-save-hook 'time-stamp)
+#+end_src
+
 *** LaTeX mode
 :PROPERTIES:
 :CUSTOM_ID: latex
