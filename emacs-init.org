@@ -1256,7 +1256,6 @@ Make links work as labels in exports to latex
 #+begin_src emacs-lisp
 (setq org-export-latex-hyperref-format "\\ref{%s}")
 #+end_src
-
 **** Org LaTeX export with default packages
 Resetting the org default exported latex packages list. It messes
 with my latex. Storing an extra list for insertion if needed.
@@ -1328,6 +1327,22 @@ Define packages for each latex command. Using latexmk...
                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
                   org-export-latex-classes))))
 (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
+#+end_src
+
+**** Org Export only heading content without heading notitle
+[[https://emacs.stackexchange.com/questions/9492/is-it-possible-to-export-content-of-subtrees-without-their-headings][source]]
+#+begin_src emacs-lisp :results silent :exports none
+(defun org-remove-headlines (backend)
+  "Remove headlines with :notitle: tag."
+  (org-map-entries (lambda () (let ((beg (point)))
+                                (outline-next-visible-heading 1)
+                                (backward-char)
+                                (delete-region beg (point))))
+                   "noexport" tree)
+  (org-map-entries (lambda () (delete-region (point-at-bol) (point-at-eol)))
+                   "notitle"))
+
+(add-hook 'org-export-before-processing-hook #'org-remove-headlines)
 #+end_src
 
 **** org-ref configuration
