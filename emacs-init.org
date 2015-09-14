@@ -1782,6 +1782,20 @@ initialize it for text modes.
 (add-hook 'text-mode-hook #'dubcaps-mode)
 #+end_src
 
+**** Change theme based on time
+
+#+begin_src emacs-lisp :tangle yes
+(defun change-theme-on-time ()
+  (destructuring-bind (sec min h m year junk junk junk junk) (decode-time (current-time)))
+  (if (or (> (string-to-number (format-time-string "%H" (current-time))) 18)
+          (< (string-to-number (format-time-string "%H" (current-time))) 9))
+      (unless custom-enabled-themes (load-theme 'my-z t)) (disable-theme 'my-z)))
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+(add-hook 'before-make-frame-hook 'change-theme-on-time)
+#+end_src
+
 *** Publish emacs init
 Publishing require the htmlize package. Can be found in
 emacs-goodies or as a standalone elisp file. I use el-get in
