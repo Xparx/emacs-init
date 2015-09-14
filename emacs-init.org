@@ -1252,6 +1252,40 @@ use latexmk 4.20 or higher.
 (add-hook 'org-export-before-parsing-hook 'my-auto-tex-cmd)
 #+end_src
 
+**** Org LaTeX additional export classes
+
+#+begin_src emacs-lisp
+(add-to-list 'org-latex-classes '("bare-article" "\\documentclass[11pt]{article}
+[NO-DEFAULT-PACKAGES]
+[PACKAGES]
+[EXTRA]"
+  ("\\section{%s}" . "\\section*{%s}")
+  ("\\subsection{%s}" . "\\subsection*{%s}")
+  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(add-to-list 'org-latex-classes '("bare-report" "\\documentclass[11pt]{report}
+[NO-DEFAULT-PACKAGES]
+[PACKAGES]
+[EXTRA]"
+  ("\\part{%s}" . "\\part*{%s}")
+  ("\\chapter{%s}" . "\\chapter*{%s}")
+  ("\\section{%s}" . "\\section*{%s}")
+  ("\\subsection{%s}" . "\\subsection*{%s}")
+  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+
+(add-to-list 'org-latex-classes '("bare-book" "\\documentclass[11pt]{book}
+[NO-DEFAULT-PACKAGES]
+[PACKAGES]
+[EXTRA]"
+  ("\\part{%s}" . "\\part*{%s}")
+  ("\\chapter{%s}" . "\\chapter*{%s}")
+  ("\\section{%s}" . "\\section*{%s}")
+  ("\\subsection{%s}" . "\\subsection*{%s}")
+  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+#+end_src
+
 **** Org LaTeX export with default packages
 :PROPERTIES:
 :tangle:   no
