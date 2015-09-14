@@ -1252,11 +1252,12 @@ use latexmk 4.20 or higher.
 (add-hook 'org-export-before-parsing-hook 'my-auto-tex-cmd)
 #+end_src
 
-Make links work as labels in exports to latex
-#+begin_src emacs-lisp
-(setq org-export-latex-hyperref-format "\\ref{%s}")
-#+end_src
 **** Org LaTeX export with default packages
+:PROPERTIES:
+:tangle:   no
+:CUSTOM_ID: deprecated
+:END:
+
 Resetting the org default exported latex packages list. It messes
 with my latex. Storing an extra list for insertion if needed.
 #+begin_src emacs-lisp :tangle yes
@@ -1278,6 +1279,7 @@ be needed.
 **** Org LaTeX export with extra packages
 :PROPERTIES:
 :tangle:   no
+:CUSTOM_ID: deprecated
 :END:
 Specify default packages to be included in every tex file, whether
 pdflatex or xelatex. This is kept as an example. Some packages are
