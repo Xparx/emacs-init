@@ -1294,7 +1294,7 @@ use latexmk 4.20 or higher.
 
 Resetting the org default exported latex packages list. It messes
 with my latex. Storing an extra list for insertion if needed.
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (setq org-latex-default-packages-bkup-alist
       org-latex-default-packages-alist)
 (setq org-latex-default-packages-alist ())
