@@ -149,6 +149,12 @@ It's handy to have a shortcut to magit
   (setq magit-status-buffer-switch-function 'switch-to-buffer))
 #+end_src
 
+***** Refine the hunk diff view
+[[https://emacs.stackexchange.com/questions/7826/is-there-a-simplified-version-control-system-appropriate-for-non-coders-writing][Source]]
+#+begin_src emacs-lisp
+(setq magit-diff-refine-hunk 'all)
+#+end_src
+
 ***** Delete trailing whitespaces from magit buffer
 [[https://gist.github.com/vermiculus/8177389][source]] and [[https://stackoverflow.com/questions/20127377/how-can-i-remove-trailing-whitespace-from-a-hunk-in-magit][stackoverflow]] question
 
@@ -158,7 +164,7 @@ It's handy to have a shortcut to magit
     "Removes whitespace from the current item."
     (interactive)
     (save-excursion
-      (magit-visit-item)
+      (magit-diff-visit-file-worktree)
       (delete-trailing-whitespace)
       (save-buffer)
       (kill-buffer))
