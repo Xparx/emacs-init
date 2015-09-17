@@ -164,7 +164,7 @@ It's handy to have a shortcut to magit
     "Removes whitespace from the current item."
     (interactive)
     (save-excursion
-      (magit-diff-visit-file-worktree)
+      (magit-diff-visit-file-worktree (magit-file-at-point))
       (delete-trailing-whitespace)
       (save-buffer)
       (kill-buffer))
