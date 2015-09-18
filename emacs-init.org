@@ -1208,6 +1208,11 @@ So that the export does not end up in the kill ring.
 (setq org-export-copy-to-kill-ring nil)
 #+end_src
 
+Make sure that my own lables are preserved
+#+begin_src emacs-lisp
+(setq org-latex-prefer-user-labels t)
+#+end_src
+
 **** Org-mode hooks
 Make org understand latex syntax: [[http://stackoverflow.com/questions/11646880/flyspell-in-org-mode-recognize-latex-syntax-like-auctex][source]]
 #+begin_src emacs-lisp
