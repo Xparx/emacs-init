@@ -179,7 +179,7 @@ Git-gutter-fringe gives git diff info in the fringes.
 Turn on git-gutter for all relevant buffers
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "git-gutter-fringe")
-  (global-git-gutter-mode 1)
+  (global-git-gutter-mode nil)
   (setq git-gutter-fr:side 'right-fringe)
   (setq git-gutter:hide-gutter t)
   (setq git-gutter:verbosity 2))
