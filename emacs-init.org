@@ -1005,7 +1005,7 @@ Install and sync org-mode repository with el-get in =init.el=
 Install manually. This file will not load untill an el-get
 org-mode package is installed.
 **** Org-Mode File association
-Both .org and .txt files should be associated with org-mode
+Associate .org files with org-mode
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 #+end_src
@@ -1014,6 +1014,12 @@ Make it so that org-mode opens external pdf files in evince: [[http://stackoverf
 #+begin_src emacs-lisp
 (eval-after-load "org"
   '(progn (setcdr (assoc "\\.pdf\\'" org-file-apps) "evince %s")))
+#+end_src
+
+**** Org-mode allow bind in file
+
+#+begin_src emacs-lisp
+(setq org-export-allow-bind-keywords t)
 #+end_src
 
 **** Hide leading stars in structure outline
@@ -1198,6 +1204,11 @@ much more like reading and editing of code using its major mode.
 (setq org-edit-src-content-indentation 0)
 #+end_src
 
+To make latex code have special fontification wich can make small inline code snippets look ok.
+#+begin_src emacs-lisp
+(setq org-highlight-latex-and-related '(latex script entities))
+#+end_src
+
 **** Org general export options
 #+begin_src emacs-lisp
 (setq org-export-with-sub-superscripts nil)
@@ -1238,26 +1249,31 @@ use latexmk 4.20 or higher.
 #+begin_src emacs-lisp
 (defun my-auto-tex-cmd (must-be-here-for-hook-to-work)
   "When exporting from .org with latex, automatically run latexmk, latex, pdflatex, or xelatex as appropriate, using latexmk."
+
+  (setq sh-esc "")
+  (when (string-match "^#\\+LATEX_CMD: ?\w* ?-shell-escape" (buffer-string))
+    (setq sh-esc "-shell-escape "))
+
   (let (texcmd))
   (cond
    ( ;; tex -> dvi -> pdf
     (string-match "^#\\+LATEX_CMD: +mkpdfdvi" (buffer-string))
-    (setq texcmd "latexmk -pdfdvi -quiet %f"))
+    (setq texcmd (concat "latexmk -pdfdvi  " sh-esc "-quiet %f")))
    ( ;; pdflatex -> pdf
     (string-match "^#\\+LATEX_CMD: +pdflatex" (buffer-string))
-    (setq texcmd "latexmk -pdf -quiet %f"))
+    (setq texcmd (concat "latexmk -pdf  " sh-esc "-quiet %f")))
    ( ;; bibtex -> dvi -> pdf
     (string-match "^#\\+LATEX_CMD: +mkbibtex" (buffer-string))
-    (setq texcmd "latexmk -pdfdvi -bibtex -quiet %f"))
+    (setq texcmd (concat "latexmk -pdfdvi -bibtex  " sh-esc "-quiet %f")))
    ( ;; bibtex -> pdf
     (string-match "^#\\+LATEX_CMD: +pdfbibtex" (buffer-string))
-    (setq texcmd "latexmk -pdf -bibtex -quiet %f"))
+    (setq texcmd (concat "latexmk -pdf -bibtex " sh-esc "-quiet %f")))
    ( ;; xelatex -> pdf
     (string-match "^#\\+LATEX_CMD: +xelatex" (buffer-string))
-    (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
+    (setq texcmd (concat "latexmk -pdflatex=xelatex -pdf " sh-esc "-quiet %f")))
    ( ;; default
     (string-match "" (buffer-string))
-    (setq texcmd "latexmk -pdfdvi -quiet %f")))
+    (setq texcmd (concat "latexmk -pdfdvi " sh-esc "-quiet -f %f"))))
   (setq org-latex-pdf-process (list texcmd)))
 
 (add-hook 'org-export-before-parsing-hook 'my-auto-tex-cmd)
