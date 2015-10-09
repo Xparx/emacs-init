@@ -1846,8 +1846,11 @@ initialize it for text modes.
 #+end_src
 
 **** Change theme based on time
+:PROPERTIES:
+:tangle:   no
+:END:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (defun change-theme-on-time ()
   (destructuring-bind (sec min h m year junk junk junk junk) (decode-time (current-time)))
   (if (or (> (string-to-number (format-time-string "%H" (current-time))) 18)
@@ -1855,7 +1858,7 @@ initialize it for text modes.
       (unless custom-enabled-themes (load-theme 'my-z t)) (disable-theme 'my-z)))
 #+end_src
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (add-hook 'before-make-frame-hook 'change-theme-on-time)
 #+end_src
 
