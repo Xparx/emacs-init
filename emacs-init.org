@@ -1004,6 +1004,12 @@ Install and sync org-mode repository with el-get in =init.el=
 **** El-getting org-mode
 Install manually. This file will not load untill an el-get
 org-mode package is installed.
+**** Change the org-mode fold ellipsis
+The =...= pattern at the end of ogr-mode headlines can be [[http://endlessparentheses.com/changing-the-org-mode-ellipsis.html][changed]].
+#+begin_src emacs-lisp
+(setq org-ellipsis " ⤵")
+#+end_src
+
 **** Org-Mode File association
 Associate .org files with org-mode
 #+begin_src emacs-lisp
