@@ -651,6 +651,12 @@ to update time stamp at save. [[http://www.emacswiki.org/emacs/TimeStamp][source
 (add-hook 'before-save-hook 'time-stamp)
 #+end_src
 
+**** If files are .asc check if it's an addition to other mode extension
+Part of the source [[https://emacs.stackexchange.com/questions/13283/how-can-i-make-emacs-ignore-part-of-the-file-name-when-deciding-major-mode][source]].
+#+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.asc\\(~\\|\\.~[0-9]+~\\)?\\'" nil ascii-file))
+#+end_src
+
 *** LaTeX mode
 :PROPERTIES:
 :CUSTOM_ID: latex
@@ -1477,6 +1483,32 @@ Give it a little bit of emacs-lisp
 (with-eval-after-load "eww" (require 'org-eww))
 #+end_src
 
+**** Ediff org-mode buffers
+[[https://lists.gnu.org/archive/html/emacs-orgmode/2013-04/msg00400.html][source]]
+#+begin_src emacs-lisp
+(defun f-ediff-prepare-buffer-hook-setup ()
+  ;; specific modes
+  (cond ((eq major-mode 'org-mode)
+         (f-org-vis-mod-maximum))
+        ;; room for more modes
+        )
+  ;; all modes
+  (setq truncate-lines nil))
+
+(defun f-org-vis-mod-maximum ()
+  "Visibility: Show the most possible."
+  (cond
+   ((eq major-mode 'org-mode)
+    (visible-mode 1)  ; default 0
+    (setq truncate-lines nil)  ; no `org-startup-truncated' in hook
+    (setq org-hide-leading-stars t))  ; default nil
+   (t
+    (message "ERR: not in Org mode")
+    (ding))))
+
+(add-hook 'ediff-prepare-buffer-hook 'f-ediff-prepare-buffer-hook-setup)
+#+end_src
+
 **** Org protocal
 http://oremacs.com/2015/01/07/org-protocol-1/
 http://oremacs.com/2015/01/08/org-protocol-2/
@@ -1687,6 +1719,17 @@ and make sure it works the same way as native isearch when searching
       (setq string (concat "(?i)" string)))
     ad-do-it))
 #+end_src
+
+Disable =visual-regexp= in pdfview
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "visual-regexp")
+  (add-hook 'pdf-view-mode-hook
+            (lambda ()
+              (progn
+                (local-set-key (kbd "C-s") 'isearch-forward)
+                (local-set-key (kbd "C-r") 'isearch-backwards)))))
+#+end_src
+
 
 **** File finding
 #+begin_src emacs-lisp
