@@ -819,7 +819,10 @@ elpy and its setup.  Some bugs with tab and indenting as well.
    py-shell-name "ipython"))
 #+end_src
 ***** Send current line to python repl
-#+begin_src emacs-lisp :tangle yes
+:PROPERTIES:
+:tangle:   no
+:END:
+#+begin_src emacs-lisp
 (defun my-python-send-statement ()
   (interactive)
   (end-of-line)
@@ -828,7 +831,7 @@ elpy and its setup.  Some bugs with tab and indenting as well.
   (deactivate-mark))
 #+end_src
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (add-hook 'python-mode-hook  (lambda () (local-set-key (kbd "<C-return>") 'my-python-send-statement)))
 #+end_src
 

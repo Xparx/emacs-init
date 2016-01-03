@@ -3,5 +3,5 @@
        :website "https://github.com/kaz-yos/eval-in-repl"
        :type github
        :pkgname "kaz-yos/eval-in-repl"
-       :depends (dash paredit)
+       :depends (dash paredit ace-window)
        :features "eval-in-repl")
