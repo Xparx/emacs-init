@@ -750,7 +750,7 @@ Turn on reftex-mode in Auctex mode.
 :CUSTOM_ID: coding
 :END:
 
-**** Python
+**** Python                                                          :python:
 :PROPERTIES:
 :CUSTOM_ID: python
 :tangle:   yes
@@ -854,7 +854,7 @@ elpy and its setup.  Some bugs with tab and indenting as well.
 (add-hook 'python-mode-hook  (lambda () (local-set-key (kbd "<C-return>") 'my-python-send-statement)))
 #+end_src
 
-***** eval-in-repl for python mode
+***** eval-in-repl for python buffers
 
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "eval-in-repl")
@@ -916,7 +916,7 @@ whatever that means.
 (semantic-mode 1)
 #+end_src
 
-**** gnuplot-mode
+**** gnuplot-mode                                                   :gnuplot:
 :PROPERTIES:
 :CUSTOM_ID: gnuplot
 :END:
@@ -936,7 +936,7 @@ Associate .gp files with gnuplot.
               auto-mode-alist))
 #+end_src
 
-**** MATLAB-mode
+**** MATLAB-mode                                                     :matlab:
 :PROPERTIES:
 :CUSTOM_ID: matlab
 :END:
@@ -961,7 +961,7 @@ it does not work! Do manually with 'M-q'
   (add-hook 'matlab-mode-hook '(lambda () (auto-fill-mode -1))))
 #+end_src
 
-**** Maxima-mode
+**** Maxima-mode                                                     :maxima:
 :PROPERTIES:
 :tangle:   yes
 :CUSTOM_ID: maxima
@@ -978,7 +978,7 @@ Assosicate files with maxima mode.
   (add-to-list 'auto-mode-alist '("\\.ma[cx]" . maxima-mode)))
 #+end_src
 
-**** R
+**** R                                                                  :r:R:
 Install manually
 #+begin_src emacs-lisp :tangle no
 (el-get 'sync '(ess))
