@@ -1002,17 +1002,29 @@ Automatically connect to R process
   (add-hook 'R-mode-hook (lambda () (ess-force-buffer-current))))
 #+end_src
 
-**** julia
+Make sure =TAB= completes in scripts as well
+#+begin_src emacs-lisp :tangle no
+(when (el-get-package-exists-p "ess")
+  (setq ess-tab-complete-in-script t))
+#+end_src
+
+**** julia                                                            :julia:
 Either install [[*R][ess]] or the julialang:
 #+begin_src emacs-lisp :tangle no
 (el-get 'sync '(julia-mode))
 #+end_src
 
-Associate ess julia scripts with the right mode
+Make julia work in org-mode (Not sure if this is included in ess)
+#+begin_src emacs-lisp :tangle no
+(el-get 'sync '(ob-julia))
+#+end_src
+
+Initiate julia mode.
 #+begin_src emacs-lisp
-(when (and (el-get-package-exists-p "ess") (executable-find "julia"))
+;; (when (and (or (el-get-package-exists-p "ess") (el-get-package-exists-p "julia-mode")) (f-exists? (executable-find "julia")))
+(when (and (el-get-package-exists-p "ess") (f-exists? (executable-find "julia")))
   (require 'ess-site)
-  (setq inferior-julia-program-name "julia"))
+  (setq inferior-julia-program-name (executable-find "julia")))
 #+end_src
 
 Make C-l clear the ess julia buffer
@@ -1024,7 +1036,17 @@ Make C-l clear the ess julia buffer
 (add-hook 'julia-post-run-hook 'my-julia-hook))
 #+end_src
 
-*** Org Mode <3
+Activate auto-complete in julia mode buffers (this behaves a bit weird currently)
+#+begin_src emacs-lisp
+(when (and (el-get-package-exists-p "ess") (executable-find "julia"))
+(defun my-julia-mode-hook ()
+  (setq company-mode t)
+  (setq auto-complete-mode t))
+
+(add-hook 'julia-mode-hook 'my-julia-mode-hook))
+#+end_src
+
+*** Org Mode <3                                                     :orgmode:
 :PROPERTIES:
 :tangle:   yes
 :END:
