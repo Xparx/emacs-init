@@ -299,23 +299,19 @@ Load my prefered theme if availible
 
 **** Aspell and dictionaries
 #+begin_src emacs-lisp
-(setq-default ispell-program-name "aspell")
+(setq-default ispell-program-name (executable-find "aspell"))
 #+end_src
 
 To fix [[http://www.emacswiki.org/emacs/FlySpell#toc8][this]] bug
 #+begin_src emacs-lisp
-(setq ispell-list-command "--list")
+(when (string= ispell-program-name (executable-find "aspell"))
+  (setq ispell-list-command "--list")
+  (setq flyspell-issue-welcome-flag nil))
 #+end_src
 
 Set default ispell dict
 #+begin_src emacs-lisp
 (setq ispell-dictionary "english")
-#+end_src
-
-Extra arguments for aspell: [[https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/init-ispell.el][source]].
-Why!!?
-#+begin_src emacs-lisp :tangle no
-(setq-default ispell-extra-args '("--reverse"))
 #+end_src
 
 Save to personal dictionary quietly
