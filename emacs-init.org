@@ -528,7 +528,7 @@ Ibuffer settings, source [[http://www.emacswiki.org/emacs/IbufferMode][here]]. L
                ("planner" (or
                            (name . "^\\*Calendar\\*$")
                            (name . "^diary$")))
-               ("emacs" (or
+               ("Emacs" (or
                          (name . "^\\*scratch\\*$")
                          (name . "^\\*ielm\\*$")
                          (name . "^\\*Completions\\*$")
@@ -652,8 +652,31 @@ Part of the source [[https://emacs.stackexchange.com/questions/13283/how-can-i-m
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.asc\\(~\\|\\.~[0-9]+~\\)?\\'" nil ascii-file))
 #+end_src
+**** File-name completion
+[[http://endlessparentheses.com/improving-emacs-file-name-completion.html][source]]
+#+begin_src emacs-lisp
+(setq read-file-name-completion-ignore-case t)
+(setq read-buffer-completion-ignore-case t)
+(mapc (lambda (x)
+        (add-to-list 'completion-ignored-extensions x))
+      '(".a" ".acn" ".acr" ".alg" ".app" ".asv" ".aux" ".auxlock" ".bak" ".bbl" ".bcf" ".blg" ".brf" ".cab" ".cpt" ".dll" ".dpth" ".dvi" ".dylib" ".egg" ".elc" ".elf" ".end" ".epub" ".exe" ".fdb_latexmk" ".fff" ".fls" ".fmt" ".gch" ".glg" ".glo" ".gls" ".hex" ".idx" ".ilg" ".ind" ".ist" ".ko" ".la" ".lai" ".lib" ".lnk" ".lo" ".loa" ".lof" ".log" ".lol" ".lot" ".m~" ".maf" ".manifest" ".md5" ".mo" ".mobi" ".mod" ".msi" ".msm" ".msp" ".mtc" ".mw" ".nav" ".nlo" ".o" ".obj" ".out" ".pch" ".pdf" ".pdfsync" ".pot" ".pyg" ".pytxcode" ".rel" ".run.xml" ".sagetex.py" ".sagetex.sage" ".sagetex.scmd" ".sav" ".slo" ".snm" ".so" ".sout" ".spec" ".sympy" ".synctex" ".synctex.gz" ".synctex.gz(busy)" ".tdo" ".thm" ".tikz" ".toc" ".ttt" ".upa" ".upb" ".vrb" ".x86_64" ".xdy" "-pkg.el" "-autoloads.el" "auto/"))
+#+end_src
 
-*** LaTeX mode
+**** Show unfinished keybindings early
+[[http://pragmaticemacs.com/emacs/show-unfinished-keystrokes-early/][source]].
+More advanced things can be done with [[https://github.com/justbur/emacs-which-key][which-key]].
+#+begin_src emacs-lisp
+(setq echo-keystrokes 0.1)
+#+end_src
+
+**** Prettify symbols
+[[http://endlessparentheses.com/new-in-emacs-25-1-have-prettify-symbols-mode-reveal-the-symbol-at-point.html][source]]
+#+begin_src emacs-lisp
+(global-prettify-symbols-mode 1)
+(setq prettify-symbols-unprettify-at-point 'right-edge)
+#+end_src
+
+*** LaTeX mode                                                        :latex:
 :PROPERTIES:
 :CUSTOM_ID: latex
 :END:
