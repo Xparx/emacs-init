@@ -1,0 +1,6 @@
+(:name auctex-latexmk
+       :website "https://github.com/tom-tan/auctex-latexmk"
+       :description "This library adds LatexMk support to AUCTeX."
+       :type github
+       :depends (auctex)
+       :pkgname "tom-tan/auctex-latexmk")

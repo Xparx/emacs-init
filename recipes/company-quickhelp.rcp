@@ -1,0 +1,7 @@
+(:name company-quickhelp
+       :website "https://github.com/expez/company-quickhelp"
+       :description "Adds documentation popup to completion candidates"
+       :type github
+       :depends (company-mode pos-tip)
+       :post-init (company-quickhelp-mode 1)
+       :pkgname "expez/company-quickhelp")
