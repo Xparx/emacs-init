@@ -803,6 +803,22 @@ Set default tabs width = 4 for python-mode
 (setq python-indent-offset 4)
 #+end_src
 
+***** elpy initialization
+Install manually
+#+begin_src emacs-lisp :tangle no
+(el-get 'sync '(elpy))
+#+end_src
+
+Enable elpy:
+=elpy-use-ipython= can be used instead of the section [[*ipython support][ipython support]] below.
+Some variables are set differently currently, check function if curious.
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "elpy")
+  (elpy-enable)
+  ;; (elpy-use-ipython) ; this sets all the variables needed for ipython
+  )
+#+end_src
+
 ***** ipython support
 If an =ipython= executable is on the path, then assume that
 IPython is the preferred method for python evaluation.
@@ -822,20 +838,6 @@ If unsure what variables to set, look in to the function [[elisp:(describe-funct
    "';'.join(module_completion('''%s'''))\n"
    python-shell-completion-string-code
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
-#+end_src
-
-***** elpy initialization
-Install manually
-#+begin_src emacs-lisp :tangle no
-(el-get 'sync '(elpy))
-#+end_src
-
-Enable elpy
-#+begin_src emacs-lisp
-(when (el-get-package-exists-p "elpy")
-  (elpy-enable)
-  ;; (elpy-use-ipython) ; this sets all the variables needed for ipython
-  )
 #+end_src
 
 ***** Make C-l clear inferior *Python* shell buffers
