@@ -709,18 +709,31 @@ More information can be found [[https://www.gnu.org/software/auctex/manual/aucte
   (add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode))
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
-  (setq-default TeX-master t))
+  (setq-default TeX-master t)
+  (setq TeX-outline-extra
+      '((".*\\\\begin{frame}\n\\|.*\\\\begin{frame}\\[.*\\]\\|.*\\\\begin{frame}.*{.*}\\|.*[       ]*\\\\frametitle\\b" 3))))
 #+end_src
 
-Hook for latex compilation with latexmk ([[https://stackoverflow.com/questions/2199678/how-to-call-latexmk-in-emacs-and-jump-to-next-error][source]])
+Hook for latex compilation with latexmk ([[https://github.com/izahn/dotemacs/blob/master/README.org#typesetting-markup-auctex][source]]).
 #+begin_src emacs-lisp
-(when (el-get-package-exists-p "auctex")
-  (add-hook 'LaTeX-mode-hook
-            (lambda ()
-              (push
-               '("latexmk" "latexmk -pdfdvi %s" TeX-run-TeX t t
-                 :help "Run Latexmk on file")
-               TeX-command-list))))
+(when (and (el-get-package-exists-p "auctex-latexmk") (executable-find "latexmk"))
+  (auctex-latexmk-setup)
+  ;; make latexmk the default
+  (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "LatexMk")))
+  (add-hook 'LaTeX-mode-hook '(lambda () (setq TeX-command-default "LatexMk")))
+  ;; honor TeX-PDF-mode settings
+  (setq auctex-latexmk-inherit-TeX-PDF-mode t))
+#+end_src
+
+Other settings from the same [[https://github.com/izahn/dotemacs/blob/master/README.org#typesetting-markup-auctex][source]]
+#+begin_src emacs-lisp
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (TeX-PDF-mode t)
+            (LaTeX-math-mode)
+            (TeX-source-correlate-mode t)
+            (imenu-add-to-menubar "Index")
+            (outline-minor-mode)))
 #+end_src
 
 **** RefTeX
@@ -740,11 +753,38 @@ Set path to default bibfile.
 
 Turn on reftex-mode in Auctex mode.
 #+begin_src emacs-lisp
-(when (el-get-package-exists-p "reftex")
+(when (and (el-get-package-exists-p "reftex") (el-get-package-exists-p "auctex"))
   (setq reftex-plug-into-AUCTeX t)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (add-hook 'latex-mode-hook 'turn-on-reftex))
 #+end_src
+
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "reftex")
+  (setq reftex-enable-partial-scans t)
+  (setq reftex-save-parse-info t)
+  (setq reftex-use-multiple-selection-buffers t)
+  (add-hook 'bibtex-mode-hook
+            (lambda ()
+              (define-key bibtex-mode-map "\M-q" 'bibtex-fill-entry))))
+#+end_src
+
+**** Company activation in LaTeX mode
+
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "company-math")
+  (defun my-latex-mode-setup ()
+    (setq-local company-backends
+                (delete-dups (cons 'company-files
+                                   company-backends)))
+    (setq-local company-backends
+                (delete-dups (cons '(company-math-symbols-latex company-latex-commands company-math-symbols-unicode)
+                                   company-backends))))
+
+    (add-hook 'LaTeX-mode-hook 'my-latex-mode-setup)
+    (add-hook 'latex-mode-hook 'my-latex-mode-setup))
+#+end_src
+
 *** Code-modes
 :PROPERTIES:
 :CUSTOM_ID: coding
@@ -1836,6 +1876,9 @@ Rgrep is infinitely useful in multi-file projects.
 *** Custom functions
 Self defined functionality
 **** Emacs strip tease
+:PROPERTIES:
+:tangle:   no
+:END:
 source: [[http://bzg.fr/emacs-strip-tease.html][here]].
 
 Hide the mode line in current buffer.
