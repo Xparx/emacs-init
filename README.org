@@ -10,12 +10,12 @@ This is a personalized emacs initialisation file.
 To get it you can git it;
 
 #+begin_src sh
-  git clone https://github.com/xparx/emacs-init.git ~/src/emacs-init
+git clone https://github.com/xparx/emacs-init.git ~/src/emacs-init
 #+end_src
 
 To try it out use
 #+begin_src sh
-  emacs -q -l ~/src/emacs-init/init.el
+emacs -q -l ~/src/emacs-init/init.el
 #+end_src
 
 It should be mostly self contained, meaning that all files it fetches,
