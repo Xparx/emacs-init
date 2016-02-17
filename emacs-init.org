@@ -1134,6 +1134,11 @@ Make it so that org-mode opens external pdf files in evince: [[http://stackoverf
 (add-hook 'org-mode-hook 'org-display-inline-images)
 #+end_src
 
+Make attr_* :widht XXXpx work for inline images
+#+begin_src emacs-lisp
+(setq org-image-actual-width nil)
+#+end_src
+
 **** hide leading stars in structure outline
 #+begin_src emacs-lisp
 (setq org-hide-leading-stars t)
@@ -1289,6 +1294,9 @@ the currently supported languages.
 
 (when (and (el-get-package-exists-p "ess") (executable-find "julia"))
   (add-to-list 'org-babel-load-languages '(julia . t)))
+
+(when (and (el-get-package-exists-p "ob-ipython"))
+  (add-to-list 'org-babel-load-languages '(ipython . t)))
 #+end_src
 
 #+name:babel-lang
@@ -1330,7 +1338,7 @@ To make latex code have special fontification wich can make small inline code sn
 
 **** Org general export options
 #+begin_src emacs-lisp
-(setq org-export-with-sub-superscripts nil)
+(setq org-export-with-sub-superscripts '{})
 #+end_src
 
 So that the export does not end up in the kill ring.
@@ -1401,6 +1409,7 @@ use latexmk 4.20 or higher.
 **** Org LaTeX additional export classes
 
 #+begin_src emacs-lisp
+(require 'ox-latex)
 (add-to-list 'org-latex-classes '("bare-article" "\\documentclass[11pt]{article}
 [NO-DEFAULT-PACKAGES]
 [PACKAGES]
@@ -1512,19 +1521,38 @@ Define packages for each latex command. Using latexmk...
 #+end_src
 
 **** Org Export only heading content without heading notitle
-[[https://emacs.stackexchange.com/questions/9492/is-it-possible-to-export-content-of-subtrees-without-their-headings][source]]
-#+begin_src emacs-lisp :results silent :exports none
-(defun org-remove-headlines (backend)
-  "Remove headlines with :notitle: tag."
-  (org-map-entries (lambda () (let ((beg (point)))
-                                (outline-next-visible-heading 1)
-                                (backward-char)
-                                (delete-region beg (point))))
-                   "noexport" tree)
-  (org-map-entries (lambda () (delete-region (point-at-bol) (point-at-eol)))
-                   "notitle"))
 
-(add-hook 'org-export-before-processing-hook #'org-remove-headlines)
+This is now implement in org/contrib. keyword =ignore= will now do what I want.
+#+begin_src emacs-lisp
+(require 'ox-extra)
+(ox-extras-activate '(latex-header-blocks ignore-headlines))
+#+end_src
+
+**** Org HTML export without XHTML link
+
+#+begin_src emacs-lisp
+(setq org-html-validation-link nil)
+#+end_src
+
+**** Org subscript should not be down shifted unless {}
+
+#+begin_src emacs-lisp
+(setq org-use-sub-superscripts '{})
+#+end_src
+
+**** Hide emphasis markers
+
+to hide the *,=,_, or / markers
+#+begin_src emacs-lisp
+(setq org-hide-emphasis-markers t)
+#+end_src
+
+**** Prettify symbols in org-mode
+To have \alpha, \to and others display as utf8 http://orgmode.org/manual/Special-symbols.html.
+See [[help:org-entities][this]] variable to see what is included.
+
+#+begin_src emacs-lisp
+(setq org-pretty-entities t)
 #+end_src
 
 **** org-ref configuration
@@ -1541,6 +1569,7 @@ Paths to files. This might be more general than reftex.
 #+begin_src emacs-lisp
 (setq org-link-abbrev-alist
       '(("bib" . "~/research/bibliography.bib::%s")
+        ("bib-notes" . "~/research/bib-notes.org::#%s")
         ("notes" . "~/research/notes.org::#%s")
         ("papers" . "~/research/papers/%s.pdf")))
 #+end_src
@@ -1548,13 +1577,13 @@ Paths to files. This might be more general than reftex.
 Org-ref variables
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "org-ref")
-  (setq org-ref-bibliography-notes "~/research/notes.org"
+  (setq org-ref-bibliography-notes "~/research/bib-notes.org"
         org-ref-default-bibliography '("~/research/bibliography.bib")
         org-ref-pdf-directory "~/research/papers/"
-        org-ref-note-title-format "*** TODO %k - %t
+        org-ref-note-title-format "** TODO %k - %t
 :PROPERTIES:
 :Custom_ID: %k
-:AUTHOR: %9a
+:AUTHOR: %a
 :JOURNAL: %j
 :YEAR: %y
 :VOLUME: %v
@@ -1563,9 +1592,9 @@ Org-ref variables
 :URL: %U
 :END:
 "
-        helm-bibtex-bibliography "~/research/references.bib"
+        helm-bibtex-bibliography "~/research/bibliography.bib"
         helm-bibtex-library-path "~/research/papers"
-        helm-bibtex-notes-path "~/research/notes")
+        helm-bibtex-notes-path "~/research/bib-notes")
 
   (setq org-agenda-files (reverse (add-to-ordered-list 'org-agenda-files (expand-file-name org-ref-bibliography-notes)))))
 #+end_src
