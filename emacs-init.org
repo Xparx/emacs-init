@@ -1056,17 +1056,13 @@ Either install [[*R][ess]] or the julialang:
 (el-get 'sync '(julia-mode))
 #+end_src
 
-Make julia work in org-mode (Not sure if this is included in ess)
-#+begin_src emacs-lisp :tangle no
-(el-get 'sync '(ob-julia))
-#+end_src
-
 Initiate julia mode.
 #+begin_src emacs-lisp
 ;; (when (and (or (el-get-package-exists-p "ess") (el-get-package-exists-p "julia-mode")) (f-exists? (executable-find "julia")))
-(when (and (el-get-package-exists-p "ess") (f-exists? (executable-find "julia")))
+(when (and (el-get-package-exists-p "ess") (executable-find "julia"))
   (require 'ess-site)
-  (setq inferior-julia-program-name (executable-find "julia")))
+  (setq inferior-julia-program-name (executable-find "julia"))
+  (add-to-list 'auto-mode-alist '(".juliahistory\\'" . julia-mode)))
 #+end_src
 
 Make C-l clear the ess julia buffer
