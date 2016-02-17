@@ -1681,6 +1681,20 @@ Push at exit
 #+begin_src emacs-lisp :tangle no
 (add-hook 'kill-emacs-hook 'org-mobile-push)
 #+end_src
+*** General company-mode settings                                   :company:
+[[https://company-mode.github.io/][source]]
+
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "company-mode")
+(add-hook 'after-init-hook 'global-company-mode))
+#+end_src
+
+General [[https://github.com/vspinu/company-math][math company]]
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "company-math")
+(add-to-list 'company-backends 'company-math-symbols-unicode))
+#+end_src
+
 *** Eshell
 good [[https://www.masteringemacs.org/article/complete-guide-mastering-eshell][source]]
 
