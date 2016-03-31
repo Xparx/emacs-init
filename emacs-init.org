@@ -1,6 +1,7 @@
 #+TITLE: Emacs Init
 #+OPTIONS: toc:2 num:nil ^:nil
 #+STARTUP:  hideblocks
+#+PROPERTY: header-args    :results silent
 
 #+begin_quote
 Emacs outshines all other editing software in approximately the same
