@@ -18,11 +18,13 @@ X-Ayatana-Desktop-Shortcuts=emacsc;emacs-snapshot;emacsfsc;
 [emacsc Shortcut Group]
 Name=Emacsclient
 Exec=/usr/bin/emacsclient -c -a "" %F
+Terminal=true
 TryExec=emacs
 
 [emacsfsc Shortcut Group]
 Name=Emacs fullscreen client
 Exec=/usr/bin/emacsclient -c -a "" -F "((fullscreen . maximized))" %F
+Terminal=true
 TryExec=emacs
 
 [emacs-snapshot Shortcut Group]
