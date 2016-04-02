@@ -1629,29 +1629,9 @@ Set org-reveal-root path.
 #+end_src
 
 **** Ediff org-mode buffers
-[[https://lists.gnu.org/archive/html/emacs-orgmode/2013-04/msg00400.html][source]]
+[[https://emacs.stackexchange.com/a/21336/427][source]]
 #+begin_src emacs-lisp
-(defun f-ediff-prepare-buffer-hook-setup ()
-  ;; specific modes
-  (cond ((eq major-mode 'org-mode)
-         (f-org-vis-mod-maximum))
-        ;; room for more modes
-        )
-  ;; all modes
-  (setq truncate-lines nil))
-
-(defun f-org-vis-mod-maximum ()
-  "Visibility: Show the most possible."
-  (cond
-   ((eq major-mode 'org-mode)
-    (visible-mode 1)  ; default 0
-    (setq truncate-lines nil)  ; no `org-startup-truncated' in hook
-    (setq org-hide-leading-stars t))  ; default nil
-   (t
-    (message "ERR: not in Org mode")
-    (ding))))
-
-(add-hook 'ediff-prepare-buffer-hook 'f-ediff-prepare-buffer-hook-setup)
+(add-hook 'ediff-prepare-buffer-hook #'show-all)
 #+end_src
 
 **** Org protocal
