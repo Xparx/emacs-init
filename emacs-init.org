@@ -686,6 +686,7 @@ More advanced things can be done with [[https://github.com/justbur/emacs-which-k
   "Save buffers, Quit, and Shutdown (kill) server"
   (interactive)
   (save-some-buffers)
+  (when (el-get-package-exists-p "elpy") (pyvenv-deactivate))
   (kill-emacs)
   )
 #+end_src
@@ -833,6 +834,14 @@ Some variables are set differently currently, check function if curious.
   )
 #+end_src
 
+Run my default python environment if possible
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "elpy")
+  (setq my-default-virtualenv "default")
+  (if (member my-default-virtualenv (pyvenv-virtualenv-list))
+      (pyvenv-workon my-default-virtualenv)))
+#+end_src
+
 ***** ipython support
 If an =ipython= executable is on the path, then assume that
 IPython is the preferred method for python evaluation.
@@ -841,7 +850,7 @@ If unsure what variables to set, look in to the function [[elisp:(describe-funct
 #+begin_src emacs-lisp
 (when (executable-find "ipython")
   (setq
-   python-shell-interpreter-args "--no-confirm-exit --no-banner -i"
+   python-shell-interpreter-args "--no-confirm-exit --no-banner"
    org-babel-python-command "python" ; org-mode works better this way, don't use ipython unless in session
    ))
 #+end_src
@@ -1584,6 +1593,7 @@ Paths to files. This might be more general than reftex.
 Org-ref variables
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "org-ref")
+  (require 'org-ref)
   (setq org-ref-bibliography-notes "~/research/bib-notes.org"
         org-ref-default-bibliography '("~/research/bibliography.bib")
         org-ref-pdf-directory "~/research/papers/"
@@ -1844,6 +1854,11 @@ Implemented in init.el
 #+end_src
 
 If =visual-regexp= or =visual-regexp-steroids= is installed, use those
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "visual-regexp-steroids")
+  (require 'visual-regexp-steroids))
+#+end_src
+
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "visual-regexp")
   (global-set-key (kbd "C-c r") 'vr/replace)
