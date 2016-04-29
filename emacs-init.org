@@ -800,6 +800,13 @@ Turn on reftex-mode in Auctex mode.
     (add-hook 'latex-mode-hook 'my-latex-mode-setup))
 #+end_src
 
+*** pdf-tools
+
+#+begin_src emacs-lisp :tangle no
+(when (el-get-package-exists-p "pdf-tools")
+  (pdf-tools-install))
+#+end_src
+
 *** Code-modes
 :PROPERTIES:
 :CUSTOM_ID: coding
