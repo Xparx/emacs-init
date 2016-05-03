@@ -837,8 +837,9 @@ Some variables are set differently currently, check function if curious.
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "elpy")
   (elpy-enable)
-  (elpy-use-ipython) ; this sets all the variables needed for ipython
-  )
+  (unless (el-get-package-exists-p "ob-ipython")
+    (elpy-use-ipython) ; this sets all the variables needed for ipython
+    ))
 #+end_src
 
 Run my default python environment if possible
@@ -847,6 +848,14 @@ Run my default python environment if possible
   (setq my-default-virtualenv "default")
   (if (member my-default-virtualenv (pyvenv-virtualenv-list))
       (pyvenv-workon my-default-virtualenv)))
+#+end_src
+
+***** ob-ipython
+ob-ipython is ipython support for src block in org-mode.
+[[https://github.com/gregsexton/ob-ipython][org-babel integration with Jupyter for evaluation of (Python by default) code blocks]]
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "ob-ipython")
+  (setq python-shell-completion-native-enable nil))
 #+end_src
 
 ***** ipython support

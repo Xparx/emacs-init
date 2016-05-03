@@ -2,5 +2,5 @@
        :website "https://github.com/gregsexton/ob-ipython"
        :description "org-babel integration with IPython for evaluation."
        :type github
-       :depends (dash f json)
+       :depends (dash f s json)
        :pkgname "gregsexton/ob-ipython")
