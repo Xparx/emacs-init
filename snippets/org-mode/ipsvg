@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: ipython svg plot
+# key: ipsvg
+# --
+#+begin_src ipython :session ${1::file ${2:$$(let ((temporary-file-directory "/tmp/")) (make-temp-file "py" nil ".svg"))}} :exports ${3:results}
+%matplotlib inline
+%config InlineBackend.figure_format = 'svg'
+import matplotlib.pyplot as plt
+import numpy as np
+$0
+#+end_src

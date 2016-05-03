@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ipython block
+# key: ipy
+# --
+#+begin_src ipython :session :exports results
+$0
+#+end_src
