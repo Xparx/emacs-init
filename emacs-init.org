@@ -802,7 +802,7 @@ Turn on reftex-mode in Auctex mode.
 
 *** pdf-tools
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle yes
 (when (el-get-package-exists-p "pdf-tools")
   (pdf-tools-install))
 #+end_src
@@ -1138,7 +1138,7 @@ Associate .org files with org-mode
 #+end_src
 
 Make it so that org-mode opens external pdf files in evince: [[http://stackoverflow.com/questions/8834633/how-do-i-make-org-mode-open-pdf-files-in-evince][source]].
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (eval-after-load "org"
   '(progn (setcdr (assoc "\\.pdf\\'" org-file-apps) "evince %s")))
 #+end_src
@@ -1690,13 +1690,13 @@ Push at exit
 
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "company-mode")
-(add-hook 'after-init-hook 'global-company-mode))
+  (add-hook 'after-init-hook 'global-company-mode))
 #+end_src
 
 General [[https://github.com/vspinu/company-math][math company]]
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "company-math")
-(add-to-list 'company-backends 'company-math-symbols-unicode))
+  (add-to-list 'company-backends 'company-math-symbols-unicode))
 #+end_src
 
 *** Eshell

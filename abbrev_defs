@@ -927,4 +927,5 @@
                                             ("yuor" "your" nil 0)
                                             ("Dnase" "DNase" nil 0)
                                             ("DNAse" "DNase" nil 0)
+                                            ("Tfs" "TFs" nil 0)
                                             ))
