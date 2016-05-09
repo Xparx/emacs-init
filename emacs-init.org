@@ -864,7 +864,7 @@ IPython is the preferred method for python evaluation.
 If unsure what variables to set, look in to the function [[elisp:(describe-function 'elpy-use-ipython)]]
 
 #+begin_src emacs-lisp
-(when (executable-find "ipython")
+(when (and (executable-find "ipython") (not (el-get-package-exists-p "ob-ipython")))
   (setq
    python-shell-interpreter-args "--no-confirm-exit --no-banner"
    org-babel-python-command "python" ; org-mode works better this way, don't use ipython unless in session
@@ -1338,6 +1338,11 @@ the currently supported languages.
 Adding unsecure evaluation of code-blocks
 #+begin_src emacs-lisp
 (setq org-confirm-babel-evaluate nil)
+#+end_src
+
+Don't evaluate src code on export
+#+begin_src emacs-lisp
+(setq org-export-babel-evaluate nil)
 #+end_src
 
 **** Org library of babel
@@ -1936,6 +1941,15 @@ Rgrep is infinitely useful in multi-file projects.
 #+begin_src emacs-lisp
 (global-set-key (kbd "M-SPC") 'cycle-spacing)
 #+end_src
+
+**** Helm config
+[[https://tuhdo.github.io/helm-intro.html][A Package in a league of its own: <code>Helm</code>]]
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "helm")
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action))
+#+end_src
+
 *** Emacs aliases
 **** for yes-no to y-n choice.
 #+begin_src emacs-lisp
@@ -2083,6 +2097,26 @@ initialize it for text modes.
 
 #+begin_src emacs-lisp
 (add-hook 'before-make-frame-hook 'change-theme-on-time)
+#+end_src
+
+**** Disable mouse mode
+[[http://endlessparentheses.com/disable-mouse-only-inside-emacs.html?source=rss][Disable Mouse only inside Emacs · Endless Parentheses]]
+
+#+begin_src emacs-lisp
+(define-minor-mode disable-mouse-mode
+  "A minor-mode that disables all mouse keybinds."
+  :global t
+  :lighter " 🐭"
+  :keymap (make-sparse-keymap))
+
+(dolist (type '(mouse down-mouse drag-mouse
+                      double-mouse triple-mouse))
+  (dolist (prefix '("" C- M- S- M-S- C-M- C-S- C-M-S-))
+    ;; Yes, I actually HAD to go up to 7 here.
+    (dotimes (n 7)
+      (let ((k (format "%s%s-%s" prefix type n)))
+        (define-key disable-mouse-mode-map
+          (vector (intern k)) #'ignore)))))
 #+end_src
 
 *** Publish emacs init
