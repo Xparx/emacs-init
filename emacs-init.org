@@ -1618,7 +1618,7 @@ Org-ref variables
   (setq org-ref-bibliography-notes "~/research/bib-notes.org"
         org-ref-default-bibliography '("~/research/bibliography.bib")
         org-ref-pdf-directory "~/research/papers/"
-        org-ref-note-title-format "** TODO %k - %t
+        org-ref-note-title-format "** TOREAD %k - %t
 :PROPERTIES:
 :Custom_ID: %k
 :AUTHOR: %a
