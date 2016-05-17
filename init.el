@@ -26,6 +26,7 @@
 (setq blink-matching-delay .1)                ;; Matching parenthesis timer default 1
 (setq-default indent-tabs-mode nil)           ;; Make sure no tabs are present.
 (setq-default tab-width 4)
+(delete-selection-mode t)                     ;; Make it so that selected text are removed on new entries
 
 ;; load el-get here.
 (setq el-get-dir (expand-file-name "el-get" emacs-init-dir))
