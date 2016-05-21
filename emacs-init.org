@@ -1856,7 +1856,7 @@ Search query formats from the github page examples
     "http://www.youtube.com/results?aq=f&oq=&search_query=%s"))
 #+end_src
 
-*** Emacs bindings
+*** Emacs bindings                                             :key:bindings:
 :PROPERTIES:
 :CUSTOM_ID: emacs-bindings
 :END:
@@ -1966,6 +1966,15 @@ Rgrep is infinitely useful in multi-file projects.
 (when (el-get-package-exists-p "helm")
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action))
+#+end_src
+
+**** Ace-window
+[[https://github.com/abo-abo/ace-window][abo-abo/ace-window: Quickly switch windows in Emacs]]
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "ace-window")
+  (global-set-key (kbd "M-p") 'ace-window)
+  (setq aw-background nil
+        aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+end_src
 
 *** Emacs aliases
