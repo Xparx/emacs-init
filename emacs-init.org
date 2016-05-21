@@ -693,6 +693,22 @@ More advanced things can be done with [[https://github.com/justbur/emacs-which-k
   )
 #+end_src
 
+**** Powerline config                                             :powerline:
+
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "powerline")
+  (powerline-default-theme)
+  (setq powerline-default-separator 'curve)
+  (set-face-attribute 'mode-line nil
+                      :foreground "white"
+                      :background "darkorange"
+                      :box nil)
+  (set-face-attribute 'mode-line-inactive nil
+                      :foreground "grey80"
+                      :background "grey60"
+                      :box nil))
+#+end_src
+
 *** LaTeX mode                                                        :latex:
 :PROPERTIES:
 :CUSTOM_ID: latex
