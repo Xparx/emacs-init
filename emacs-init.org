@@ -525,7 +525,9 @@ Ibuffer settings, source [[http://www.emacswiki.org/emacs/IbufferMode][here]]. L
                          (mode . bibtex-mode)))
                ("python" (or
                          (mode . python-mode)
-                         (mode . inferior-python-mode)))
+                         (mode . inferior-python-mode)
+                         (name . "^\\*ob-ipython-client-driver\\*$")
+                         (name . "^\\*ob-ipython-kernel\*")))
                ("planner" (or
                            (name . "^\\*Calendar\\*$")
                            (name . "^diary$")))
