@@ -1310,9 +1310,18 @@ Capture to specified files
          "* TODO %?\n%i\n%a" :kill-buffer t)
         ("R" "Research note" entry (file+headline "~/research/notes.org" "Notes")
          "* %?\n%U\n%a\n%i" :prepend t :kill-buffer t)
+        ("s" "Code Snippet" entry
+         (file+headline (car org-default-notes-file) "Code")
+         "* %?\t%^g\n#+begin_src %^{language}\n\n#+end_src")
+        ("m" "Media" entry
+         (file+headline (car org-default-notes-file) "Movies, TV shows and books")
+         "* %?\nURL: \nEntered on %U\n")
         ("c" "Contacts" entry (file (expand-file-name "contacts.org" org-directory))
          "* %(org-contacts-template-name)\n:PROPERTIES:\n:EMAIL: %(org-contacts-template-email)\n:END:")))
 #+end_src
+
+Sources:
+- [[http://blog.dispatched.ch/2016/05/01/org-mode-capture-template-for-code-snippets/][org-mode capture template for code snippets | Munen Alain M. Lafon]]
 
 **** Activate babel languages                                         :babel:
 :PROPERTIES:
