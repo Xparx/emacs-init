@@ -2162,6 +2162,14 @@ initialize it for text modes.
           (vector (intern k)) #'ignore)))))
 #+end_src
 
+**** Launch org-mode sheat sheet
+
+#+begin_src emacs-lisp
+(defun my-orgmode-sheat-sheet ()
+  (interactive)
+  (eww "http://orgmode.org/orgcard.txt"))
+#+end_src
+
 *** Publish emacs init
 Publishing require the htmlize package. Can be found in
 emacs-goodies or as a standalone elisp file. I use el-get in
