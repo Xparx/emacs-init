@@ -565,9 +565,9 @@ This is mostly for el-get when looking for recpies but might affect other stuff 
 **** Abbrev mode
 [[http://pragmaticemacs.com/emacs/use-abbreviations-to-expand-text/][source]]
 
-Activate as default
+Activate only in text modes
 #+begin_src emacs-lisp
-(setq-default abbrev-mode t)
+(add-hook 'text-mode-hook (lambda () (abbrev-mode t)))
 #+end_src
 
 make sure the abbrev file is in the right location
