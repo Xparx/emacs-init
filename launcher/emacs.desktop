@@ -4,14 +4,14 @@ Name=Emacs
 GenericName=Text Editor
 Comment=View and edit files
 MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;text/x-bibtex;
-Exec=/usr/bin/emacsclient -c -a "" %F
+Exec=/usr/bin/emacsclient -c -a /usr/bin/emacs %F
 TryExec=emacs
 Icon=/usr/share/icons/hicolor/scalable/apps/emacs-snapshot.svg
 Type=Application
 Terminal=false
-Categories=Utility;Development;TextEditor;
+Categories=Utility;Development;TextEditor;Office;Science;Network;
 StartupWMClass=emacs
-X-Ayatana-Desktop-Shortcuts=emacsc;emacs-snapshot;emacsfsc;
+X-Ayatana-Desktop-Shortcuts=emacsc;emacsw;emacsfsc;
 # https://xdev.me/article/Create_an_emacsclient_launcher_for_Ubuntu_Unity
 # Exec=/usr/bin/emacs %F
 
@@ -27,7 +27,7 @@ Exec=/usr/bin/emacsclient -c -a "" -F "((fullscreen . maximized))" %F
 Terminal=true
 TryExec=emacs
 
-[emacs-snapshot Shortcut Group]
+[emacsw Shortcut Group]
 Name=Emacs non client
-Exec=/usr/bin/emacs-snapshot %F
+Exec=/usr/bin/emacs %F
 TryExec=emacs
