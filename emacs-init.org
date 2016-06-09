@@ -1933,7 +1933,6 @@ Disable =visual-regexp= in pdfview
                 (local-set-key (kbd "C-r") 'isearch-backwards)))))
 #+end_src
 
-
 **** File finding
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
@@ -1984,6 +1983,14 @@ Rgrep is infinitely useful in multi-file projects.
   (global-set-key (kbd "C-x o") 'ace-window)
   (setq aw-background nil
         aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+#+end_src
+
+**** Unset COMMENT header fast key in orgmode
+I hit this to often in error instead of =C-c '=
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook
+          (lambda()
+            (local-unset-key (kbd "C-c ;"))))
 #+end_src
 
 *** Emacs aliases
