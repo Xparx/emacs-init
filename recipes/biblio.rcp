@@ -1,0 +1,5 @@
+(:name biblio
+       :website "https://github.com/cpitclaudel/biblio.el"
+       :description "Browse and import bibliographic references from CrossRef, DBLP, HAL, arXiv, Dissemin, and doi.org from Emacs"
+       :type github
+       :pkgname "cpitclaudel/biblio.el")
