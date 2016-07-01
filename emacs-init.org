@@ -1777,6 +1777,52 @@ Set the alias file location
     (while (pcomplete-here (pcomplete-entries) nil 'expand-file-name))))
 #+end_src
 
+*** Ansi-term
+:PROPERTIES:
+:tangle:   yes
+:END:
+A mix of [[http://oremacs.com/2015/01/01/three-ansi-term-tips/][this source]] and a little of [[https://echosa.github.io/blog/2012/06/06/improving-ansi-term/][that source]].
+
+kill buffer after terminating shell
+#+begin_src emacs-lisp
+(defun oleh-term-exec-hook ()
+  (let* ((buff (current-buffer))
+         (proc (get-buffer-process buff)))
+    (set-process-sentinel
+     proc
+     `(lambda (process event)
+        (if (string= event "finished\n")
+            (kill-buffer ,buff))))))
+
+(add-hook 'term-exec-hook 'oleh-term-exec-hook)
+#+end_src
+
+Always use bash
+#+begin_src emacs-lisp
+(setq explicit-shell-file-name (executable-find "bash"))
+#+end_src
+
+Use UTF8 for the terminal
+#+begin_src emacs-lisp
+(defun my-term-use-utf8 ()
+  (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
+(add-hook 'term-exec-hook 'my-term-use-utf8)
+#+end_src
+
+Make adresses in terminal work.
+#+begin_src emacs-lisp
+(defun my-term-hook ()
+  (goto-address-mode))
+
+(add-hook 'term-mode-hook 'my-term-hook)
+#+end_src
+
+Fix pasting
+#+begin_src emacs-lisp
+(eval-after-load "term"
+  '(define-key term-raw-map (kbd "C-c C-y") 'term-paste))
+#+end_src
+
 *** Yasnippet
 :PROPERTIES:
 :CUSTOM_ID: yasnippet
