@@ -344,8 +344,12 @@ Save to personal dictionary quietly
 **** Highlight matching parentheses when the point is on them.
 
 #+name: emacs-init-match-parens
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
 (show-paren-mode 1)
+#+end_src
+
+#+name: emacs-init-customize-match-parens
+#+begin_src emacs-lisp :tangle no
 (set-face-background 'show-paren-match-face (face-background 'default))
 (set-face-foreground 'show-paren-match-face "#def")
 (set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
@@ -1158,6 +1162,12 @@ The =...= pattern at the end of ogr-mode headlines can be [[http://endlessparent
 (setq org-ellipsis " ⤵")
 #+end_src
 
+**** Folded edits
+
+#+begin_src emacs-lisp
+(setq org-catch-invisible-edits 'show)
+#+end_src
+
 **** Org-Mode File association
 Associate .org files with org-mode
 #+begin_src emacs-lisp
@@ -1582,6 +1592,12 @@ Define packages for each latex command. Using latexmk...
                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
                   org-export-latex-classes))))
 (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
+#+end_src
+
+**** Org man-pages integration
+
+#+begin_src emacs-lisp
+(require 'org-man)
 #+end_src
 
 **** Org Export only heading content without heading notitle
