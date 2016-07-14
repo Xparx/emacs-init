@@ -349,10 +349,10 @@ Save to personal dictionary quietly
 #+end_src
 
 #+name: emacs-init-customize-match-parens
-#+begin_src emacs-lisp :tangle no
-(set-face-background 'show-paren-match-face (face-background 'default))
-(set-face-foreground 'show-paren-match-face "#def")
-(set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
+#+begin_src emacs-lisp :tangle yes
+(set-face-background 'show-paren-match (face-background 'default))
+(set-face-foreground 'show-paren-match "#def")
+(set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 #+end_src
 
 **** Init random seed.
