@@ -1381,7 +1381,7 @@ the currently supported languages.
   (add-to-list 'org-babel-load-languages '(ipython . t)))
 #+end_src
 
-#+name:babel-lang
+#+name: babel-lang
 #+begin_src emacs-lisp
 (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
 #+end_src
@@ -1391,8 +1391,8 @@ Adding unsecure evaluation of code-blocks
 (setq org-confirm-babel-evaluate nil)
 #+end_src
 
-Don't evaluate src code on export
-#+begin_src emacs-lisp
+Don't evaluate src code on export [[help:org-export-babel-evaluate][and more (WARNING !!)]]. To make sure not to evalue on export use the header argument =:eval never-export=.
+#+begin_src emacs-lisp :tangle no
 (setq org-export-babel-evaluate nil)
 #+end_src
 
@@ -1606,6 +1606,18 @@ Define packages for each latex command. Using latexmk...
 (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
 #+end_src
 
+**** org cdlatex integration
+
+[[https://www.gnu.org/software/emacs/manual/html_node/org/CDLaTeX-mode.html][The Org Manual: CDLaTeX mode]]
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "cdlatex-mode")
+  (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+  (add-hook 'cdlatex-mode-hook
+            (lambda () (when (eq major-mode 'org-mode)
+                         (make-local-variable 'org-pretty-entities-include-sub-superscripts)
+                         (setq org-pretty-entities-include-sub-superscripts nil)))))
+#+end_src
+
 **** Org man-pages integration
 
 #+begin_src emacs-lisp
@@ -1630,6 +1642,14 @@ This is now implement in org/contrib. keyword =ignore= will now do what I want.
 
 #+begin_src emacs-lisp
 (setq org-use-sub-superscripts '{})
+#+end_src
+
+**** latex-math-mode in Org
+Turn on latex math mode by default
+[[help:latex-math-mode][commands]]
+
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook 'LaTeX-math-mode)
 #+end_src
 
 **** Hide emphasis markers
