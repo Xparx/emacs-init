@@ -38,7 +38,7 @@ session.
 *** ELPA archive repositories
 
 This is an important package that should be imported and synced.
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (el-get 'sync '(package))
 #+end_src
 
@@ -145,7 +145,7 @@ It's handy to have a shortcut to magit
 #+end_src
 
 ***** Don't split buffer
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (when (el-get-package-exists-p "magit")
   (setq magit-status-buffer-switch-function 'switch-to-buffer))
 #+end_src
@@ -265,7 +265,7 @@ This approach is not perfect. It destroys the (scroll) history in the shell buff
 #+end_src
 
 enable another clear function that seems to work well
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (defun my-eshell-hook ()
   (local-set-key "\C-l" 'eshell/clear))
 
@@ -344,12 +344,12 @@ Save to personal dictionary quietly
 **** Highlight matching parentheses when the point is on them.
 
 #+name: emacs-init-match-parens
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (show-paren-mode 1)
 #+end_src
 
 #+name: emacs-init-customize-match-parens
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (set-face-background 'show-paren-match (face-background 'default))
 (set-face-foreground 'show-paren-match "#def")
 (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
@@ -514,9 +514,10 @@ associate with relevant files
 Warning: This might get memory intensive
 
 Make sure the desktop copy gets saved in kill-ring even though something else is cut before.
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (setq save-interprogram-paste-before-kill t)
 #+end_src
+
 **** Ibuffer settings
 Ibuffer settings, source [[http://www.emacswiki.org/emacs/IbufferMode][here]]. Lots of interesting stuff in there.
 #+begin_src emacs-lisp
@@ -823,8 +824,8 @@ Turn on reftex-mode in Auctex mode.
 #+end_src
 
 *** pdf-tools
-
-#+begin_src emacs-lisp :tangle yes
+Pdf tools have a number of requirements that needs to be installed. Make sure to check error messages and the git page.
+#+begin_src emacs-lisp
 (when (el-get-package-exists-p "pdf-tools")
   (pdf-tools-install))
 #+end_src
@@ -837,7 +838,6 @@ Turn on reftex-mode in Auctex mode.
 **** Python                                                          :python:
 :PROPERTIES:
 :CUSTOM_ID: python
-:tangle:   yes
 :END:
 Support for the Python programming language.
 
@@ -934,7 +934,7 @@ elpy and its setup.  Some bugs with tab and indenting as well.
 #+end_src
 ***** Send current line to python repl
 :PROPERTIES:
-:tangle:   no
+:header-args: :tangle   no
 :END:
 #+begin_src emacs-lisp
 (defun my-python-send-statement ()
@@ -962,7 +962,7 @@ elpy and its setup.  Some bugs with tab and indenting as well.
 ***** Use Cython mode
 :PROPERTIES:
 :CUSTOM_ID: cython
-:tangle:   no
+:header-args: :tangle   no
 :END:
 Install and sync cython-mode repository with el-get manually.
 #+begin_src emacs-lisp :tangle no
@@ -1058,7 +1058,6 @@ it does not work! Do manually with 'M-q'
 
 **** Maxima-mode                                                     :maxima:
 :PROPERTIES:
-:tangle:   yes
 :CUSTOM_ID: maxima
 :END:
 Install and sync init-maxima repository with el-get
@@ -1139,8 +1138,9 @@ Activate auto-complete in julia mode buffers (this behaves a bit weird currently
 
 *** Org Mode <3                                                     :orgmode:
 :PROPERTIES:
-:tangle:   yes
+:CUSTOM_ID: org-mode
 :END:
+
 Install and sync org-mode repository with el-get in =init.el=
 **** El-getting org-mode
 Install manually. This file will not load untill an el-get
@@ -1245,6 +1245,7 @@ Set to the location of your Org files on your local system
 #+end_src
 
 **** Org-Mode TODO
+
 Org mode todo states and agenda mode navigation.
 #+begin_src emacs-lisp
 (eval-after-load "org"
@@ -1342,7 +1343,7 @@ encouraged to activate more languages.  The customize interface
 of =org-babel-load-languages= contains an up to date list of
 the currently supported languages.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (setq org-babel-load-languages '((emacs-lisp . t)
                                  (sql . t)
                                  (shell . t)
@@ -1515,10 +1516,9 @@ use latexmk 4.20 or higher.
   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 #+end_src
 
-**** Org LaTeX export with default packages
+**** Org LaTeX export with default packages                      :deprecated:
 :PROPERTIES:
-:tangle:   no
-:CUSTOM_ID: deprecated
+:header-args: :tangle   no
 :END:
 
 Resetting the org default exported latex packages list. It messes
@@ -1539,10 +1539,9 @@ be needed.
         (""     "amssymb"  nil)))
 #+end_src
 
-**** Org LaTeX export with extra packages
+**** Org LaTeX export with extra packages                        :deprecated:
 :PROPERTIES:
-:tangle:   no
-:CUSTOM_ID: deprecated
+:header-args: :tangle   no
 :END:
 Specify default packages to be included in every tex file, whether
 pdflatex or xelatex. This is kept as an example. Some packages are
@@ -1765,7 +1764,7 @@ Set the alias file location
 #+end_src
 
 [[https://emacs.stackexchange.com/questions/14522/how-do-i-change-behaviour-of-eshell-rm-rm-in-eshell-tab-completion][How do I change behaviour of eshell/rm (rm in eshell) tab completion? - Emacs Stack Exchange]]
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (require 'pcmpl-unix)
 (defun pcomplete/rm ()
   "Completion for `rm'."
@@ -1778,9 +1777,6 @@ Set the alias file location
 #+end_src
 
 *** Ansi-term
-:PROPERTIES:
-:tangle:   yes
-:END:
 A mix of [[http://oremacs.com/2015/01/01/three-ansi-term-tips/][this source]] and a little of [[https://echosa.github.io/blog/2012/06/06/improving-ansi-term/][that source]].
 
 kill buffer after terminating shell
@@ -1838,13 +1834,13 @@ Install yasnippet with el-get manually
 #+end_src
 
 Activate yasnippet everywhere
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (when (el-get-package-exists-p "yasnippet")
   (yas-global-mode 1))
 #+end_src
 
 Above does not work for org-mode, therefore do it here.
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (when (el-get-package-exists-p "yasnippet")
   (add-hook 'org-mode-hook
             '(lambda ()
@@ -1872,7 +1868,7 @@ Configure engine-mode
 #+end_src
 
 Pick what browser should be used
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (when (el-get-package-exists-p "engine-mode")
   (setq browse-url-browser-function 'eww-browse-url))
 #+end_src
@@ -2189,7 +2185,7 @@ initialize it for text modes.
 
 **** Change theme based on time
 :PROPERTIES:
-:tangle:   no
+:header-args: :tangle   no
 :END:
 
 #+begin_src emacs-lisp
