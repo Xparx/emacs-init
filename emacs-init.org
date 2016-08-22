@@ -307,7 +307,8 @@ To fix [[http://www.emacswiki.org/emacs/FlySpell#toc8][this]] bug
 #+begin_src emacs-lisp
 (when (string= ispell-program-name (executable-find "aspell"))
   (setq ispell-list-command "--list")
-  (setq flyspell-issue-welcome-flag nil))
+  (setq flyspell-issue-welcome-flag nil)
+  (setq flyspell-issue-message-flag nil))
 #+end_src
 
 Set default ispell dict
