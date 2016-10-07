@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: revealjs slide
+# key: slide
+# --
+#+HTML: <section id="slide-(org-id-get-create)">
+#+HTML: <div class="slide-header"></div>
+#+HTML: # <h2 id="(org-id-get-create)">$1</h2>
+#+HTML: $0
+#+HTML: <div class="slide-footer"></div>
+#+HTML: </section>

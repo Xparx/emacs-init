@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: python plot.ly
+# key: pyplotly
+# --
+#+begin_src python :session :exports results :var filename=${2:$$(let ((temporary-file-directory "/tmp/")) (make-temp-file "py" nil ".html"))
+import plotly
+import plotly.graph_objs as go
+from plotly.offline import plot
+
+plot([go.Scatter(x=[1, 2, 3], y=[3, 2, 6])],show_link=False,output_type='file',auto_open=False,image='svg',filename=filename)
+$0
+#+end_src

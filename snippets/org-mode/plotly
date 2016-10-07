@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: ipython plot.ly
+# key: plotly
+# --
+#+begin_src ipython :session :exports results :results output raw :var filename=${2:$$(let ((temporary-file-directory "/tmp/")) (make-temp-file "py" nil ".html"))}
+import plotly
+import plotly.graph_objs as go
+from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
+init_notebook_mode()
+$0
+outputfile = plot(,filename=filename)
+print outputfile
+#+end_src

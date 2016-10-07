@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: python plot
+# key: pp
+# --
+#+begin_src python :file ${1:$$(let ((temporary-file-directory "/tmp/")) (make-temp-file "py" nil ".png"))} :exports results :results file
+import matplotlib
+# matplotlib.use('Qt4Agg')
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt 
+
+$0
+plt.show()
+# plt.savefig('$1')
+# return '$1'
+#+end_src

@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: python plot
+# key: pypl
+# --
+#+begin_src python
+import matplotlib
+matplotlib.use('Qt4Agg') # if the setup described in notes have been setup. tag :qt:
+matplotlib.use('TkAgg') # if the setup described in notes have been setup. tag :gtk:
+import matplotlib.pyplot as plt
+$0
+#+end_src
