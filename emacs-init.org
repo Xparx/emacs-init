@@ -1202,7 +1202,8 @@ Make it so that org-mode opens external pdf files in evince: [[http://stackoverf
 
 **** Inline images to be displayed
 
-#+begin_src emacs-lisp
+I can turn this on when needed instead.
+#+begin_src emacs-lisp :tangle no
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
 (add-hook 'org-mode-hook 'org-display-inline-images)
 #+end_src
@@ -1459,6 +1460,11 @@ make ispell treat src blocks ok. [[http://endlessparentheses.com/ispell-and-org-
 (add-hook 'org-mode-hook #'endless/org-ispell)
 #+end_src
 
+Org-mode hook for tex-master
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook (setq TeX-master t))
+#+end_src
+
 **** Org LaTeX export types
 Originally taken from Bruno Tavernier: [[http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432][here]], but adapted to
 use latexmk 4.20 or higher.
@@ -1650,7 +1656,8 @@ Turn on latex math mode by default
 [[help:latex-math-mode][commands]]
 
 #+begin_src emacs-lisp
-(add-hook 'org-mode-hook 'LaTeX-math-mode)
+(when (el-get-package-exists-p "auctex")
+  (add-hook 'org-mode-hook 'LaTeX-math-mode))
 #+end_src
 
 **** Hide emphasis markers
@@ -1705,17 +1712,21 @@ Org-ref variables
 :DOI: %D
 :URL: %U
 :END:
-"
-        helm-bibtex-bibliography "~/research/bibliography.bib"
-        helm-bibtex-library-path "~/research/papers"
-        helm-bibtex-notes-path "~/research/bib-notes")
+")
 
   (setq org-agenda-files (reverse (add-to-ordered-list 'org-agenda-files (expand-file-name org-ref-bibliography-notes)))))
 #+end_src
 
-Org-mode hook for tex-master
+**** helm-bibtex
+:PROPERTIES:
+:CUSTOM_ID: helm-bibtex
+:END:
+
 #+begin_src emacs-lisp
-(add-hook 'org-mode-hook (setq TeX-master t))
+(when (el-get-package-exists-p "helm-bibtex")
+  (setq bibtex-completion-library-path '("~/research/papers")
+        bibtex-completion-bibliography '("~/research/bibliography.bib")
+        bibtex-completion-notes-path "~/research/bib-notes.org"))
 #+end_src
 
 **** Org reveal
