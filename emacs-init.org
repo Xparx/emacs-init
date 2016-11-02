@@ -868,7 +868,7 @@ Install manually
 #+end_src
 
 Enable elpy:
-=elpy-use-ipython= can be used instead of the section [[*ipython support][ipython support]] below.
+=elpy-use-ipython= can be used instead of the section [[#ipython_support][ipython support]] below.
 Some variables are set differently currently, check function if curious.
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "elpy")
@@ -891,10 +891,15 @@ ob-ipython is ipython support for src block in org-mode.
 [[https://github.com/gregsexton/ob-ipython][org-babel integration with Jupyter for evaluation of (Python by default) code blocks]]
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "ob-ipython")
-  (setq python-shell-completion-native-enable nil))
+  (setq python-shell-completion-native-enable nil)
+  (setq python-shell-prompt-detect-failure-warning nil))
 #+end_src
+[[https://github.com/jorgenschaefer/elpy/issues/733][Python shell prompts not detected · Issue #733 · jorgenschaefer/elpy]]
 
 ***** ipython support
+:PROPERTIES:
+:CUSTOM_ID: ipython_support
+:END:
 If an =ipython= executable is on the path, then assume that
 IPython is the preferred method for python evaluation.
 If unsure what variables to set, look in to the function [[elisp:(describe-function 'elpy-use-ipython)]]
@@ -902,7 +907,7 @@ If unsure what variables to set, look in to the function [[elisp:(describe-funct
 #+begin_src emacs-lisp
 (when (and (executable-find "ipython") (not (el-get-package-exists-p "ob-ipython")))
   (setq
-   python-shell-interpreter-args "--no-confirm-exit --no-banner"
+   python-shell-interpreter-args "--no-confirm-exit --no-banner --simple-prompt -i"
    org-babel-python-command "python" ; org-mode works better this way, don't use ipython unless in session
    ))
 #+end_src
