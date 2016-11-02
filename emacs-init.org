@@ -1432,8 +1432,12 @@ To make latex code have special fontification wich can make small inline code sn
 #+end_src
 
 **** Org general export options
+
+[[https://emacs.stackexchange.com/a/27697/427][html5 fancy]]
 #+begin_src emacs-lisp
-(setq org-export-with-sub-superscripts '{})
+(setq org-export-with-sub-superscripts '{}
+      org-html-html5-fancy t
+      org-html-doctype "html5")
 #+end_src
 
 So that the export does not end up in the kill ring.
