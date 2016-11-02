@@ -1333,19 +1333,19 @@ Org-capture stores notes and todos with a simple key command.
 Capture to specified files
 #+begin_src emacs-lisp
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline (car org-agenda-files) "Tasks")
+      '(("t" "Todo" entry (file+headline "~/notebook/todo.org" "Tasks")
          "* TODO %?\n%i\n%a" :kill-buffer t)
-        ("n" "Journal" entry (file+headline (car org-default-notes-file) "Unsorted")
+        ("n" "Journal" entry (file+headline "~/notebook/notes.org" "Unsorted")
          "* %?\n%U\n%a\n%i" :prepend t :kill-buffer t)
         ("r" "Research task" entry (file+headline "~/research/notes.org" "Tasks")
          "* TODO %?\n%i\n%a" :kill-buffer t)
         ("R" "Research note" entry (file+headline "~/research/notes.org" "Notes")
          "* %?\n%U\n%a\n%i" :prepend t :kill-buffer t)
         ("s" "Code Snippet" entry
-         (file+headline (car org-default-notes-file) "Code")
+         (file+headline "~/notebook/notes.org" "Code")
          "* %?\t%^g\n#+begin_src %^{language}\n\n#+end_src")
         ("m" "Media" entry
-         (file+headline (car org-default-notes-file) "Movies, TV shows and books")
+         (file+headline "~/notebook/notes.org" "Movies, TV shows and books")
          "* %?\nURL: \nEntered on %U\n")
         ("c" "Contacts" entry (file (expand-file-name "contacts.org" org-directory))
          "* %(org-contacts-template-name)\n:PROPERTIES:\n:EMAIL: %(org-contacts-template-email)\n:END:")))
