@@ -881,7 +881,7 @@ Some variables are set differently currently, check function if curious.
 Run my default python environment if possible
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "elpy")
-  (setq my-default-virtualenv "default")
+  (setq my-default-virtualenv "default3")
   (if (member my-default-virtualenv (pyvenv-virtualenv-list))
       (pyvenv-workon my-default-virtualenv)))
 #+end_src
