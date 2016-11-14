@@ -2084,8 +2084,9 @@ Rgrep is infinitely useful in multi-file projects.
 [[https://tuhdo.github.io/helm-intro.html][A Package in a league of its own: <code>Helm</code>]]
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "helm")
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action))
+  (with-eval-after-load "helm.el"
+    (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+    (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)))
 #+end_src
 
 **** Ace-window
