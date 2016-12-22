@@ -21,7 +21,9 @@ brighter; it simply makes everything else vanish.
 #+begin_src emacs-lisp
 (add-to-list 'load-path (concat emacs-init-dir "lisp"))
 (setq autoload-file (concat emacs-init-dir "loaddefs.el"))
-(setq custom-file "/dev/null")
+(setq custom-file "/dev/null")(defun load-if-exists (f)
+  (if (file-readable-p f)
+      (load-file f)))
 #+end_src
 *** Ubiquitous Packages
 which should be loaded on startup rather than
