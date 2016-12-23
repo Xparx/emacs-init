@@ -1452,6 +1452,23 @@ Make sure that my own lables are preserved
 (setq org-latex-prefer-user-labels t)
 #+end_src
 
+force utf-8 in export
+#+begin_src emacs-lisp
+(setq org-export-coding-system 'utf-8)
+#+end_src
+
+**** Default header arguments
+
+Unfortunatley this seems to break tramp execution. Specifically to the NCS gamma. It might be more general but I haven't tested it.
+#+begin_src emacs-lisp :tangle no
+;; ensure this variable is defined
+(unless (boundp 'org-babel-default-header-args:sh)
+  (setq org-babel-default-header-args:sh '()))
+
+(add-to-list 'org-babel-default-header-args:sh
+             '(:shebang . "#!/usr/bin/env bash"))
+#+end_src
+
 **** Org-mode hooks
 Make org understand latex syntax: [[http://stackoverflow.com/questions/11646880/flyspell-in-org-mode-recognize-latex-syntax-like-auctex][source]]
 #+begin_src emacs-lisp
