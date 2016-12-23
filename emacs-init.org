@@ -1466,8 +1466,8 @@ make ispell treat src blocks ok. [[http://endlessparentheses.com/ispell-and-org-
   (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
   (add-to-list 'ispell-skip-region-alist '("~" "~"))
   (add-to-list 'ispell-skip-region-alist '("=" "="))
-  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
-  (add-to-list 'ispell-skip-region-alist '("^#\\+begin_src" . "^#\\+end_src")))
+  (add-to-list 'ispell-skip-region-alist '("^ *#\\+BEGIN_SRC" . "^ *#\\+END_SRC"))
+  (add-to-list 'ispell-skip-region-alist '("^ *#\\+begin_src" . "^ *#\\+end_src")))
 (add-hook 'org-mode-hook #'endless/org-ispell)
 #+end_src
 
@@ -1675,7 +1675,7 @@ Turn on latex math mode by default
 
 to hide the *,=,_, or / markers
 #+begin_src emacs-lisp
-(setq org-hide-emphasis-markers t)
+(setq org-hide-emphasis-markers nil)
 #+end_src
 
 **** Prettify symbols in org-mode
@@ -1708,7 +1708,7 @@ Paths to files. This might be more general than reftex.
 Org-ref variables
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "org-ref")
-  (require 'org-ref)
+  ;; (require 'org-ref)
   (setq org-ref-bibliography-notes "~/research/bib-notes.org"
         org-ref-default-bibliography '("~/research/bibliography.bib")
         org-ref-pdf-directory "~/research/papers/"
