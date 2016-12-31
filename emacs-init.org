@@ -1422,6 +1422,10 @@ Add the standard file to the library
 (org-babel-lob-ingest (expand-file-name "org-mode/doc/library-of-babel.org" el-get-dir))
 #+end_src
 
+#+begin_src emacs-lisp
+(org-babel-lob-ingest (expand-file-name "org/tjarnberg-lob.org" emacs-init-dir))
+#+end_src
+
 **** Code block fontification and editing
 :PROPERTIES:
 :CUSTOM_ID: code-block-fontification
