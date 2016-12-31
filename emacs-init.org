@@ -1,7 +1,7 @@
 #+TITLE: Emacs Init
 #+OPTIONS: toc:2 num:nil ^:nil
 #+STARTUP:  hideblocks
-#+PROPERTY: header-args    :results silent
+#+PROPERTY: header-args    :results silent :eval never-export
 
 #+begin_quote
 Emacs outshines all other editing software in approximately the same
@@ -21,9 +21,18 @@ brighter; it simply makes everything else vanish.
 #+begin_src emacs-lisp
 (add-to-list 'load-path (concat emacs-init-dir "lisp"))
 (setq autoload-file (concat emacs-init-dir "loaddefs.el"))
-(setq custom-file "/dev/null")(defun load-if-exists (f)
+(setq custom-file "/dev/null")
+(defun load-if-exists (f)
   (if (file-readable-p f)
       (load-file f)))
+(defmacro with-library (symbol &rest body)
+  `(condition-case nil
+       (progn
+         (require ',symbol)
+         ,@body)
+
+     (error (message (format "I guess we don't have %s available." ',symbol))
+            nil)))
 #+end_src
 *** Ubiquitous Packages
 which should be loaded on startup rather than
@@ -729,7 +738,6 @@ The el-get package does not contain the requirement =visual-fill-column= so it n
     (define-key writeroom-mode-map (kbd "C-M-=") #'writeroom-adjust-width)))
 #+end_src
 
-
 *** LaTeX mode                                                        :latex:
 :PROPERTIES:
 :CUSTOM_ID: latex
@@ -1022,6 +1030,7 @@ Shortcut function to load notebook
     (interactive)
     (ein:notebooklist-open)))
 #+end_src
+
 **** cedet
 I am not sure what this does except enabling cedet when coding,
 whatever that means.
@@ -1180,7 +1189,7 @@ Give it a little bit of emacs-lisp
 **** Change the org-mode fold ellipsis
 The =...= pattern at the end of ogr-mode headlines can be [[http://endlessparentheses.com/changing-the-org-mode-ellipsis.html][changed]].
 #+begin_src emacs-lisp
-(setq org-ellipsis " ⤵")
+(setq org-ellipsis " ⬎")
 #+end_src
 
 **** Folded edits
@@ -1221,6 +1230,7 @@ Make attr_* :widht XXXpx work for inline images
 #+end_src
 
 **** hide leading stars in structure outline
+
 #+begin_src emacs-lisp
 (setq org-hide-leading-stars t)
 #+end_src
@@ -1457,6 +1467,11 @@ force utf-8 in export
 (setq org-export-coding-system 'utf-8)
 #+end_src
 
+Languages in html code blocks. Not working as expected, might be already set to python. But the mouse over language box does not appear.
+#+begin_src emacs-lisp :tangle no
+(add-to-list 'org-latex-listings-langs '(ipython "IPython"))
+#+end_src
+
 **** Default header arguments
 
 Unfortunatley this seems to break tramp execution. Specifically to the NCS gamma. It might be more general but I haven't tested it.
@@ -1652,7 +1667,6 @@ Define packages for each latex command. Using latexmk...
                          (make-local-variable 'org-pretty-entities-include-sub-superscripts)
                          (setq org-pretty-entities-include-sub-superscripts nil)))))
 #+end_src
-
 **** Org man-pages integration
 
 #+begin_src emacs-lisp
@@ -1688,9 +1702,9 @@ Turn on latex math mode by default
   (add-hook 'org-mode-hook 'LaTeX-math-mode))
 #+end_src
 
-**** Hide emphasis markers
+**** Hide/Show emphasis markers
 
-to hide the *,=,_, or / markers
+to hide the *,=,_, or / markers set ~t~
 #+begin_src emacs-lisp
 (setq org-hide-emphasis-markers nil)
 #+end_src
