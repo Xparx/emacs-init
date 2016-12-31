@@ -1579,27 +1579,11 @@ use latexmk 4.20 or higher.
   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 #+end_src
 
-**** Org LaTeX export with default packages                      :deprecated:
-:PROPERTIES:
-:header-args: :tangle   no
-:END:
-
-Resetting the org default exported latex packages list. It messes
-with my latex. Storing an extra list for insertion if needed.
+**** Org LaTeX export with my packages
+My extra packages in latex exports. Third argument is for if latex math snippets in org buffers should use the package.
 #+begin_src emacs-lisp
-(setq org-latex-default-packages-bkup-alist
-      org-latex-default-packages-alist)
-(setq org-latex-default-packages-alist ())
-#+end_src
-
-Minimal default export package list. This is all that should
-be needed.
-#+begin_src emacs-lisp
-(setq org-latex-default-packages-alist
-      '(("AUTO" "inputenc" t)
-        ("colorlinks=true"     "hyperref"  nil)
-        (""     "amsmath"  nil)
-        (""     "amssymb"  nil)))
+(add-to-list 'org-latex-packages-alist
+             '("" "easySymbols" t))
 #+end_src
 
 **** Org LaTeX export with extra packages                        :deprecated:
@@ -1654,6 +1638,25 @@ Define packages for each latex command. Using latexmk...
                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
                   org-export-latex-classes))))
 (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
+#+end_src
+
+**** Org LaTeX math snippets configuration
+
+To activate math snippets in a buffer do ~C-v C-c C-l~, and repeat to deactivate.
+Program to use for convertion can be set with the variable [[help:org-preview-latex-default-process][org-preview-latex-default-process]] to anyone found in [[help:org-preview-latex-process-alist][org-preview-latex-process-alist]].
+
+set to use svg images instead of png if possible
+#+begin_src emacs-lisp
+(when (executable-find "dvisvgm")
+  (setq org-preview-latex-default-process 'dvisvgm))
+#+end_src
+
+Scale math snippets to a reasonable size
+#+begin_src emacs-lisp
+(plist-put (alist-get 'dvipng org-preview-latex-process-alist)
+           :image-size-adjust '(1.5 . 1.5))
+(plist-put (alist-get 'dvisvgm org-preview-latex-process-alist)
+           :image-size-adjust '(2.2 . 2.2))
 #+end_src
 
 **** org cdlatex integration
