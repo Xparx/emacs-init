@@ -1717,6 +1717,12 @@ See [[help:org-entities][this]] variable to see what is included.
 (setq org-pretty-entities t)
 #+end_src
 
+**** Load rasmus prettify src blocks
+
+#+begin_src emacs-lisp
+(with-library rasmus-prettify)
+#+end_src
+
 **** org-ref configuration
 :PROPERTIES:
 :CUSTOM_ID: org-ref
@@ -1781,7 +1787,7 @@ To setup and create presentations with org-mode see instructions [[http://blog.j
 Set org-reveal-root path.
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "org-reveal")
-  (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/2.6.2/"))
+  (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/"))
 #+end_src
 
 **** Org eww integration
