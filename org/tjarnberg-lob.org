@@ -1,0 +1,50 @@
+#+title: My local library of babel
+
+* How do I insert code block header :var in exported code block in org-mode
+[[https://emacs.stackexchange.com/questions/27610/how-do-i-insert-code-block-header-var-in-exported-code-block-in-org-mode][source]]
+
+#+NAME: expand-src-block
+#+BEGIN_SRC elisp :var block-name="" datum="" info="" lang="" body="" :exports none :eval
+(save-excursion
+  (org-babel-goto-named-src-block block-name)
+  (setq datum (org-element-at-point))
+  t)
+(setq info (org-babel-get-src-block-info nil datum))
+(setq lang (nth 0 info))
+(setq body (org-babel-expand-src-block nil info))
+(format "%s" body)
+#+END_SRC
+
+To use this function on an existing code block as /e.g./
+#+name: print-abc
+#+BEGIN_SRC shell :var data="ABC" :exports none
+echo -n $data
+#+END_SRC
+
+#+RESULTS: print-abc
+: ABC
+
+Create a block as follows
+#+BEGIN_SRC shell :noweb yes :exports code
+<<expand-src-block(block-name="print-abc")>>
+#+END_SRC
+
+#+name: py-print-abc
+#+BEGIN_SRC python :var data="ABC" :exports none
+print(data)
+#+END_SRC
+
+
+#+BEGIN_SRC python :noweb yes :exports code
+<<expand-src-block(block-name="py-print-abc")>>
+#+END_SRC
+
+
+#+name: ipy-print-abc
+#+BEGIN_SRC ipython :var data=my_bots :exports none
+print(data)
+#+END_SRC
+
+#+BEGIN_SRC python :noweb yes :exports code
+<<expand-src-block(block-name="ipy-print-abc")>>
+#+END_SRC
