@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: R plot
+# key: rplot
+# --
+#+header: ${1::file} ${2:$$(make-temp-file "R" nil "")}.png
+#+header: :results graphics replace :width 5 :height 5
+#+name: ${2:$(file-name-nondirectory yas/text)}
+
+#+begin_src R
+$0
+#+end_src
+
+#+attr_html: :width 400px
+#+RESULTS: ${2:$(file-name-nondirectory yas/text)}

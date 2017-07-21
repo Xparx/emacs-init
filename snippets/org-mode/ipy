@@ -2,6 +2,6 @@
 # name: ipython block
 # key: ipy
 # --
-#+begin_src ipython :session :exports results
+#+begin_src ipython :session :exports code :results silent
 $0
 #+end_src
