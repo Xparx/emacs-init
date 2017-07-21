@@ -1,7 +1,12 @@
 #+TITLE: Emacs Init
 #+OPTIONS: toc:2 num:nil ^:nil
 #+STARTUP:  hideblocks
-#+PROPERTY: header-args    :results silent :eval never-export
+#+PROPERTY: header-args   :exports code :results silent :eval never-export :comments link
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>
+# #+OPTIONS: toc:nil num:3 H:4 ^:nil pri:t
+#+HTML_HEAD_EXTRA: <style type="text/css">p {text-align: justify;} </style>
+#+MACRO: kbd @@html:<kbd>$1</kbd>@@
+
 
 #+begin_quote
 Emacs outshines all other editing software in approximately the same
@@ -10,6 +15,7 @@ brighter; it simply makes everything else vanish.
 
 -- Neal Stephenson, "In the Beginning was the Command Line"
 #+end_quote
+[[https://www.reddit.com/r/emacs/comments/5qe0at/cool_quotes_about_emacs/][Quotes about Emacs]]
 
 * Implementation
 :PROPERTIES:
@@ -444,7 +450,7 @@ Bind keys for dired to be more consistent with open file
         ("\\.tex\\'" "pdflatex" "latex")
         ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\|rar\\)\\(?:\\.part\\)?\\'" "vlc")
         ("\\.\\(?:mp3\\|flac\\)\\'" "rhythmbox")
-        ("\\.html?\\'" "webbrowser-app" "chromium-browser" "firefox")
+        ("\\.html?\\'" "chromium-browser" "webbrowser-app" "firefox")
         ("\\.cue?\\'" "audacious")))
 #+end_src
 
@@ -737,6 +743,42 @@ The el-get package does not contain the requirement =visual-fill-column= so it n
     (define-key writeroom-mode-map (kbd "C-M->") #'writeroom-increase-width)
     (define-key writeroom-mode-map (kbd "C-M-=") #'writeroom-adjust-width)))
 #+end_src
+
+**** Visible bookmarks
+[[https://github.com/joodland/bm][joodland/bm: bm.el -- Visual Bookmarks for GNU Emacs]]
+[[http://pragmaticemacs.com/emacs/use-visible-bookmarks-to-quickly-jump-around-a-file/][Use visible bookmarks to quickly jump around a file | Pragmatic Emacs]]
+
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "bm")
+  (autoload 'bm-toggle   "bm" "Toggle bookmark in current buffer." t)
+  (autoload 'bm-next     "bm" "Goto bookmark."                     t)
+  (autoload 'bm-previous "bm" "Goto previous bookmark."            t)
+  (global-set-key (kbd "<C-f2>") 'bm-toggle)
+  (global-set-key (kbd "<f2>")   'bm-next)
+  (global-set-key (kbd "<S-f2>") 'bm-previous)
+  (global-set-key (kbd "<left-fringe> <mouse-5>") 'bm-next-mouse)
+  (global-set-key (kbd "<left-fringe> <mouse-4>") 'bm-previous-mouse)
+  (global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse))
+#+end_src
+
+**** Browse with eww sometimes
+[[https://www.reddit.com/r/emacs/comments/6ha4tl/a_little_trick_with_eww/][A little trick with EWW : emacs]]
+#+name: browse-eww-sometimes
+#+begin_src emacs-lisp
+(defalias 'gk-urls-external-browser 'browse-url-xdg-open)
+
+(defun gk-browse-url (&rest args)
+  "Prompt for whether or not to browse with EWW, if no browse
+with external browser."
+  (apply
+   (if (y-or-n-p "Browse with EWW? ")
+       'eww-browse-url
+     #'gk-urls-external-browser)
+   args))
+
+(setq browse-url-browser-function #'gk-browse-url)
+#+end_src
+
 
 *** LaTeX mode                                                        :latex:
 :PROPERTIES:
@@ -1391,6 +1433,7 @@ the currently supported languages.
                                  (C . t)
                                  (css . t)
                                  (calc . t)
+                                 (maxima . t)
                                  (perl . t)))
 
 (when (and (el-get-package-exists-p "ess") (executable-find "julia"))
@@ -1655,7 +1698,7 @@ set to use svg images instead of png if possible
   (setq org-preview-latex-default-process 'dvisvgm))
 #+end_src
 
-Scale math snippets to a reasonable size
+Scale math snippets to a reasonable size (it seems like the correct way of doing this is found in the variable [[help:org-format-latex-options]])
 #+begin_src emacs-lisp
 (plist-put (alist-get 'dvipng org-preview-latex-process-alist)
            :image-size-adjust '(1.5 . 1.5))
@@ -1758,6 +1801,7 @@ Org-ref variables
         org-ref-pdf-directory "~/research/papers/"
         org-ref-note-title-format "** %k - %t
 :PROPERTIES:
+:INTERLEAVE_PDF: papers/%f
 :Custom_ID: %k
 :AUTHOR: %a
 :JOURNAL: %j
@@ -1777,11 +1821,25 @@ Org-ref variables
 :CUSTOM_ID: helm-bibtex
 :END:
 
+Basic configuration
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "helm-bibtex")
   (setq bibtex-completion-library-path '("~/research/papers")
         bibtex-completion-bibliography '("~/research/bibliography.bib")
+        bibtex-completion-notes-path "~/research/bib-notes.org"
         bibtex-completion-notes-path "~/research/bib-notes.org"))
+#+end_src
+
+Additional configuration
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "helm-bibtex")
+  (setq bibtex-completion-additional-search-fields '(abstract keywords))
+  (define-key org-mode-map (kbd "<menu> b" ) 'helm-bibtex))
+#+end_src
+
+**** interleave
+#+begin_src emacs-lisp
+(setq interleave-org-notes-dir-list '("~/research" "."))
 #+end_src
 
 **** Org reveal
