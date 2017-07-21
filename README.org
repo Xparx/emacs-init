@@ -1,3 +1,12 @@
+#+TITLE: Emacs init
+#+SUBTITLE: Readme
+#+PROPERTY: header-args :results silent :exports code :eval never-export :comments link
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>
+#+OPTIONS: toc:nil num:3 H:4 ^:nil pri:t
+#+HTML_HEAD_EXTRA: <style type="text/css">p {text-align: justify;} </style>
+#+MACRO: kbd @@html:<kbd>$1</kbd>@@
+
+
 * Emacs init
 :PROPERTIES:
 :CUSTOM_ID: introduction
@@ -100,10 +109,13 @@ a wide range of different repositories. The source can be fetched
 #+begin_src sh
   git clone https://github.com/dimitri/el-get.git
 #+end_src
-This can be automated with a [[Lazy%20install][Lazy install]] or regular [[Regular%20Install][Regular Install]], which
+This can be automated with a [[#lazy_install][Lazy Install]] or [[*Regular Install master branch][Regular Install master branch]], which
 is the default in this emacs-init. This is done in init.el for conveniance
 *** El-get initialization
 **** Lazy Install
+:PROPERTIES:
+:CUSTOM_ID: lazy_install
+:END:
 To setup el-get the simple way one needs only
 to evaluate the following emacs lisp block
 #+begin_src emacs-lisp :tangle no
@@ -117,6 +129,9 @@ to evaluate the following emacs lisp block
 #+end_src
 
 **** Regular Install master branch
+:PROPERTIES:
+:CUSTOM_ID: regular_install
+:END:
 #+begin_src emacs-lisp :tangle no
   (setq el-get-dir (expand-file-name "el-get" emacs-init-dir))
   (add-to-list 'load-path (concat emacs-init-dir "el-get/el-get"))
