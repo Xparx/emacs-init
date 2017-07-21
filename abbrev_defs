@@ -100,6 +100,7 @@
     ("DNAse" "DNase" nil 0)
     ("Dnase" "DNase" nil 0)
     ("Tfs" "TFs" nil 0)
+    ("Tf" "TF" nil 0)
     ("abbout" "about" nil 0)
     ("abotu" "about" nil 0)
     ("abouta" "about a" nil 0)
@@ -1022,6 +1023,7 @@
     ("ytou" "you" nil 0)
     ("yuo" "you" nil 0)
     ("yuor" "your" nil 0)
+    ("haed" "head" nil 0)
    ))
 
 (define-abbrev-table 'grep-mode-abbrev-table '())
