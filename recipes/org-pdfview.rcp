@@ -1,0 +1,4 @@
+(:name org-pdfview
+       :description "org-link support for pdf-view-mode"
+       :type github
+       :pkgname "markus1189/org-pdfview")

@@ -1252,6 +1252,16 @@ Make it so that org-mode opens external pdf files in evince: [[http://stackoverf
   '(progn (setcdr (assoc "\\.pdf\\'" org-file-apps) "evince %s")))
 #+end_src
 
+[[https://emacs.stackexchange.com/a/24502/427][associate pds with pdf-view]]
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "org-pdfview")
+  (eval-after-load 'org '(require 'org-pdfview))
+
+  (add-to-list 'org-file-apps
+               '("\\.pdf\\'" . (lambda (file link)
+                                 (org-pdfview-open link)))))
+#+end_src
+
 **** Org-mode allow bind in file
 
 #+begin_src emacs-lisp
@@ -1837,7 +1847,7 @@ Additional configuration
   (define-key org-mode-map (kbd "<menu> b" ) 'helm-bibtex))
 #+end_src
 
-**** interleave
+**** interleave-mode
 #+begin_src emacs-lisp
 (setq interleave-org-notes-dir-list '("~/research" "."))
 #+end_src
