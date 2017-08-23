@@ -1847,7 +1847,18 @@ Additional configuration
   (define-key org-mode-map (kbd "<menu> b" ) 'helm-bibtex))
 #+end_src
 
+Not sure how to use this for helm-bibtex specifically. But this works
+#+begin_src emacs-lisp
+(when (el-get-package-exists-p "helm-bibtex")
+(add-hook 'helm-after-initialize-hook (lambda ()
+                                        (with-helm-buffer
+                                          (visual-line-mode)))))
+#+end_src
+
+
+
 **** interleave-mode
+interleave needs to be installed with ~package-install~ from =melpa=
 #+begin_src emacs-lisp
 (setq interleave-org-notes-dir-list '("~/research" "."))
 #+end_src
