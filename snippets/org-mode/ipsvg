@@ -2,7 +2,7 @@
 # name: ipython svg plot
 # key: ipsvg
 # --
-#+begin_src ipython :session ${1::file ${2:$$(let ((temporary-file-directory "/tmp/")) (make-temp-file "py" nil ".svg"))}} :exports ${3:results}
+#+begin_src ipython :session ${1::ipyfile ${2:$$(let ((temporary-file-directory "/tmp/")) (make-temp-file "py" nil ".svg"))}} :exports ${3:results} :results ${4:raw drawer}
 %matplotlib inline
 %config InlineBackend.figure_format = 'svg'
 import matplotlib.pyplot as plt

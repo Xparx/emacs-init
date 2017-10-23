@@ -580,7 +580,11 @@ Ibuffer mode hook
 #+end_src
 
 **** Don't set unsafe variables
-This is mostly for el-get when looking for recpies but might affect other stuff (like themes?)
+:PROPERTIES:
+:header-args: :tangle   no
+:END:
+This is mostly for el-get when looking for recpies but might affect other stuff (like themes?), however this makes it so that I can't play with file local variables for library of babel for example.
+
 #+begin_src emacs-lisp
 (setq enable-local-variables :safe)
 #+end_src
@@ -944,7 +948,11 @@ ob-ipython is ipython support for src block in org-mode.
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "ob-ipython")
   (setq python-shell-completion-native-enable nil)
-  (setq python-shell-prompt-detect-failure-warning nil))
+  (setq python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'org-latex-minted-langs '(ipython "python"))
+  (setq ob-ipython-resources-dir "./figures/")
+  (add-to-list 'company-backends 'company-ob-ipython)
+)
 #+end_src
 [[https://github.com/jorgenschaefer/elpy/issues/733][Python shell prompts not detected · Issue #733 · jorgenschaefer/elpy]]
 
@@ -1272,8 +1280,8 @@ Make it so that org-mode opens external pdf files in evince: [[http://stackoverf
 
 I can turn this on when needed instead.
 #+begin_src emacs-lisp :tangle no
-(add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
 (add-hook 'org-mode-hook 'org-display-inline-images)
+(add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
 #+end_src
 
 Make attr_* :widht XXXpx work for inline images

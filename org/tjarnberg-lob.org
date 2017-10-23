@@ -48,3 +48,40 @@ print(data)
 #+BEGIN_SRC python :noweb yes :exports code
 <<expand-src-block(block-name="ipy-print-abc")>>
 #+END_SRC
+
+* Initiate ob-ipython session with defaut settings
+
+#+name: initialize-ob-ipython-session
+#+begin_src ipython :session :exports code :results silent
+import sys
+import os
+from importlib import reload
+sys.path.insert(0, './lib/')
+sys.path.insert(0, './external/')
+pd.set_option('precision',3)
+#+end_src
+
+To use this as default when opening a buffer enter the following code in an local varaible block =M-x add-file-local-variable RET eval RET (org-sbe initialize_ipython_session)=
+
+#+name: load-ob-ipython-libraries
+#+begin_src ipython :session :exports code :results silent
+import matplotlib
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import re
+import seaborn as sns
+#+end_src
+
+#+name: set-ob-ipython-default-plot-configs
+#+begin_src ipython :session :exports code :results silent
+%matplotlib inline
+plt.style.use('seaborn-whitegrid')
+from matplotlib import rc
+rc('text', usetex=False)
+rc('font', size='18')
+# sns.set_palette('muted')
+sns.set(style="whitegrid", palette="muted", color_codes=True, font_scale=2)
+# plt.style.available
+#+end_src
+
