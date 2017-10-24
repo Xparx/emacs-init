@@ -951,7 +951,7 @@ ob-ipython is ipython support for src block in org-mode.
   (setq python-shell-prompt-detect-failure-warning nil)
   (add-to-list 'org-latex-minted-langs '(ipython "python"))
   (setq ob-ipython-resources-dir "./figures/")
-  (add-to-list 'company-backends 'company-ob-ipython)
+  ;; (add-to-list 'company-backends 'company-ob-ipython)
 )
 #+end_src
 [[https://github.com/jorgenschaefer/elpy/issues/733][Python shell prompts not detected · Issue #733 · jorgenschaefer/elpy]]
