@@ -1842,8 +1842,8 @@ Org-ref variables
 Basic configuration
 #+begin_src emacs-lisp
 (when (el-get-package-exists-p "helm-bibtex")
-  (setq bibtex-completion-library-path '("~/research/papers")
-        bibtex-completion-bibliography '("~/research/bibliography.bib")
+  (setq bibtex-completion-library-path "~/research/papers"
+        bibtex-completion-bibliography "~/research/bibliography.bib"
         bibtex-completion-notes-path "~/research/bib-notes.org"
         bibtex-completion-notes-path "~/research/bib-notes.org"))
 #+end_src
