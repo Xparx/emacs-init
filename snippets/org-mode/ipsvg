@@ -2,10 +2,19 @@
 # name: ipython svg plot
 # key: ipsvg
 # --
-#+begin_src ipython :session ${1::ipyfile ${2:$$(let ((temporary-file-directory "/tmp/")) (make-temp-file "py" nil ".svg"))}} :exports ${3:results} :results ${4:raw drawer}
-%matplotlib inline
-%config InlineBackend.figure_format = 'svg'
+#+header: :var savefig=1 fname="${2:$$(make-temp-file "py_" nil "")}.svg"
+#+name: ${2:$(file-name-nondirectory yas/text)}
+#+begin_src ipython :session :exports code :results file output drawer
+%matplotlib tk
 import matplotlib.pyplot as plt
-import numpy as np
-$0
+
+fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(8, 6), dpi=75, facecolor='w', edgecolor='k')
+__ = ax.plot($0)
+if savefig:
+    # fig.savefig(fname, transparent=True)
+    fig.savefig(fname)
+    print(fname, sep=",", end="")
 #+end_src
+
+#+attr_html: :width 400px
+#+RESULTS: ${2:$(file-name-nondirectory yas/text)}
