@@ -1578,6 +1578,23 @@ Org-mode hook for tex-master
 (add-hook 'org-mode-hook (setq TeX-master t))
 #+end_src
 
+**** Org-mode export options
+
+[[http://pragmaticemacs.com/emacs/prevent-comments-from-breaking-paragraphs-in-org-mode-latex-export/][source1]], [[https://emacs.stackexchange.com/questions/22574/orgmode-export-how-to-prevent-a-new-line-for-comment-lines][source2]]
+#+begin_src emacs-lisp
+;; remove comments from org document for use with export hook
+(defun delete-org-comments (backend)
+  (loop for comment in (reverse (org-element-map (org-element-parse-buffer)
+                    'comment 'identity))
+    do
+    (setf (buffer-substring (org-element-property :begin comment)
+                (org-element-property :end comment))
+          "")))
+
+;; add to export hook
+(add-hook 'org-export-before-processing-hook 'delete-org-comments)
+#+end_src
+
 **** Org LaTeX export types
 Originally taken from Bruno Tavernier: [[http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432][here]], but adapted to
 use latexmk 4.20 or higher.
@@ -1654,60 +1671,6 @@ My extra packages in latex exports. Third argument is for if latex math snippets
 #+begin_src emacs-lisp
 (add-to-list 'org-latex-packages-alist
              '("" "easySymbols" t))
-#+end_src
-
-**** Org LaTeX export with extra packages                        :deprecated:
-:PROPERTIES:
-:header-args: :tangle   no
-:END:
-Specify default packages to be included in every tex file, whether
-pdflatex or xelatex. This is kept as an example. Some packages are
-still included in the output.
-#+begin_src emacs-lisp
-(setq org-export-latex-packages-alist
-      '(("" "graphicx" t)
-        ("" "longtable" nil)
-        ("" "float" nil)))
-#+end_src
-
-Define packages for each latex command. Using latexmk...
-#+begin_src emacs-lisp
-(defun my-auto-tex-parameters ()
-  "Automatically select the tex packages to include."
-  ;; default packages for ordinary latex or pdflatex export
-  (setq org-export-latex-default-packages-alist
-        '(("" "graphicx" t)
-          ("" "longtable" nil)
-          ("" "float" nil)
-          ("AUTO" "inputenc" t)
-          ("T1"   "fontenc"   t)
-          (""     "fixltx2e"  t)
-          (""     "hyperref"  nil)))
-
-  ;; Packages to include when xelatex is used
-  (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-      (setq org-export-latex-default-packages-alist
-            '(("" "fontspec" t)
-              ("" "xunicode" t)
-              ("" "url" t)
-              ("" "rotating" t)
-              ("american" "babel" t)
-              ("babel" "csquotes" t)
-              ("" "soul" t)
-              ("xetex" "hyperref" nil)
-              )))
-
-  (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-      (setq org-export-latex-classes
-            (cons '("article"
-                    "\\documentclass[11pt,article,oneside]{memoir}"
-                    ("\\section{%s}" . "\\section*{%s}")
-                    ("\\subsection{%s}" . "\\subsection*{%s}")
-                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-                  org-export-latex-classes))))
-(add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
 #+end_src
 
 **** Org LaTeX math snippets configuration
