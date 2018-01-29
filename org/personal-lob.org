@@ -49,7 +49,10 @@ print(data)
 <<expand-src-block(block-name="ipy-print-abc")>>
 #+END_SRC
 
-* Initiate ob-ipython session with defaut settings
+
+* Python blocks
+
+** Initiate ob-ipython session with defaut settings
 
 #+name: initialize-ob-ipython-session
 #+begin_src ipython :session :exports code :results silent
@@ -58,30 +61,69 @@ import os
 from importlib import reload
 sys.path.insert(0, './lib/')
 sys.path.insert(0, './external/')
-pd.set_option('precision',3)
 #+end_src
 
-To use this as default when opening a buffer enter the following code in an local varaible block =M-x add-file-local-variable RET eval RET (org-sbe initialize_ipython_session)=
+To use this as default when opening a buffer enter the following code in an local varaible block =M-x add-file-local-variable RET eval RET (org-sbe initialize-ob-ipython-session)=
 
 #+name: load-ob-ipython-libraries
 #+begin_src ipython :session :exports code :results silent
-import matplotlib
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import re
-import seaborn as sns
+pd.set_option('precision',3)
 #+end_src
+
+** Plotting configurations in ipython
 
 #+name: set-ob-ipython-default-plot-configs
 #+begin_src ipython :session :exports code :results silent
-%matplotlib inline
+%matplotlib tk
+import seaborn as sns
+import matplotlib as mpl
 plt.style.use('seaborn-whitegrid')
-from matplotlib import rc
-rc('text', usetex=False)
-rc('font', size='18')
+mpl.rc('text', usetex=False)
+mpl.rc('font', size='18')
 # sns.set_palette('muted')
 sns.set(style="whitegrid", palette="muted", color_codes=True, font_scale=2)
-# plt.style.available
 #+end_src
 
+#+name: set-ob-ipython-default-plot-configs2
+#+begin_src ipython :session :exports code :results silent
+%matplotlib tk
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+color_pallet = "muted"
+plt.style.use('seaborn-whitegrid')
+sns.set_context("notebook", font_scale=1.5)
+sns.set_palette(color_pallet)
+sns.set_color_codes(color_pallet)
+#+end_src
+
+#+name: example-plot
+#+begin_src ipython :session :exports code :results silent
+import numpy as np
+fig, ax = plt.subplots(facecolor='w', edgecolor='k', figsize=(12,8), dpi=75)
+__ = ax.plot(np.linspace(0, 2 * np.pi), np.sin(np.linspace(0, 2 * np.pi)), 'b-o')
+__ = ax.grid(True)
+__ = ax.set(xlabel="rad")
+__ = ax.set(ylabel="Amplitude")
+plt.tight_layout(pad=0)
+#+end_src
+
+#+name: save-figure-all-formats
+#+begin_src ipython :session :exports code :results silent var: default_fname="/tmp/temporary_plot"
+import pathlib
+if 'fname' not in locals():
+    fname = default_fname
+
+if not os.path.exists(fname):
+    os.makedirs(fname, exist_ok=True)
+
+fig.savefig(os.path.join(fname, "pixel.png"), transparent=False)
+fig.savefig(os.path.join(fname, "vector.svg"), transparent=False)
+mpld3.save_html(fig,os.path.join(fname, "web.html"))
+
+# print(fname, sep=",", end="")
+#+end_src

@@ -1477,6 +1477,11 @@ Don't evaluate src code on export [[help:org-export-babel-evaluate][and more (WA
 #+end_src
 
 **** Org library of babel
+:PROPERTIES:
+:custom_id: lob
+:END:
+
+Code blocks located in any Org mode file can be loaded into the “Library of Babel” with the =org-babel-lob-ingest= function, bound to =C-c C-v i=. 
 
 Add the standard file to the library
 #+begin_src emacs-lisp
