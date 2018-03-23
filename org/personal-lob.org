@@ -59,8 +59,8 @@ print(data)
 import sys
 import os
 from importlib import reload
-sys.path.insert(0, './lib/')
-sys.path.insert(0, './external/')
+sys.path.insert(0, 'lib/')
+sys.path.insert(0, 'external/')
 #+end_src
 
 To use this as default when opening a buffer enter the following code in an local varaible block =M-x add-file-local-variable RET eval RET (org-sbe initialize-ob-ipython-session)=
@@ -69,6 +69,7 @@ To use this as default when opening a buffer enter the following code in an loca
 #+begin_src ipython :session :exports code :results silent
 import pandas as pd
 import numpy as np
+import scipy.stats as stats
 import re
 pd.set_option('precision',3)
 #+end_src
@@ -106,17 +107,19 @@ sns.set_color_codes(color_pallet)
 import numpy as np
 
 sns.set_context(context, font_scale=1.5)
-fig, ax = plt.subplots(facecolor='w', edgecolor='k', figsize=(12,8), dpi=75)
-__ = ax.plot(np.linspace(0, 2), np.sin(np.linspace(0, 2 * np.pi)), 'b-o')
+fig, ax = plt.subplots(nrows=1, ncols=2, facecolor='w', edgecolor='k', figsize=(18,8), dpi=75, sharey=True)
+__ = ax[0].plot(np.linspace(0, 2), np.sin(np.linspace(0, 2 * np.pi)), 'b-o')
+__ = ax[0].grid(True, color='lightgray', linestyle='--', linewidth=1)
+__ = ax[0].set(xlabel="$\pi$")
+__ = ax[0].set(ylabel="Amplitude")
+__ = ax[1].hist(np.sin(np.linspace(0, 20 * np.pi, num=1000)),bins=100, orientation='horizontal', density=True)
+__ = ax[1].set(xlabel="Freq")
 __ = sns.despine(offset=20, trim=True)
-__ = ax.grid(True, color='lightgray', linestyle='--', linewidth=1)
-__ = ax.set(xlabel="$\pi$")
-__ = ax.set(ylabel="Amplitude")
 __ = fig.tight_layout(pad=0)
 #+end_src
 
 #+name: save-figure-all-formats
-#+begin_src ipython :session :exports code :results silent var: default_fname="/tmp/temporary_plot"
+#+begin_src ipython :session :exports code :results output file drawer var: default_fname="/tmp/temporary_plot"
 if 'fname' not in locals():
     fname = default_fname
 
@@ -128,5 +131,5 @@ fig.savefig(os.path.join(fname, "vector.svg"), transparent=False)
 mpld3.save_html(fig,os.path.join(fname, "web.html"))
 
 # print(fname, sep=",", end="")
+print(fname+"/pixel.png", sep=",", end="")
 #+end_src
-
