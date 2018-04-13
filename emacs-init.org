@@ -930,7 +930,8 @@ Some variables are set differently currently, check function if curious.
 (when (el-get-package-exists-p "elpy")
   (elpy-enable)
   (unless (el-get-package-exists-p "ob-ipython")
-    (elpy-use-ipython) ; this sets all the variables needed for ipython
+    (setq python-shell-interpreter "jupyter"
+      python-shell-interpreter-args "console --simple-prompt")
     ))
 #+end_src
 
