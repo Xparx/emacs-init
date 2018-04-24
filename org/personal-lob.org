@@ -1,4 +1,5 @@
-#+title: My local library of babel
+#+STARTUP: hideblocks
+#+title: My local babel library
 
 * How do I insert code block header :var in exported code block in org-mode
 [[https://emacs.stackexchange.com/questions/27610/how-do-i-insert-code-block-header-var-in-exported-code-block-in-org-mode][source]]
@@ -99,18 +100,18 @@ plt.style.use('seaborn-ticks')
 sns.set_color_codes(color_pallet)
 # sns.set_context("notebook", font_scale=1.5)
 # sns.set_palette(color_pallet)
+#+end_src
+
+To check the default rc paramters look in to the variable and set current ones with =mpl.rcParams=. Se also =mpl.rc_context= below.
+#+name: default-rc-params
+#+begin_src ipython :session :exports code :results silent
+mpl.rcParamsDefault
 # mpl.rcParams['text.usetex'] = True
 # mpl.rcParams['text.latex.preamble'] = [r"\usepackage[charter]{mathdesign}"]
 # mpl.rcParams['font.family'] = ['serif']
 # mpl.rcParams['font.size'] = 10
+# plt.rc("text", usetex=True)
 #+end_src
-
-To check the default rc paramters look in to the variable and set current ones with =mpl.rcParams=
-#+name: default-rc-params
-#+begin_src ipython :session :exports code :results silent
-mpl.rcParamsDefault
-#+end_src
-
 
 #+name: example-ipython-plot
 #+begin_src ipython :session :exports code :results silent :var context="notebook"
@@ -118,19 +119,29 @@ mpl.rcParamsDefault
 import numpy as np
 
 # with plt.style.context(('seaborn-ticks')):
-sns.set_context(context, font_scale=1.5)
 with mpl.rc_context(rc={'font.family': ['serif']}):
-
+    sns.set_context(context, font_scale=1.5)
+    # mpl.rcParams['text.usetex'] = True
     fig, ax = plt.subplots(nrows=1, ncols=2, facecolor='w', edgecolor='k', figsize=(18,8), dpi=75, sharey=True)
     __ = ax[0].plot(np.linspace(0, 1), np.sin(np.linspace(0, 2 * np.pi)), 'b-o')
-    __ = ax[0].grid(True, color='lightgray', linestyle='--', linewidth=1)
-    __ = ax[0].set(xlabel="$\pi$")
+    __ = ax[0].minorticks_on()
+    __ = ax[0].grid(which="major", color='darkgray', linestyle='--', linewidth=1)
+    __ = ax[0].grid(which="minor", color='lightgray', linestyle='--', linewidth=0.5)
+    __ = ax[0].set(xlabel="$\\tau$")
     # __ = ax[0].set(ylabel="Amplitude", rotation='horizontal')
     __ = ax[0].set_ylabel("Amplitude",  color='gray', rotation='horizontal')
+    __ = ax[0].yaxis.set_label_coords(-0.01, 1.01)
     __ = ax[1].hist(np.sin(np.linspace(0, 20 * np.pi * np.random.rand(), num=1000)),bins=100, orientation='horizontal', density=True)
     __ = ax[1].set(xlabel="Freq")
-    __ = sns.despine(offset=20, trim=True)
-    __ = ax[0].yaxis.set_label_coords(-0.05, 1.0)
+    __ = sns.despine(offset=0, trim=False)
+    for x in ax:
+        __ = x.tick_params(which='minor', # This needs to be after despine or it does not stick
+                           top=False, # turn off top ticks
+                           left=False, # turn off left ticks
+                           right=False,  # turn off right ticks
+                           bottom=False) # turn off bottom ticks
+        __ = x.set_axisbelow(True) # This can be put after minorticks_on line.
+
     __ = fig.tight_layout(pad=0)
 #+end_src
 
@@ -144,7 +155,7 @@ if not os.path.exists(fname):
 
 fig.savefig(os.path.join(fname, "pixel.png"), transparent=False)
 fig.savefig(os.path.join(fname, "vector.svg"), transparent=False)
-mpld3.save_html(fig,os.path.join(fname, "web.html"))
+mpld3.save_html(fig, os.path.join(fname, "web.html"))
 
 # print(fname, sep=",", end="")
 print(fname+"/pixel.png", sep=",", end="")

@@ -309,9 +309,9 @@ Add list to load-theme path. use [[elisp:load-theme][load-theme]] RET "theme" to
 #+end_src
 
 Load my prefered theme if availible
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (condition-case nil
-    (load-theme 'my-z t)
+    (load-theme 'zenburn t)
   (error "no theme loaded"))
 #+end_src
 
